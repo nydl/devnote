@@ -208,8 +208,8 @@ app.listen(3000);
 
 上方的伪代码中标注了中间件的执行顺序，看起来是不是有点像 ruby 执行代码块（block）时 yield 的表现了？也许这能帮助你更好的理解 koa 运作的方式。
 
-### 形象示意图 
-![onion.png](https://github.com/nydl/devnote/blob/master/img/koa-onion.png)
+### 级联调用形象示意图 
+![onion.png](https://raw.githubusercontent.com/nydl/devnote/master/img/koa-onion.png)
 
 应用配置（Settings）
 --------------------
