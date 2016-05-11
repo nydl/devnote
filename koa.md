@@ -21,15 +21,15 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 更多资源
 -------
 
--	[API](docs/api/index.md) documentation
+-	[接口文档](docs/api/index.md) documentation
 -	[Badgeboard](https://koajs.github.io/badgeboard) and list of official modules
--	[Examples](https://github.com/facebook/react-native/tree/master/Examples)
--	[Middleware](https://github.com/koajs/koa/wiki) list
+-	[示例](https://github.com/facebook/react-native/tree/master/Examples)
+-	[中间件](https://github.com/koajs/koa/wiki) list
 -	[Wiki](https://github.com/koajs/koa/wiki)
 -	[G+ Community](https://plus.google.com/communities/101845768320796750641)
 -	[Reddit Community](http://reddit.com/r/koajs)
 -	[Mailing list](https://groups.google.com/forum/#!forum/koajs)
--	[Guide](docs/guide.md)
+-	[使用指南](docs/guide.md)
 -	[FAQ](docs/faq.md)
 -	**#koajs** on freenode
 
@@ -57,29 +57,118 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 	其实npm test和npm start是npm run test和npm run start的简写。事实上，你可以使用npm run来运行scripts里的任何条目。  
 	使用npm run的方便之处在于，npm会自动把node_modules/.bin加入$PATH，这样你可以直接运行依赖程序和开发依赖程序，不用全局安装了。 只要npm上的包提供命令行接口，你就可以直接使用它们，方便吧。
   
-## 示例代码
   
+## 示例代码
+
+### Hello World
+
+```js
+var koa = require('koa');  
+var app = koa();
+
+app.use(ctx=>  
+  ctx.body = 'Hello World';
+);
+
+app.listen(3000);  
+```
+  
+### 插入中间件并等待后续执行
+
 ```js
 var koa = require('koa');
 var app = koa();
 
-// logger
-
-app.use(function *(next){
-  var start = new Date;
-  yield next;
-  var ms = new Date - start;
-  console.log('%s %s - %s', this.method, this.url, ms);
+// logger 中间件
+app.use(async (ctx,next)=>{
+  const start = new Date();
+  await next();
+  const ms = new Date - start;
+  console.log(`logger: ${ctx.method} ${ctx.url} - ${ms}ms`);
 });
 
 // response
-
-app.use(function *(){
-  this.body = 'Hello World';
+app.use(ctx =>{
+  ctx.body = 'Hello World';
 });
 
 app.listen(3000);
 ```
+
+## 静态文件服务
+
+- [koa-send](https://github.com/koajs/send) tj参与的文件发送基本库
+  支持自动压缩等，代码不多，功能强大
+- [koa-static](https://github.com/koajs/static) tj参与的文件服务中间件
+- [send](https://github.com/pillarjs/send) tj参与的早期文件发送基本库
+  代码很多，express 使用的基本库
+- [serve-static](https://github.com/expressjs/serve-static) express常用的文件服务中间件
+  封装到 koa 2.0 代码示例:
+  ``` js
+  import serveStatic from 'serve-static';
+  function wrapServeStatic(serve) {
+    return ctx => {
+      const urlBackup = ctx.req.url;
+      ctx.req.url = '/' + (ctx.params.pathname || '');
+      return new Promise(resolve => {
+        serve(ctx.req, ctx.res, resolve);
+      }).then(() => {
+        ctx.req.url = urlBackup;
+      });
+    };
+  }
+  
+  // koa-serve-static 封装的
+  function serveStatic(root, options) {
+    const fn = serveStatic(root, options);
+    return (ctx, next) => {
+      return new Promise((resolve, reject) => {
+        // hacked statusCode
+        if (ctx.status === 404) ctx.status = 200
+        // unnecessary response by koa
+        ctx.respond = false
+        // 404, serve-static forward non-404 errors
+        // force throw error
+        fn(ctx.req, ctx.res, reject)
+      })
+    }
+  }
+  ```
+## 封装 koa-send示例，测试通过 
+  ```
+  import Koa from "koa";
+  const app = new Koa();
+  import send from "koa-send";
+
+  const resolve = require('path').resolve;
+  const assert = require('assert');
+
+
+  function serve(root, opts) {
+    opts = opts || {};
+
+    assert(root, 'root directory is required to serve files');
+
+    // options
+    //debug('static "%s" %j', root, opts);
+    opts.root = resolve(root);
+
+    if (opts.index !== false)
+      opts.index = opts.index || 'index.html';
+
+    return async (ctx, next)=>{
+      console.log(ctx.url, ctx.path, opts.root, ctx.request.body);
+
+      if (ctx.method == 'HEAD' || ctx.method == 'GET') {
+        if (await send(ctx, ctx.path, opts)) return;
+      }
+      await next();
+    };
+  }
+
+  app.use(serve('./public'));
+  ```  
+
 
 运行测试
 --------
@@ -96,16 +185,7 @@ $ make test
 在这些中间件中，有负责内容协商（content-negotation）、缓存控制（cache freshness）、反向代理（proxy support）与重定向等等功能的常用中间件（详见 中间件 章节），但如前所述， Koa 内核并不会打包这些中间件。
 
 让我们先来看看 Koa 极其简单的 Hello World 应用程序：
-```js
-var koa = require('koa');  
-var app = koa();
 
-app.use(ctx=>  
-  ctx.body = 'Hello World';
-);
-
-app.listen(3000);  
-```
 
 级联调用（Cascading）
 ------------------
@@ -223,7 +303,7 @@ app.listen(3000);
 -	**app.jsonSpaces** 默认的 JSON 响应空间
 -	**app.outputErrors** 是否输出错误堆栈 err.stack 到 stderr [当执行环境是 "test" 的时候为 false]
 
-## 代码理解
+## 代码解析
 
 ### app.listen(...)
 
