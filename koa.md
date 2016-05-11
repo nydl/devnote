@@ -31,29 +31,102 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 -	[Mailing list](https://groups.google.com/forum/#!forum/koajs)
 -	[使用指南](docs/guide.md)
 -	[FAQ](docs/faq.md)
--	**#koajs** on freenode
-
-开始使用
-------
-
 -	[Kick-Off-Koa](https://github.com/koajs/kick-off-koa) - An intro to koa via a set of self-guided workshops.
 -	[Workshop](https://github.com/koajs/workshop) - A workshop to learn the basics of koa, Express' spiritual successor.
 -	[Introduction Screencast](http://knowthen.com/episode-3-koajs-quickstart-guide/) - An introduction to   
   installing and getting started with Koa
-- 安装koa 2.0
-  `$ npm install koa`
-- 示例
+
+开始使用
+------
+
+- koa 2.0 需要使用 Babel，需要安装 Babel转换器
+  - 使用了es7的语法，如 async、await
+- package.json 项目配置参考文件：
+``` js
+{
+  "name": "koastart",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "eslint": "node_modules/.bin/eslint ./src",
+    "test": "node_modules/.bin/eslint ./src",
+    "build": "node_modules/.bin/babel src -d lib",
+    "prepublish": "node_modules/.bin/babel src -d lib"
+  },
+  "author": "",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "filesize-parser": "^1.3.1",
+    "fs-promise": "^0.4.1",
+    "jsrsasign": "^5.0.7",
+    "koa": "^2.0.0",
+    "koa-bodyparser": "^3.0.0",
+    "koa-router": "^7.0.0",
+    "mysql": "^2.10.2",
+    "nodemailer": "^2.3.0",
+    "progress": "^1.1.8",
+    "qiniu": "^6.1.9",
+    "read": "^1.0.7",
+    "request": "^2.69.0",
+    "sequelize": "^3.19.3",
+    "uid-safe": "^2.0.0",
+    "umzug": "^1.9.0"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^2.3.1",
+    "babel-cli": "^6.5.1",
+    "babel-plugin-syntax-async-functions": "^6.5.0",
+    "babel-plugin-syntax-object-rest-spread": "^6.5.0",
+    "babel-plugin-transform-async-to-generator": "^6.3.13",
+    "babel-plugin-transform-es2015-arrow-functions": "^6.5.2",
+    "babel-plugin-transform-es2015-destructuring": "^6.3.15",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.3.16",
+    "babel-plugin-transform-es2015-parameters": "^6.5.0",
+    "babel-plugin-transform-es2015-spread": "^6.5.2",
+    "babel-plugin-transform-object-rest-spread": "^6.5.0",
+    "babel-plugin-transform-strict-mode": "^6.5.2",
+    "babel-register": "^6.3.13",
+    "babel-eslint": "^4.1.6",
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "^2.1.1",
+    "eslint-plugin-import": "^0.12.1"
+  }
+}
+```
+- .babelrc 转换配置文件
+``` js
+{
+  "plugins": [
+    "syntax-object-rest-spread",
+    "syntax-async-functions",
+    "transform-es2015-arrow-functions",
+    "transform-async-to-generator",
+    "transform-es2015-modules-commonjs",
+    "transform-es2015-destructuring",
+    "transform-es2015-spread",
+    "transform-object-rest-spread",
+    "transform-es2015-parameters",
+    "transform-strict-mode"
+  ]
+}
+```
+- npm 修改npm服务器为淘宝镜像服务器，加快安装速度
+  npm config set registry https://registry.npm.taobao.org
+  npm config set disturl https://npm.taobao.org/dist
+- 安装所有第三方库 `$ npm i`
+- 运行示例代码
   -	下载示例并解压到指定路径
   -	进入该目录，运行 `npm install` 自动完成相关组件安装
   -	进入各个示例中，运行 node app 即可运行各种示例
 - 需将webstorm 中的 js 设置为 6.0 或 jsx，否则报错
-- koa2 使用了es7的语法，如 async、await，需要 Babel转换
 - 使用 js 6后，webstorm会提示 一个 自动转换为 5 的 插件：
 	File watcher 'Babel' is available for thie file. Description:'Transpiles ECMAScript 6 code to ECMAScript 5'
   这个插件在你修改文件时，会自动将es6、es7语法文件转换为es5或es6的文件。  
   会影响编码效率，一般项目比较大，文件多，不推荐使用，学习、测试可以使用。
   也可以通过tools手动添加。
--	运行服务端RN，`npm start`，npm 会在项目的 package.json 文件中寻找 scripts 区域中的start命令。  
+-	批量转换编译，`npm run build`，npm 会在项目的 package.json 文件中寻找 scripts 区域中的命令。  
 	其实npm test和npm start是npm run test和npm run start的简写。事实上，你可以使用npm run来运行scripts里的任何条目。  
 	使用npm run的方便之处在于，npm会自动把node_modules/.bin加入$PATH，这样你可以直接运行依赖程序和开发依赖程序，不用全局安装了。 只要npm上的包提供命令行接口，你就可以直接使用它们，方便吧。
   
