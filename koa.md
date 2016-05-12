@@ -10,13 +10,6 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 **中文文档**：http://koajs.cn/  
 **示例**: https://github.com/koajs/examples
 
-作者
-----
-
--	[TJ Holowaychuk](https://github.com/tj)
--	[Jonathan Ong](https://github.com/jonathanong)
--	[Julian Gruber](https://github.com/juliangruber)
--	[Yiyu He](https://github.com/dead-horse)
 
 更多资源
 -------
@@ -49,7 +42,7 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
   "description": "",
   "main": "index.js",
   "scripts": {
-    "eslint": "node_modules/.bin/eslint ./src",
+    "lint": "node_modules/.bin/eslint ./src",
     "test": "node_modules/.bin/eslint ./src",
     "build": "node_modules/.bin/babel src -d lib",
     "prepublish": "node_modules/.bin/babel src -d lib"
@@ -59,11 +52,12 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
   "private": true,
   "dependencies": {
     "filesize-parser": "^1.3.1",
-    "fs-promise": "^0.4.1",
-    "jsrsasign": "^5.0.7",
+    "fs-promise": "^0.5.0",
+    "jsrsasign": "^5.0.11",
     "koa": "^2.0.0",
     "koa-bodyparser": "^3.0.0",
     "koa-router": "^7.0.0",
+    "koa-send": "^3.2.0",
     "mysql": "^2.10.2",
     "nodemailer": "^2.3.0",
     "progress": "^1.1.8",
@@ -75,8 +69,8 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
     "umzug": "^1.9.0"
   },
   "devDependencies": {
-    "sequelize-cli": "^2.3.1",
     "babel-cli": "^6.5.1",
+    "babel-eslint": "^6.0.4",
     "babel-plugin-syntax-async-functions": "^6.5.0",
     "babel-plugin-syntax-object-rest-spread": "^6.5.0",
     "babel-plugin-transform-async-to-generator": "^6.3.13",
@@ -88,10 +82,12 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
     "babel-plugin-transform-object-rest-spread": "^6.5.0",
     "babel-plugin-transform-strict-mode": "^6.5.2",
     "babel-register": "^6.3.13",
-    "babel-eslint": "^4.1.6",
-    "eslint": "^1.10.3",
-    "eslint-config-airbnb": "^2.1.1",
-    "eslint-plugin-import": "^0.12.1"
+    "eslint": "^2.9.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.8.0",
+    "eslint-plugin-jsx-a11y": "^1.2.0",
+    "eslint-plugin-react": "^5.1.1",
+    "sequelize-cli": "^2.3.1"
   }
 }
 ```
@@ -112,6 +108,38 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
   ]
 }
 ```
+- .eslintrc 转换配置文件
+``` js
+{
+  "extends": "eslint-config-airbnb/base",
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true,
+    "mocha": true
+  },
+  "rules": {
+    // Disable for console/alert
+    "no-console": 0,
+    "no-alert": 0,
+
+    "indent": [2, 2, {"SwitchCase": 1}]
+  },
+  "plugins": [
+    "import"
+  ],
+  "settings": {
+    "import/parser": "babel-eslint",
+    "import/resolve": {
+      "moduleDirectory": ["node_modules", "src"]
+    }
+  },
+  "globals": {
+    "__DEV__": true,
+    "__OPTION__": true
+  }
+}
+```
 - npm 修改npm服务器为淘宝镜像服务器，加快安装速度
   npm config set registry https://registry.npm.taobao.org
   npm config set disturl https://npm.taobao.org/dist
@@ -124,11 +152,20 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 - 使用 js 6后，webstorm会提示 一个 自动转换为 5 的 插件：
 	File watcher 'Babel' is available for thie file. Description:'Transpiles ECMAScript 6 code to ECMAScript 5'
   这个插件在你修改文件时，会自动将es6、es7语法文件转换为es5或es6的文件。  
-  会影响编码效率，一般项目比较大，文件多，不推荐使用，学习、测试可以使用。
+  建议不要使用，会影响编码效率，学习、测试可以使用，涉及多个文件引用时，引用文件如果采用了新语法，会报错。
   也可以通过tools手动添加。
 -	批量转换编译，`npm run build`，npm 会在项目的 package.json 文件中寻找 scripts 区域中的命令。  
 	其实npm test和npm start是npm run test和npm run start的简写。事实上，你可以使用npm run来运行scripts里的任何条目。  
 	使用npm run的方便之处在于，npm会自动把node_modules/.bin加入$PATH，这样你可以直接运行依赖程序和开发依赖程序，不用全局安装了。 只要npm上的包提供命令行接口，你就可以直接使用它们，方便吧。
+- webstorm调试：
+  - 添加调试文件时，使用 babel-node 代替 标准 node
+    比如 osx 上：
+    /Users/way/.nvm/versions/node/v5.10.1/bin/node
+    替换为：
+    /Users/way/.nvm/versions/node/v5.10.1/bin/babel-node
+  - 编译时带"-s"生成 Source Maps，运行js时，可对编译前的代码进行调试！
+    "build": "node_modules/.bin/babel src -d lib -s",
+- 如果浏览器提示错误，在浏览器上先连一下调试端口，然后打开web端口，即可触发调试
   
   
 ## 示例代码
@@ -216,8 +253,7 @@ app.listen(3000);
   const resolve = require('path').resolve;
   const assert = require('assert');
 
-
-  function serve(root, opts) {
+  function staticFile(root, opts) {
     opts = opts || {};
 
     assert(root, 'root directory is required to serve files');
@@ -239,7 +275,7 @@ app.listen(3000);
     };
   }
 
-  app.use(serve('./public'));
+  app.use(staticFile('./public'));
   ```  
 
 
