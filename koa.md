@@ -8,6 +8,7 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 **官方网站**: http://koajs.com  
 **GitHub**：https://github.com/koajs/koa
 **中文文档**：http://koajs.cn/  
+**KOA实战**:http://book.apebook.org/minghe/koa-action/index.html
 **示例**: https://github.com/koajs/examples
 
 
@@ -170,40 +171,37 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
   
 ## 示例代码
 
-### Hello World
+- Hello World
+  ```js
+  var koa = require('koa');  
+  var app = koa();
 
-```js
-var koa = require('koa');  
-var app = koa();
+  app.use(ctx=>  
+    ctx.body = 'Hello World';
+  );
 
-app.use(ctx=>  
-  ctx.body = 'Hello World';
-);
+  app.listen(3000);  
+  ```
+- 插入中间件并等待后续执行
+  ```js
+  var koa = require('koa');
+  var app = koa();
 
-app.listen(3000);  
-```
-  
-### 插入中间件并等待后续执行
+  // logger 中间件
+  app.use(async (ctx,next)=>{
+    const start = new Date();
+    await next();
+    const ms = new Date - start;
+    console.log(`logger: ${ctx.method} ${ctx.url} - ${ms}ms`);
+  });
 
-```js
-var koa = require('koa');
-var app = koa();
+  // response
+  app.use(ctx =>{
+    ctx.body = 'Hello World';
+  });
 
-// logger 中间件
-app.use(async (ctx,next)=>{
-  const start = new Date();
-  await next();
-  const ms = new Date - start;
-  console.log(`logger: ${ctx.method} ${ctx.url} - ${ms}ms`);
-});
-
-// response
-app.use(ctx =>{
-  ctx.body = 'Hello World';
-});
-
-app.listen(3000);
-```
+  app.listen(3000);
+  ```
 
 ## 静态文件服务
 
@@ -244,7 +242,7 @@ app.listen(3000);
     }
   }
   ```
-## 封装 koa-send示例，测试通过 
+- 封装 koa-send示例，测试通过 
   ```
   import Koa from "koa";
   const app = new Koa();
@@ -278,6 +276,39 @@ app.listen(3000);
   app.use(staticFile('./public'));
   ```  
 
+## jade模板
+
+- [consolidate](https://github.com/tj/consolidate.js) tj写的几十种模板库！
+- [koa-react-view](https://github.com/koajs/static) react模板库
+- [koa-views](https://github.com/queckezz/koa-views) 封装了consolidate，支持 koa 2
+- [pug](https://github.com/pugjs/pug) jade 更名为 pug
+- [koa-pug](https://github.com/chrisyip/koa-pug) pug koa的封装
+- [jade官网](http://jade-lang.com)
+- [html2jade](https://github.com/donpark/html2jade) 转换库
+- [html2jade web](http://html2jade.org) 在线转换
+- [jade2html2jade](http://jumplink.github.io/jade2html2jade/) 双向转换
+- 示例代码：
+  ``` js
+  import Koa from 'koa';
+  import Pug from 'koa-pug';
+
+  const app = new Koa();
+
+  // jade 模板
+  const pug = new Pug({
+    app, // equals to pug.use(app) and app.use(pug.middleware)
+    viewPath: './views',
+    debug: process.env.NODE_ENV === 'development' });
+
+  pug.locals.title = 'Koa Demo';
+
+  app.use(ctx => {
+    ctx.render( 'h1 Hello, #{title} #{name}', { name: 'Pug' }, { fromString: true }, false);
+  });
+
+  console.log('koa start on port 3003');
+  app.listen(3003);
+  ```
 
 运行测试
 --------
