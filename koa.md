@@ -280,7 +280,7 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 ## 路由
 
 - [koa-router](https://github.com/alexmingoia/koa-router) 人气最高的路由中间件
-- Express风格， 使用 `app.get`, `app.put`, `app.post`, 等.  
+- Express风格， 使用 `app.get`, `app.put`, `app.post`, 等. 
   ```js
   .get|put|post|patch|delete|del|all(path, middleware, [...]) ⇒ Router
 
@@ -301,9 +301,10 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 - 匹配具体路径的中间件，用于路由集合：`router.routes ⇒ function`
 - 匹配路由参数：`.param(param, middleware) ⇒ Router`
 - 匹配所有操作：`.all([path], middleware, [...]) ⇒ Router`
-- 前置中间件处理    
+- 前置中间件处理
   ```js
   语法：.use([path], middleware, [...]) ⇒ Router
+  
   示例：
   // 路由处理之前，执行的中间件
   router.use(session(), authorize());
@@ -316,8 +317,9 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
   ```js
   outer.redirect(source, destination, code) ⇒ Router  
   router.redirect('/login', 'sign-in');
+  
   ```
-- 多重路由：对一个路径，多个顺连的处理函数    
+- 多重路由：对一个路径，多个顺连的处理函数
   ```js
   router.get(
     '/users/:id',
@@ -330,12 +332,14 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
       // => { id: 17, name: "Alex" }
     }
   );
+  
   ```
-- 路由嵌套：路由处理可以是另一个子路由，注意子路由是基于父路由的！    
+- 路由嵌套：路由处理可以是另一个子路由，注意子路由是基于父路由的！
   ```js
   userRt.post('/reg', next => {...}); // responds to "/user/reg"
   userRt.get('/get', next => {...});  // responds to "/user/get"
   forums.use('/user', userRt.routes(), posts.allowedMethods());
+  
   ```
 - ES7 async/await 支持.
 - Named URL parameters.
