@@ -280,9 +280,10 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 ## 路由
 
 - [koa-router](https://github.com/alexmingoia/koa-router) 人气最高的路由中间件
-- Express风格， 使用 `app.get`, `app.put`, `app.post`, 等.
-  `.get|put|post|patch|delete|del|all(path, middleware, [...]) ⇒ Router`
-  ``` js
+- Express风格， 使用 `app.get`, `app.put`, `app.post`, 等.  
+  ```js
+  .get|put|post|patch|delete|del|all(path, middleware, [...]) ⇒ Router
+
   router
     .get('/', next => {
       this.body = 'Hello World!';
@@ -338,7 +339,6 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 - 支持 `405 Method Not Allowed` and `501 Not Implemented`.
 - Multiple routers.
 
-
 ### 创建路由
 new Router([opts])
 | Param | Type | Description |
@@ -361,6 +361,7 @@ app.use(rt.routes()).use(router.allowedMethods());
 ## jade模板
 
 >jade 已经更名为pug，不是解析最快（毫秒差距无足轻重），但是是最简洁、层次最清晰的模板   
+
 - [consolidate](https://github.com/tj/consolidate.js) tj写的几十种模板库！
 - [koa-react-view](https://github.com/koajs/static) react模板库
 - [koa-views](https://github.com/queckezz/koa-views) 封装了consolidate，支持 koa 2
