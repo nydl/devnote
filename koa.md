@@ -70,7 +70,7 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
     "umzug": "^1.9.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.5.1",
+    "babel-cli": "^6.8.0",
     "babel-eslint": "^6.0.4",
     "babel-plugin-syntax-async-functions": "^6.5.0",
     "babel-plugin-syntax-object-rest-spread": "^6.5.0",
@@ -141,21 +141,22 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
   }
 }
 ```
-- npm 修改npm服务器为淘宝镜像服务器，加快安装速度
+- npm镜像：npm 修改npm服务器为淘宝镜像服务器，加快安装速度
   npm config set registry https://registry.npm.taobao.org
   npm config set disturl https://npm.taobao.org/dist
-- 安装所有第三方库 `$ npm i`
-- 运行示例代码
+- 安装第三方库： `$ npm i`
+- 运行示例代码：
   -	下载示例并解压到指定路径
   -	进入该目录，运行 `npm install` 自动完成相关组件安装
   -	进入各个示例中，运行 node app 即可运行各种示例
-- 需将webstorm 中的 js 设置为 6.0 或 jsx，否则报错
-- 使用 js 6后，webstorm会提示 一个 自动转换为 5 的 插件：
+- js版本：需将webstorm 中的 js 设置为 JSX Harmoney，最大限度支持新语法
+- ESLint：Java Script 中开启 ESLint,提供代码编写规范检查
+- Babel自动转换：使用 js 6后，webstorm会提示 一个 自动转换为 5 的 插件：
 	File watcher 'Babel' is available for thie file. Description:'Transpiles ECMAScript 6 code to ECMAScript 5'
   这个插件在你修改文件时，会自动将es6、es7语法文件转换为es5或es6的文件。  
   建议不要使用，会影响编码效率，学习、测试可以使用，涉及多个文件引用时，引用文件如果采用了新语法，会报错。
   也可以通过tools手动添加。
--	批量转换编译，`npm run build`，npm 会在项目的 package.json 文件中寻找 scripts 区域中的命令。  
+-	批量转换：`npm run build`，npm 会在项目的 package.json 文件中寻找 scripts 区域中的命令。  
 	其实npm test和npm start是npm run test和npm run start的简写。事实上，你可以使用npm run来运行scripts里的任何条目。  
 	使用npm run的方便之处在于，npm会自动把node_modules/.bin加入$PATH，这样你可以直接运行依赖程序和开发依赖程序，不用全局安装了。 只要npm上的包提供命令行接口，你就可以直接使用它们，方便吧。
 - webstorm调试：
@@ -276,8 +277,90 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
   app.use(staticFile('./public'));
   ```  
 
+## 路由
+
+- [koa-router](https://github.com/alexmingoia/koa-router) 人气最高的路由中间件
+- Express风格， 使用 `app.get`, `app.put`, `app.post`, 等.
+  `.get|put|post|patch|delete|del|all(path, middleware, [...]) ⇒ Router`
+  ``` js
+  router
+    .get('/', next => {
+      this.body = 'Hello World!';
+    })
+    .post('/users', next => {
+      // ...
+    })
+    .put('/users/:id', next => {
+      // ...
+    })
+    .del('/users/:id', next => {
+      // ...
+    });  
+  ```
+- 匹配具体路径的中间件，用于路由集合：`router.routes ⇒ function`
+- 匹配路由参数：`.param(param, middleware) ⇒ Router`
+- 匹配所有操作：`.all([path], middleware, [...]) ⇒ Router`
+- 前置中间件处理：`.use([path], middleware, [...]) ⇒ Router`
+  ```
+  // 路由处理之前，执行的中间件
+  router.use(session(), authorize());
+  // 符合/user路径时，执行用户授权检查中间件
+  router.use('/user', userAuth());
+  // 符合/user路径时，执行子路由匹配！
+  router.use('/user', userRouter.routes());
+  ```
+- 重定向：outer.redirect(source, destination, code) ⇒ Router
+  `router.redirect('/login', 'sign-in');`
+- 多重处理
+  ``` js
+  router.get(
+    '/users/:id',
+    (ctx, next) => {
+      ctx.user = await User.findOne(this.params.id);
+      await next();
+    },
+    ctx => {
+      console.log(ctx.user);
+      // => { id: 17, name: "Alex" }
+    }
+  );
+  ```
+- 路由嵌套：路由处理可以是另一个子路由，注意子路由是基于父路由的！
+  ``` js
+  userRt.post('/reg', next => {...}); // responds to "/user/reg"
+  userRt.get('/get', next => {...});  // responds to "/user/get"
+  forums.use('/user', userRt.routes(), posts.allowedMethods());
+  ```
+- ES7 async/await 支持.
+- Named URL parameters.
+- Named routes with URL generation.
+- Responds to `OPTIONS` requests with allowed methods.
+- 支持 `405 Method Not Allowed` and `501 Not Implemented`.
+- Multiple routers.
+
+
+### 创建路由
+new Router([opts])
+| Param | Type | Description |
+| --- | --- | --- |
+| [opts] | <code>Object</code> |  |
+| [opts.prefix] | <code>String</code> | prefix router paths |
+
+### 示例代码
+
+``` js
+import Koa from 'koa'; // koa web 服务框架
+import Router from 'koa-router';
+
+const rt = new Router();
+rt.get('/', next => {...});
+
+app.use(rt.routes()).use(router.allowedMethods());
+```
+
 ## jade模板
 
+>jade 已经更名为pug，不是解析最快（毫秒差距无足轻重），但是是最简洁、层次最清晰的模板   
 - [consolidate](https://github.com/tj/consolidate.js) tj写的几十种模板库！
 - [koa-react-view](https://github.com/koajs/static) react模板库
 - [koa-views](https://github.com/queckezz/koa-views) 封装了consolidate，支持 koa 2
@@ -518,8 +601,8 @@ app.on('error', function(err, ctx){
   https://github.com/ucms/ucms-plugin-file-store/blob/master/src/index.js
 - 或者使用koa提供的 koa-convert 对之前的koa中间件进行封装调用
   - 安装 `$ npm install koa-convert`
-  - 使用
-``` js
+  - 使用示例：  
+  ``` js
   const Koa = require('koa') // koa v2.x
   const convert = require('koa-convert')
   const app = new Koa()
@@ -542,4 +625,4 @@ app.on('error', function(err, ctx){
       // after
     })
   }
-```  
+  ```  
