@@ -213,7 +213,7 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
   代码很多，express 使用的基本库
 - [serve-static](https://github.com/expressjs/serve-static) express常用的文件服务中间件
   封装到 koa 2.0 代码示例:
-  ``` js
+  ```js
   import serveStatic from 'serve-static';
   function wrapServeStatic(serve) {
     return ctx => {
@@ -244,7 +244,7 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
   }
   ```
 - 封装 koa-send示例，测试通过 
-  ```
+  ```js
   import Koa from "koa";
   const app = new Koa();
   import send from "koa-send";
@@ -281,7 +281,7 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 
 - [koa-router](https://github.com/alexmingoia/koa-router) 人气最高的路由中间件
 - Express风格， 使用 `app.get`, `app.put`, `app.post`, 等.  
-```js
+  ```js
   .get|put|post|patch|delete|del|all(path, middleware, [...]) ⇒ Router
 
   router
@@ -297,12 +297,12 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
     .del('/users/:id', next => {
       // ...
     });  
-```
+  ```
 - 匹配具体路径的中间件，用于路由集合：`router.routes ⇒ function`
 - 匹配路由参数：`.param(param, middleware) ⇒ Router`
 - 匹配所有操作：`.all([path], middleware, [...]) ⇒ Router`
 - 前置中间件处理
-```js
+  ```js
   语法：.use([path], middleware, [...]) ⇒ Router
   示例：
   // 路由处理之前，执行的中间件
@@ -311,14 +311,14 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
   router.use('/user', userAuth());
   // 符合/user路径时，执行子路由匹配！
   router.use('/user', userRouter.routes());
-```
+  ```
 - 重定向
-```js
+  ```js
   outer.redirect(source, destination, code) ⇒ Router  
   router.redirect('/login', 'sign-in');
-```
+  ```
 - 多重路由：对一个路径，多个顺连的处理函数  
-```js
+  ```js
   router.get(
     '/users/:id',
     (ctx, next) => {
@@ -330,13 +330,13 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
       // => { id: 17, name: "Alex" }
     }
   );
-```
+  ```
 - 路由嵌套：路由处理可以是另一个子路由，注意子路由是基于父路由的！  
-```js
+  ```js
   userRt.post('/reg', next => {...}); // responds to "/user/reg"
   userRt.get('/get', next => {...});  // responds to "/user/get"
   forums.use('/user', userRt.routes(), posts.allowedMethods());
-```
+  ```
 - ES7 async/await 支持.
 - Named URL parameters.
 - Named routes with URL generation.
