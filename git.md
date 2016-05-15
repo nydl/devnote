@@ -264,7 +264,7 @@ git 常用指令
 		如果是克隆的代码库，已经设置，无需另行设置，
 	- git pull # 更新本地仓库至最新改动， D → A
 	- git fetch # 获取远程仓库更新， D → C
-	- git push origin branch_name # 推送分支到远端仓库
+	- git push origin master # 推送至master分支, C → D
 - 查看信息
 	- git log # 查看提交记录日志
 	- git status # 查看修改状态
@@ -281,7 +281,7 @@ git 常用指令
 	- git checkout -b branch_name # 创建名叫“branch_name”的分支，并切换过去
 	- git checkout master # 切换回主分支
 	- git branch -d branch_name # 删除名叫“branch_name”的分支
-	- git push origin master # 推送至master分支, C → D
+	- git push origin branch_name # 推送分支到远端仓库
 - 合并冲突
 	- git merge branch_name # 合并分支branch_name到当前分支(如master)
 	- git rebase # 衍合，线性化的自动， D → A#冲突处理
