@@ -24,36 +24,37 @@ VS Code
 	需要变更 tab 设置，只能将原文件更名，创建新文件，把内容拷贝过来！
 
 ## Markdown 转 html
-  1. npm install -g marked
-  2. Create tasks.json  
-    F1 and type in 'Configure Task Runner', press Enter to select it.
-    Select Others.
-    tasks.json :
-		```js  
-    {
-      // See http://go.microsoft.com/fwlink/?LinkId=733558
-      // for the documentation about the tasks.json format
-      "version": "0.1.0",
-      "command": "echo",
-      "isShellCommand": true,
-      "args": ["Hello World"],
-      "showOutput": "always"
-    }
-		
-		```
-    we change the contents as follows:  
-    {
-      // See http://go.microsoft.com/fwlink/?LinkId=733558
-      // for the documentation about the tasks.json format
-      "version": "0.1.0",
-      "command": "marked",
-      "isShellCommand": true,
-      "args": ["sample.md", "-o", "sample.html"],
-      "showOutput": "always"
-    }
-    Use ⌃Space to see the available settings.
-  3. Run the Build Task  
-    As this is the only task in the file, you can execute it by simply pressing ⇧⌘B (Run Build Task).
+  
+1. npm install -g marked
+2. Create tasks.json  
+	F1 and type in 'Configure Task Runner', press Enter to select it.
+	Select Others.
+	tasks.json :
+	```js  
+	{
+		// See http://go.microsoft.com/fwlink/?LinkId=733558
+		// for the documentation about the tasks.json format
+		"version": "0.1.0",
+		"command": "echo",
+		"isShellCommand": true,
+		"args": ["Hello World"],
+		"showOutput": "always"
+	}
+	
+	we change the contents as follows:  
+	{
+		// See http://go.microsoft.com/fwlink/?LinkId=733558
+		// for the documentation about the tasks.json format
+		"version": "0.1.0",
+		"command": "marked",
+		"isShellCommand": true,
+		"args": ["sample.md", "-o", "sample.html"],
+		"showOutput": "always"
+	}
+	```
+	Use ⌃Space to see the available settings.
+3. Run the Build Task  
+	As this is the only task in the file, you can execute it by simply pressing ⇧⌘B (Run Build Task).
 
 ## Markdown 批量转 html
 
@@ -62,6 +63,7 @@ VS Code
 	npm i -g gulp-cli
 	npm i gulp -D
 	npm i gulp-markdown -D
+	
 	```
 2. 创建 Gulp 任务 gulpfile.js，也就是用js编写的类似 bat、cmd一样的批量处理执行脚本
 	```js

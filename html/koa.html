@@ -433,6 +433,17 @@ rt.post(&#39;/api/reg&#39;, user.reg);</li>
 <li>实现用户注册页面</li>
 <li>实现用户注册接口</li>
 </ul>
+<h2 id="mongodb-">MongoDB 数据库</h2>
+<blockquote>
+<p>Mongoose 是 MongoDB数据库node.js下的ODM(Object Document Mapper，对象文档映射)。<br>以对象方式，提供数据校验、关联、连接池等各种更高级功能。</p>
+</blockquote>
+<ul>
+<li>安装：npm i mongoose -S</li>
+<li>安装原生驱动：npm install mongodb --save</li>
+<li>原生驱动是基于字符串方式的文档模型操作，灵活但是容易出错，在密集写入场景可使用。</li>
+<li>mongoose 在原生驱动上做了封装，密集操作时，性能上比原生操作慢一点点，但更健壮，推荐在常规场景使用。</li>
+<li>mongoose详细操作请参见专门的<a href="">mongoose使用说明</a></li>
+</ul>
 <h2 id="-">运行测试</h2>
 <p><code>$ make test</code></p>
 <h2 id="-application-">应用（Application）</h2>

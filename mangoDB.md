@@ -1,0 +1,1140 @@
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<link href="css/markdown.css" rel="stylesheet" />
+
+<link href="css/prettify.css" rel="stylesheet" />
+
+<script src="http://apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script src="js/prettify.js"></script>  
+
+mongoDB
+=======
+
+网址：http://www.mongodb.org
+
+3.0 性能得到巨大提升，WiredTiger存储引擎。
+
+安装
+----
+
+-	**下载网址**：http://www.mongodb.org/downloads
+- **所有版本**：http://www.mongodb.org/dl/win32/x86_64-2008plus-ssl
+	- https://fastdl.mongodb.org/win32/mongodb-win32-x86_64-2008plus-ssl-3.0.3-signed.msi?_ga=1.171888416.1244568051.1434236933
+	- mongodb-win32-x86_64-2008plus-ssl-3.0.3-signed.msi
+	-	根据业界规则，偶数为“稳定版”（如：1.6.X，1.8.X），奇数为“开发版”（如：1.7.X，1.9.X)。
+	-	下载页面提供线上免费版本，超过一定存储空间，需付费  
+	-	有32位和64位版本，根据系统情况下载, 32bit的mongodb最大只能存放2G的数据，64bit就没有限制。
+	-	改版后的下载windows版本，好像只提供64位 Windows 64bit 2008 R2+、64bit legacy
+	-	生产版本，不建议使用windows版本，建议使用 linux版本！
+	-	可下载MSI安装文件，或者zip文件，MSI跟zip安装效果一样，相当于一个自动解压程序而已！
+	-	以前有个nightly版本，改版后没有  
+		nightly相当于每日发布的版本，一般发布几个nightly 版本后，就会发布RC版本， RC版本就是预发行版本，在发行正式版之前都会先发布几个RC版本，如RC1 RC2..... RC版本相对于nightly版本来说比较稳定，stable为比较稳定的正式版。
+-	一般安装在 D:\MongoDB\目录，如果自己解压，则解压到bin目录，如果MSI安装会自动创建bin目录
+- 手动解压的版本，在windows8 上提示 计算机丢失了 libeay32.dll，无法运行，安装版本则能正常运行，比较发现手动解压版本缺少两个dll：libeay32.dll、ssleay32.dll，OpenSSL带的两个库！
+-	数据库存在 d:\MongoDB\data，避免卸载程序时将数据库删除！卸载程序时，千万不要把数据库目录删除了！  
+	默认文件夹路径为c:/data/db.使用系统默认文件夹路径时，启动服务无需加--dbpath 参数说明，但文件夹还要手工创建。
+-	创建一个etc目录，存储配置文件
+-	创建一个 data目录，存储数据库文件
+-	创建一个log目录，存储日志
+-	mac os 直接使用 brew install mongodb，brew会自动创建上述一切！
+
+参数设置
+--------
+
+-	windows需自己手动创建conf文件，一般创建在 etc/mongod.conf
+-	参数网址：http://docs.mongodb.org/manual/reference/configuration-options/
+-	使用 mongod -h 可以查看基本参数
+-	基本配置文件内容如下：
+
+```
+dbpath=D:\MongoDB\data #数据库路径
+logpath=D:\MongoDB\log\mongo.log #日志输出文件路径
+logappend=true #错误日志采用追加模式，配置这个选项后mongodb的日志会追加到现有的日志文件，而不是从新创建一个新文件
+journal=true #启用日志文件，默认启用
+quiet=true #这个选项可以过滤掉一些无用的日志信息，若需要调试使用请设置为false
+port=27017 #端口号 默认为27017
+#bind_ip=127.0.0.1 # 不设置，则外网能访问，设置则只限本机访问
+storageEngine = wiredTiger
+```
+
+-	Mac会自动创建参数文件 usr/local/etc/mongod.conf，启动时需指定配置文件
+
+```
+systemLog:
+  destination: file
+  path: /usr/local/var/log/mongodb/mongo.log
+  logAppend: true
+storage:
+  dbPath: /usr/local/var/mongodb
+net:
+  bindIp: 127.0.0.1
+```
+
+-	本机访问：bind 127.0.0.1，如果不限定主机，则屏蔽不配置
+-	dbpath 指定数据库存储目录
+-	新的 wiredTiger，新安装的默认就是 该引擎，以前需设定！  
+  速度快10倍，但是缺省未开启，需在配置文件中开启，开启时，需重新指定全新的数据库路径， 原路径如果存在数据，则无法启动，提示：  
+	>2015-05-16T21:32:59.081+0800 I STORAGE [initandlisten] exception in initAndListen: 28574 Cannot start server. Detected data files in C:\MongoDB\data created by storage engine 'mmapv1'. The configured storage engine is 'wiredTiger'., terminating
+-	storageEngine = wiredTiger 指定存储引擎，屏蔽则使用 mmapv1，这个是3.0以前的引擎， 兼容旧的数据库，如果要使用新的引擎，则无法打开旧的数据，需使用程序或导出导入工具 将旧数据重新写入到新的库！！！
+- mac下查看一下是否启用了wiredTiger引擎：
+  echo "db.serverStatus()"| mongo|grep wiredTiger
+  如果输出的结果中有显示"name" : "wiredTiger", 说明引擎已经更换成功。
+-	logpath D:/mongodb/logs/mongodb.log --logappend 表示日志是以追加的方式输出的；
+-	httpinterface = false，是否开启http接口，默认关闭！
+- wiredTigerCacheSizeGB = 1 # 最大内存占用，默认 所有物理内存的一半
+-	directoryperdb 说明每个DB都会新建一个目录；
+-	-- serviceName MongoDB Windows服务的名称；
+-	--install 安装服务
+-	--remove 卸载服务
+
+运行
+----
+
+-	查看帮助  
+	`mongod -h`
+-	windows手动运行  
+	`mongod --config D:\MongoDB\etc\mongod.conf`  
+-	可生成一个 mongod.bat 文件，方便执行： @echo off D:\MongoDB\bin\mongod.exe --config D:\MongoDB\etc\mongod.conf
+- 运行提示： 无法启动此程序,因为计算机中丢失LIBEAY32.DLL
+-	运行后，日志显示：
+
+```
+2015-05-16T21:49:20.817+0800 I CONTROL  ***** SERVER RESTARTED *****
+2015-05-16T21:49:20.829+0800 I CONTROL  Hotfix KB2731284 or later update is not installed, will zero-out data files
+2015-05-16T21:49:20.832+0800 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=1G,session_max=20000,eviction=(threads_max=4),statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),checkpoint=(wait=60,log_size=2GB),statistics_log=(wait=0),
+2015-05-16T21:49:21.445+0800 I CONTROL  [initandlisten] MongoDB starting : pid=54432 port=27017 dbpath=C:\MongoDB\data 64-bit host=WALTER-AIR
+2015-05-16T21:49:21.446+0800 I CONTROL  [initandlisten] targetMinOS: Windows 7/Windows Server 2008 R2
+2015-05-16T21:49:21.446+0800 I CONTROL  [initandlisten] db version v3.0.3
+2015-05-16T21:49:21.446+0800 I CONTROL  [initandlisten] git version: b40106b36eecd1b4407eb1ad1af6bc60593c6105
+2015-05-16T21:49:21.446+0800 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.0.1m-fips 19 Mar 2015
+2015-05-16T21:49:21.446+0800 I CONTROL  [initandlisten] build info: windows sys.getwindowsversion(major=6, minor=1, build=7601, platform=2, service_pack='Service Pack 1') BOOST_LIB_VERSION=1_49
+2015-05-16T21:49:21.446+0800 I CONTROL  [initandlisten] allocator: system
+2015-05-16T21:49:21.446+0800 I CONTROL  [initandlisten] options: { config: "..\etc\mongod.conf", net: { port: 27017 }, storage: { dbPath: "C:\MongoDB\data", engine: "wiredTiger", journal: { enabled: true } }, systemLog: { destination: "file", logAppend: true, path: "C:\MongoDB\log\mongo.log", quiet: true } }
+2015-05-16T21:49:21.453+0800 I NETWORK  [initandlisten] waiting for connections on port 27017
+```
+
+-	如运行出错，可能原因：
+	-	硬盘空间不够3G以上
+	-	异常退出，文件被锁，删除 mongod.lock 文件
+	-	端口被占用
+	-	引擎不对
+-	windows 自启动服务，安装后，服务名称为 MongoDB，请检查是否自动启动，是否已经启动，调试机器，可设置为手动启动，使用时启动  
+	`mongod --config D:\MongoDB\etc\mongod.conf --install`
+-	windows 卸载服务  
+	`mongod --config D:\MongoDB\etc\mongod.conf --remove`
+-	以后就可以在cmd下用命令net start MongoDB和net stop MongoDB来启动和停止MongoDB，cmd需要管理员权限运行
+-	也可以在本地服务中看到 通过界面来管理该服务。 ![mongoSvc](mongoDB/mongoSvc.gif)
+-	mac 手动运行  
+	`$ mongod --config /usr/local/etc/mongod.conf`
+-	mac开机自动运行  
+	`ln -sfv /usr/local/opt/mongodb/*plist ~/Library/LaunchAgents`  
+	`launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist`
+-	mac停止开机自动运行  
+	`launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist`
+-	mac卸载开机自动运行  
+	`launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.mongodb.plist`
+-	如果开启了 httpinterface 接口，在网址上输入http://localhost:27017/，可以看到  
+	`It looks like you are trying to access MongoDB over HTTP on the native driver port.`
+-	打开一个cmd，输入： D:/mongodb/bin>mongo 或者双击mongo.exe，即可进行mongodb的客户端命令操作了,
+-	客户端，数据库名称不填，默认连接到 test，进去后可以用 use 切换数据库，启动指令：  
+	`mongo 数据库名称 --host xxx --port xxx`
+-	可运行 help查看指令，exit退出客户端
+-	客户端测试：
+
+```
+	> 3+3 6
+	> use test
+	> // the first write will create the db:
+	> db.foo.insert( { a : 1 } )
+	> db.foo.find() { _id : ..., a : 1 }
+```
+
+-	mongos Sharding controller
+-	mongodump - MongoDB dump tool - for backups, snapshots, etc..
+-	mongoexport - Export a single collection to test (JSON, CSV) bin/mongoimport - Import from JSON or CSV
+-	mongorestore - MongoDB restore a dump
+-	mongofiles - Utility for putting and getting files from MongoDB GridFS
+-	mongostat - Show performance statistics
+
+注意事项
+--------
+
+-	mongodb不需要先创建库，写入时自动创建库及表的
+-	不要覆盖了其它的数据库或表
+-	不要删除数据库文件或其它的库、表
+
+WiredTiger引擎
+--------------
+
+直接收购存储引擎厂商WiredTiger，将WiredTiger存储引擎集成进3.0版本（仅在64位版本中提供）。那么这款走到聚光灯下的存储引擎究竟具备哪些值得期待的特性呢？
+
+1.	文档级别并发控制 WiredTiger通过MVCC实现文档级别的并发控制，即文档级别锁。这就允许多个客户端请求同时更新一个集合内存的多个文档，再也不需要在排队等待库级别的写锁。这在提升数据库读写性能的同时，大大提高了系统的并发处理能力。关于这一点的效果从监控工具mongostat就可以直接体现出来，旧版本的监控指标会有locked db这一项（该项指标过高是mongo使用人员的一大痛点啊），而新版的mongostat已经看不到了。
+
+2.	磁盘数据压缩
+
+WiredTiger支持对所有集合和索引进行Block压缩和前缀压缩（如果数据库启用了journal，journal文件一样会压缩），已支持的压缩选项包括：不压缩、Snappy压缩和Zlib压缩。这为广大Mongo使用者们带来了又一福音，因为很多Mongo数据库都是因为MMAP存储引擎消耗了过多的磁盘空间而不得已进行扩容。其中Snappy压缩为数据库的默认压缩方式，用户可以根据业务需求选择适合的压缩方式。理论上来说，Snappy压缩速度快，压缩率OK，而Zlib压缩率高，CPU消耗多且速度稍慢。当然，只要选择使用压缩，Mongo肯定会占用更多的CPU使用率，但是考虑到Mongo本身并不是十分耗CPU，所以启用压缩完全是值得的。
+
+1.	存储方式不同 此外，WiredTiger存储方式上也有很大改进。旧版本Mongo在数据库级别分配文件，数据库中的所有集合和索引都混合存储在数据库文件中，所以即使删掉了某个集合或者索引，占用的磁盘空间也很难及时自动回收。WiredTiger在集合和索引级别分配文件，数据库中的所有集合和索引均存储在单独的文件中，集合或者索引删除后，对应的存储文件随即删除。当然，因为存储方式不同，低版本的数据库无法直接升级到WiredTiger存储引擎，只能通过导出导入数据的方式来实现。
+
+2.	可配置内存使用上限
+
+WiredTiger支持内存使用容量配置，用户通过storage.wiredTiger.engineConfig.cacheSizeGB参数即可控制MongoDB所能使用的最大内存，该参数默认值为物理内存大小的一半。这也为广大Mongo使用者们带来了又一福音，MMAP存储引擎消耗内存是出了名的，只要数据量够大，简直就是有多少用多少。
+
+数据库引擎升级
+--------------
+
+-	首先对mongodb 3.0之前的数据进行备份：  
+
+```
+
+for (var i = 1; i <= 50000; i++) { db.dbdao.insert( { x : i , name: "dbdao.com" , name1:"dbdao.com", name2:"dbdao.com", name3:"dbdao.com"} ) }
+
+root@dbdao-Inspiron-560s:~# mongodump --out dbdao connected to: 127.0.0.1 Wed Apr 8 03:41:12.499 all dbs Wed Apr 8 03:41:12.500 DATABASE: test to dbdao/test Wed Apr 8 03:41:12.513 test.system.indexes to dbdao/test/system.indexes.bson Wed Apr 8 03:41:12.514 1 objects Wed Apr 8 03:41:12.514 test.dbdao to dbdao/test/dbdao.bson Wed Apr 8 03:41:12.564 50000 objects Wed Apr 8 03:41:12.564 Metadata for test.dbdao to dbdao/test/dbdao.metadata.json 以上dbdao是用户自己定义的一个备份目录。
+
+```
+
+-	安装mongodb 3.0.3，启用新的引擎，指向新的数据库路径
+-	导入先前的数据，并启动mongodb @wiredTiger
+-	通过命令 echo "db.serverStatus()"| mongo|grep wiredTiger 可以确认是否启用了wiredTiger
+
+```
+
+root@dbdao-Inspiron-560s:/m01/mondata# echo "db.serverStatus()"| mongo|grep wiredTiger "name" : "wiredTiger" "wiredTiger" : {
+
+```
+
+-	使用mongorestore 导入之前导出的数据
+
+```
+
+root@dbdao-Inspiron-560s:~# mongorestore dbdao/ 2015-04-08T04:12:18.779-0400 building a list of dbs and collections to restore from dbdao/ dir 2015-04-08T04:12:18.779-0400 reading metadata file from dbdao/test/dbdao.metadata.json 2015-04-08T04:12:18.780-0400 restoring test.dbdao from file dbdao/test/dbdao.bson 2015-04-08T04:12:19.904-0400 restoring indexes for collection test.dbdao from metadata 2015-04-08T04:12:19.905-0400 finished restoring test.dbdao 2015-04-08T04:12:19.905-0400 done
+
+root@dbdao-Inspiron-560s:~# mongo MongoDB shell version: 3.0.2 connecting to: test
+
+> db.dbdao.count(); 50000
+
+```
+
+MongoDB集成Hadoop进行统计计算
+-----------------------------
+
+MongoDB 本身可以做一些简单的统计工作，包括其内置的基于 Javascript 的 MapReduce 框架，也包括在MongoDB 2.2版本中引入的新的统计框架。除此之外，MongoDB 还提供了对外部统计工具的接口，这就是本文要说的MongoDB- MongoDB与Hadoop相结合的方式，
+
+### 原理图解
+
+MongoDB与Hadoop相结合的方式如下图所示，MongoDB作为数据源存储以及数据结果存储。而具体的计算过程在Hadoop中进行。 ![示意图](mongoDB/mongoHadoop.png)
+
+这一套处理流程，允许我们通过 Python, Ruby 与 JavaScript 来写MapReduce函数进行数据统计，而不是使用Java。
+
+### 例子
+
+首先准备好Hadoop环境，并安装好Hadoop，MongoDB中间件。然后通过下面的方式进行数据处理。
+
+1.	数据准备 从Twitter API导入原始数据到MongoDB中  
+	`curl https://stream.twitter.com/1/statuses/sample.json -u<login>:<password> | mongoimport -d twitter -c in`
+2.	Map函数 写一个map函数，保存在文件mapper.rb 中\`\`\`\#!/usr/bin/env ruby require 'mongo-hadoop'
+
+	MongoHadoop.map do |document| { :_id => document['user']['time_zone'], :count => 1 } end\`\`\`
+
+3.	Reduce函数 然后是reduce函数，保存在文件reducer.rb中`
+	#!/usr/bin/env ruby
+	require 'mongo-hadoop'
+	MongoHadoop.reduce do |key, values|
+	    count = sum = 0
+	    values.each do |value|
+	        count += 1
+	        sum += value['num']
+	    end
+	    { :_id => key, :average => sum / count }
+	end
+	`
+
+4.	运行脚本 创建一个运行脚本，写入下面内容，就可以利用上面的MapReduce方法处理第一步中获取的数据。`
+	hadoop jar mongo-hadoop-streaming-assembly*.jar -mapper mapper.rb -reducer reducer.rb -inputURI mongodb://127.0.0.1/twitter.in -outputURI mongodb://127.0.0.1/twitter.out
+	`
+
+MongoDB开发者的50条建议
+=======================
+
+Tip1.Duplicate data for speed，reference data for integrity
+-----------------------------------------------------------
+
+数据冗余是为了性能，引用数据是为了完整性。 被多个文档使用的数据，既可以直接嵌入文档，也可以在文档中引用数据。嵌入不一定就比引用好，反之，引用也不一定就比嵌入好。 每一种都有自己的取舍，不论什么，你都应该选择适合你的应用程序的方式。 嵌入式的结构，可能会导致数据的不一致。假设你需要把图1.1中的fruit的值从苹果修改为鸭梨，你刚修改完food集合中的fruit值， 这时候你的应用崩溃了，其他地方的fruit的值还是旧的值，这时候你的应用中就同时存在两种不同的fruit值。
+
+![嵌入结构](mongoDB/嵌入结构.png)
+
+图1.1 嵌入式结构，fruit的值既存在于food集合，也存在于meals集合
+
+不一致性也不是什么大问题，但“不是大问题”也是有级别的，这个级别依赖于你的用户需求。对于很多的应用， 短时间内的不一致是可以接受的。假设一个用户修改了他的姓名，在几个小时内，他的旧帖子继续显示他的旧姓名，是可以接受的。 如果是即使短时间的不一致性也不能接受的话，你就需要考虑使用引用式的结构了。
+
+![引用结构](mongoDB/引用结构.jpg)
+
+图1.2 引用式结构，fruit的值只存在于food集合，meals集合存储fruit的id
+
+这需要权衡，你不能同时拥有最好的性能和确保及时的数据一致性。你必须决定哪一个对于你的应用来说更重要。 举个例子来说。 假设我们正在设计一个购物车的应用，设计在mongodb中存在订单信息，订单需要包含哪些信息呢？ 引用式结构`
+a product:
+{
+  "_id":productId,
+  "name":name,
+  "price":price
+}
+a order:
+{
+  "_id":orderId,
+  "user":userInfo,
+  "items":[
+    productId1,
+    productId2
+  ]
+}
+` 在订单的item项中存在每一个productid，当需要显示订单内容的时候，首先查询order集合，然后根据productid查询product集合来获取相应的产品名称， 没有办法做到只用一次查询就可以获取完整的订单信息。如果产品信息被更新，所有引用该产品的地方，都会显示新的产品信息。 引用式的结构会拖慢读数据的速度，但是在多个订单会有很好的一致性，多个文档能实现原子的变化（只需要修改引用的文档的信息）。
+
+嵌入式结构`
+a product:
+{
+  "_id":productId,
+  "name":name,
+  "price":price
+}
+a order:
+{
+  "_id":orderId,
+  "user":userInfo,
+  "items":[
+    {
+      "_id":productId1,
+      "name":name,
+      "price":price
+    },
+    {
+      "_id":productId2,
+      "name":name,
+      "price":price
+    }
+  ]
+}
+`
+
+将产品信息嵌入到订单信息中，当需要显示订单的时候，只需要执行一次查询即可。如果产品的信息发生变化， 而且我们想要将变化传递给订单的话，我们需要更新多个独立的订单。嵌入式结构加快了读取的速度，但是一致性会降低， 产品信息不能被原子的在多个文档中被修改。
+
+决定使用嵌入式结构还是使用引用式结构，可以参考下面的因素：
+----------------------------------------------------------
+
+-	为很少发生变化的数据，每次都是再次读取，你是否愿意付出这样的代价？ 你是愿意承担1000次读取带来的惩罚？大多数应用，读的压力要大于写的压力。这需要你仔细测试自己的比例。 你正在考虑的引用数据的变化频率如何？改变越少，越是赞成使用嵌入式的结构。引用很少改变的数据，例如名称，出生日期，存货标记和地址，是很不值的。
+
+-	一致性有多重要？ 如果一致性很重要，你就应该使用引用式结构。例如，多个文档需要原子的查看数据的变化。如果我们正在设计一个交易系统，有价证券只能在特定的时间才可以进行交易，到达不可以进行交易的时间，我们需要立即锁定这些有价证券。这种事情在应用级别来操作可能更好，因为应用需要知道在什么时间锁定或者解锁。 在上面的这个订单应用中，一致性可能是有害的。假设我们想要给一个产品打折，20% off。我们不想更新已经存在的订单中的产品信息。这时候，我们需要的可能是一个快照，是下单时候的产品信息。
+
+-	是否需要更快的读取速度？ 如果需要尽可能快的读取速度，我们应该使用嵌入式结构。实时系统应该更多的使用嵌入式结构。
+
+上面的这个订单文档是一个很好的嵌入式结构的例子，改变产品信息的时候，我们不想改变订单的信息。在这里，引用式结构不能带给我们任何的好处。 在这个例子中，嵌入式结构是最佳的选择。 最后给大家一个地址，Your Coffee Shop Doesn't Use Two-Phase Commit，里面的例子讲述了在真实的环境中，如何处理一致性问题，以及相关的系统改如何设计。
+
+Tip2.Normalize if you need to future-proof data
+-----------------------------------------------
+
+如果你想你的数据为不会过期的技术服务的话，请使用引用式结构
+
+如果你的数据为不同的应用所使用，还需要满足将来不同的查询方式，请选择引用式结构，确保数据完整性。 假设你有一些数据，一个应用接着一个应用的，都需要访问它，年复一年都会使用这些数据。肯定会有一些这样的数据， 但是大多数人的数据都是不断进化的，旧的数据可能会被更新也可能会被放弃。大多数人都想自己的数据库对现在做的事情进行查询得到时候， 运行的尽可能快，如果将来需要改变这些查询，他们将会因为新的查询优化数据库。
+
+如果应用很成功，里面的数据肯定会是应用特定的。这不是说这些数据不会被其他的应用使用，通常，最少需要进行元数据的分析。 其实也很好理解，因为mongodb只是负责存储你的数据，显示这些数据肯定要用一种编程语言。
+
+语言可能是面向对象的，可能是面向过程的，也可能是面向其他的，语言的种类比较多，而且将来会出现语言说不好。 而且有的语言可以很好的理解mongodb的嵌入式结构，但有一些可能不能理解，但是只保留一个引用这种方式， 几乎所有语言都可以理解，至少你可以自己写点代码来支持一下，如果你想使得语言无关，而且有可能使用各种语言编码， 还需要支持将来的语言，那么你就需要选择引用式的结构。
+
+Tip3:Try to fetch data in a single query
+----------------------------------------
+
+尽量使用一次查询获取所需的数据
+
+如果你的应用是一个web或者移动引用的话，你可以把向后端的一次请求看做是一个应用单元。 如果是一个桌面应用，就可能是一次用户交互。 如果是分析系统，就可能是一个图表的加载。 总之，一个应用单元是你的应用的一个独立的工作单元，它也可能会包括访问数据库。
+
+在设计mongodb的结构的时候，最好每一个应用单元只做一次查询。  
+举个博客的例子 如果你正在设计一个博客系统，对一篇博客的请求可能是一个应用单元。当显示博客的时候，我们希望内容，tag， 作者的一些的信息（可能不是作者的全部信息），还有评论也一块显示。因此，我们可能会把这些信息都嵌入博客文档中， 就可以一次性的获取全部了。记住我们的目标是一次查询，不是一个文档或者一页。有些时候，我们希望返回多个文档， 或者是多个文档的一部分字段（不是全部字段）。  
+例如，主页会显示最新的10篇博客，但是只包括标题，作者和博客简介就可以了。 db.post.find({},{'title':1,'author':1,'slug':1}).sort({'pub_date':-1}).limit(10) 也可能是使用了特定tag的最新的20篇博客。
+
+```
+
+db.post.find({'tag':'tagname'},{'title':1,'author':1,'slug':1}).sort({'pub_date':-1}).limit(20)
+
+```
+
+会有单独的作者集合，包含每一个作者的完整信息，作者信息页就很简单了，只需要从这个集合中获取一个文档就可以了。
+
+```
+
+db.author.findOne({'name':'authorName'})
+
+```
+
+post集合中可能会包含author的嵌入文档，其中只包括作者的姓名和头像的缩略图。 记住，不是说一个应用单元只能响应一个文档，虽然前面的博客和作者都是一个文档，但是有很多地方返回的都是多个文档， 只是通过一次访问来获取这些数据。
+
+在分页查询的需求中，我们可以使用mongodb的skip来跳过一些条目，获取后面的条目。
+
+```
+
+db.post.skip(10).limit(10)
+
+```
+
+上面的命令可以跳过10条，获取10条。可以实现，每页10条，获取第二页的数据，这样一个需求。 但是如果数据量大的话，skip是很低效的，有一种办法可以提升效率。那就是把前一页的查询条件传递回来， 使用这个条件来过滤一下，然后使用limit获取一页的数据。这样就避免了使用skip带来的低效。
+
+```
+
+db.post.find({'pub_data':{'$gt':lastDateSeen}}).sort({'pub_date':-1}).limit(20)
+
+```
+
+随着你的系统越来越复杂，用户越来越多，需要管理更多的请求，如果在一个应用单元中需要多于一次的查询， 你不要绝望。每个应用单元只进行一次查询是一个好的开始，用来调整你最初的存储结构，但是现实世界是很复杂的。 任何足够复杂的系统，都很可能会走向一个应用单元使用多于一次的查询这样一个结局。
+
+Tip4.Embed dependent fields
+---------------------------
+
+嵌入依赖的字段
+
+当决定是该使用嵌入文档还是引用文档的时候，你可以这么问自己，你是否会单独查询这些文档本身呢？还是只是另外一个大文档的一部分呢？ 例如，你可能想要查询tag，但是只是在查看post的时候看对应的tag，而不会只是看tag。相似的还有评论，你可能会有一个最新评论的列表， 但是人们感兴趣的是引发这些评论的博客（除非你的应用把评论最为主要的内容来看待）。 如果你已经使用关系数据库，但是真在迁移到mongodb，可以考虑把连接表设计为嵌入文档。那些只有一个key-value信息的的表， 例如，tag，permission和address，这些在mongodb中使用嵌入式设计会更好。
+
+总之，如果只有一个文档关心这些信息，那就把这些信息嵌入这个文档。
+
+Tip5.Embed "point-in-tme" data
+------------------------------
+
+对某一时间点的快照数据采用嵌入式结构
+
+在Tip1中提到的订单的例子，你不希望存储在订单中的产品信息随着继续的交易发生变化。有很多类似的数据， 你需要一个购买时候的快照，这样的信息应该使用嵌入式结构。另外一个来自订单文档的例子是，地址，这属于某一时间点这种类型的数据。 你不希望在用户更新了个人信息之后，过去的订单中的地址信息发生任何变化。
+
+Tip6.Do not embed fields that have unbound growth
+-------------------------------------------------
+
+不要嵌入无限增长的字段
+
+在mongodb的存储数据的方式里，如果持续给数组增加信息，效率会很低。  
+因此，嵌入20个子文档，100个，100万个，但是一定要预先这么做。允许一个文档越来越大，它会比你想象的更慢。
+
+对于不同的应用，评论是通常是一个典型的例子。在大多数应用中，评论应该嵌入父文档中。但是，对于一些评论有单独实体的应用， 或者说评论有数百条之多，那就应该存储在单独的文档中。
+
+再说一个例子，假设你的系统是一个以评论为主要目的的应用，主要的内容是评论。在这样的情况下，你的评论应该单独存储。
+
+Tip7.Pre-populate anything you can
+----------------------------------
+
+预先填充你能填充的
+
+如果你知道，在将来，你的文档中肯定会需要一些字段，在你插入文档的时候就填充它们，而不是在需要它们的时候在创建， 会更高效。例如，你正在创建一个站点分析的应用，可以查看一天中有每一页都有多少用户访问。 你会有一个pages collection，每个document记录在过去的6个小时中，每分钟和每小时的访问量。
+
+```
+
+\{ "_id":pageId, "start":time, "visits":{ "minutes":\[ [num0,num1,...,num59], [num0,num1,...,num59], [num0,num1,...,num59], [num0,num1,...,num59], [num0,num1,...,num59], [num0,num1,...,num59] ], "hours":[num0,num1,...,num5] } }
+
+```
+
+这么做有一个优势，就是我们知道从现在到某一个时间点文档会是什么样子。是一个从现在开始，在接下来的6个小时， 每分钟和每小时的访问量。后面的6个小时又会是一个新的文档。
+
+因此，我们需要一个批量处理的任务，在空闲的时候，或者是在一天的固定时间，插入这些模板文档。  
+插入的模板应该是下面的样子。`
+{
+  "_id":pageId,
+  "start":someTime,
+  "visits":{
+    "minutes":[
+      [0,0,...,0],
+      [0,0,...,0],
+      [0,0,...,0],
+      [0,0,...,0],
+      [0,0,...,0],
+      [0,0,...,0]
+    ],
+    "hours":[0,0,0,0,0]
+  }
+}
+` 现在，当你增加这些计数器的时候，mongodb不需要为他们现去分配空间。只是更新已经插入的文档的值，这么做速度会更快。  
+例如，在刚开始的一个小时，你只需要这么做。
+
+```
+
+db.page.update({"_id":pageId,"start":thisHour},{"$inc":{"visits.0.0":3}})
+
+```
+
+这种做法也可以扩展到集合和数据库的其他类型数据，如果你每天需要一个新的集合，最好预先创建他们。
+
+Tip8.Preallocate space，whenever possible
+-----------------------------------------
+
+只要可能，可以预先分配一些空间
+
+本条建议和Tip6.Do not embed fields that have unbound growth(不要嵌入无限增长的字段)，  
+Tip7.Pre-populate anything you can（预先填充你能填充的）有紧密的关系。如果你可以确定你的文档将会增长到一定的量， 这么做就可以实现优化。在你插入文档的时候，添加一个garbage的字段，字段的内容大小是你的文档可能会达到的量，然后用unset删除这个garbage字段。`
+db.person.insert({name:'andyshi',garbage:someLongString})
+db.person.update({name:'andyshi'},{"$unset":{garbage:1}})
+` 这么做，mongodb会为这个文档初始化足够的空间，来应对将来的增长。
+
+Tip9.Store embedded information in arrays for anonymous access
+--------------------------------------------------------------
+
+将通用化的信息使用嵌入式结构存储在数组中
+
+有一个问题，经常会出现。 “在数组中嵌入信息呢？还是用子文档表示呢？” 当你精确的知道你要查询的内容的时候，适合使用子文档。如果你对于要查询的内容知道的不很精确，适合使用数组。当你知道你要查询的数据的一些规则的时候，适合使用数组。 假设我们正在开发一个游戏程序，游戏角色可以装备各种武器，我们定义下面的文档。`
+{
+  "_id":"fred",
+  "items":{
+    "slingshot":{
+      "type":"weapon",
+      "damage":23,
+      "ranged":true
+    },
+    "jar":{
+      "type":"container",
+      "contains":"fairy"
+    },
+    "sword":{
+      "type":"weapon",
+      "damage":30,
+      "ranged":false
+    }
+  }
+}
+` 现在，让我们找出所有武器中，能造成20以上伤害的武器。我们发现做不到！子文档的形式不允许我们进入items，告诉它返回伤害值大于等于20的武器。我们只能一个子文档一个子文档的查找，slingshot的伤害是否大于等于20，sword的伤害是否大于等于20。 如果你想要不使用标识就可以直接访问items，你就应该把他们存放在一个数组中。`
+{
+  "_id":"fred",
+  "items":[
+    { "id":"slingshot",
+      "type":"weapon",
+      "damage":23,
+      "ranged":true
+    },
+    { "id":"jar",
+      "type":"container",
+      "contains":"fairy"
+    },
+    { "id":"sword",
+      "type":"weapon",
+      "damage":30,
+      "ranged":false
+    }
+  ]
+}
+` 现在你可以使用查询
+
+```
+
+{"items.damage":{"$gt":20}}
+
+```
+
+来获取伤害大于等于20的武器了，如果你需要匹配特定项的话，可以使用$elemMatch来匹配。 那么，什么时候又需要用子文档替代数组呢？当你知道你访问的文档的字段的名称的时候。 例如，你跟踪一个游戏角儿的能力值，力量，智力，智慧，敏捷，体质和魅力的时候。你肯定想要知道一项具体的能力信息。我们就按照下面的方式存储。`
+{
+  "id":"fred",
+  "race":"gnome",
+  "class":"illusionlist",
+  "abilities":{
+    "str":20,
+    "int":30,
+    "wis":50,
+    "dex":24,
+    "con":36,
+    "cha":22
+  }
+}
+` 当你需要知道一项特殊技能的值的时候，你就可以查询abilities.str，或者是abilities.wis就可以了。我们不会有“能力值大于20的能力”这样的需求出现，我们总是知道我们要找的是什么。
+
+Tip10.Design documents to be self-sufficient
+--------------------------------------------
+
+将文档设计成自给自足的
+
+mongodb应该是一个大的，无声的数据存储容器。它本身不做任何处理，只是负责存储和读取数据。你应该坚持这个目的， 避免强迫mongodb进行一些客户端可以进行的计算工作。甚至是一些例如计算平均数或者是计算加和这样琐碎的工作，都应该推给客户端去做。 如果你非要进行一些需要计算的查询，你有两个选择： 招来严重的性能惩罚。在mongodb中使用javascript进行计算。 在文档中显式的存储这些信息。 通常来说，你应该在文档中显式的存储这些信息。 假设你需要查询apple和orange总共是30个的文档。`
+{
+  "_id":123,
+  "apple":10,
+  "orange":12
+}
+` 如果文档是上面的格式，就需要在查询的同时使用javascript进行计算工作，非常低效。相反，在文档中加一个total的字段。`
+{
+  "_id":123,
+  "apple":12,
+  "orange":14,
+  "total":30
+}
+` 在更新apple和orange数量的时候，同时更新一下total的信息。`
+>db.food.update({"_id":123},{"$inc":{"apple":10,"orange":-2,"total":8}})
+>db.food.findOne()
+{
+  "_id":123,
+  "apple":22,
+  "orange":12,
+  "orange":38
+}
+` 假设是下面的情形，你的total存储的是水果的类型数量。`
+{
+  "_id":123,
+  "apple":10.
+  "orange":24,
+  "total":2
+}
+` 现在，你需要更新文档，但是有可能增加字段，也有可能不增加字段。那你是否增加total的值呢？如果更新语句是下面的情况，你就需要更新total的值。
+
+```
+
+> db.food.update({"_id":123},{"$inc":{"banana":12,"total":1}})
+
+```
+
+相反的，如果banana字段已经存在了呢，我们就不应该增加total字段的值。但是在客户端，我们不知道这些情况。 通常在这种情况下，我们有两种处理方法：速度快，会产生不一致；速度慢，没有不一致。 快速的办法就是不管三七二十一，给total加1，同时让应用意识到将来还需要检查total的值是否正确。可以运行一个不间断的批量处理任务，修正这些数据。 如果应用可以接受额外的处理时间，我们可以使用findAndModify方法，将文档lock（设置一个locked字段，其他的写请求会检查这个字段），返回文档，然后在正确更新total的值之后，将lock字段设置为false。`
+>var resule=db.runCommand({"findAndModify":"food",
+  "query":{"_id":123,"locked":false},
+  "update":{"$set":{"locked":true}}})
+>if ("banana" in result.value){
+  db.food.update({criteria,{"$set":{"locked":false}."$inc":{"banana":20}}})
+  }else{
+  db.food.update({criteria,{"$set":{"locked":false},"$inc":{"banana":3,"total":1}}})
+}
+` 具体如何选择，依赖于你的应用需求。
+
+### Tip11.Prefer $-operators to JavaScript
+
+使用$操作符，而不是用javascript
+
+对于大多数应用，设计一个自包含的文档，可以将查询的复杂性降到最低。但是，有的时候你需要查询的内容用$操作符没有办法做到。 这时候，可以使用javascript。你可以使用$where，在查询中执行任意的javascript代码。 为了使用$where，你需要写一个javascript函数，返回值是true或者false。假设你需要返回member[0].value等于member[1].value的记录， 你可以这么做。`
+>db.members.find({"$where":function(){
+  return this.member[0].value==this.member[1].value;
+}})
+` 只要你想到的，$where可以赋予你的查询更强的能力。 $where需要花费很长的时间，因为mongodb需要在幕后做很多工作。当你执行一个正常的（非$where）查询，客户端把查询转换成BSON， 然后发送给数据库。mongodb存储数据也是用BSON，因此可以用条件进行基本的比较。这非常快，而且高效。 现在假设在查询时候需要使用$where。mongodb必须为集合中的每一个文档创建一个javascript对象，解析文档的BSON， 然后将字段赋值到javascript对象中。然后执行你发送过去的javascript代码，进行比较，然后再拆解这些对象。 这相当耗时，而且需要很多资源。 $where在必要的时候是一个好的选择，但是要避免任何时候都是用。事实上，如果在查询中发现很多$where， 这时候就需要重新考虑你的文档结构了。 如果非要使用$where，你可以想一些办法，减少使用$where的文档数量。先用条件过滤，然后对过滤后的文档使用$where， $where就不会花很长时间了。 例如，我们在上面的场景使用$where，我们需要检查member的age，我们只需要检查相关的成员和家庭成员。`
+>db.members.find({"type":{"$in":['joint','family']},
+  "$where":function(){
+    return this.member[0].value==this.member[1].value;
+}})
+` 现在，所有非joint和family的member就不用花时间执行$where了。
+
+Tip12.Compute aggregations as you go
+------------------------------------
+
+使用的过程中，随时计算聚合量
+
+只要可能，使用$inc计算聚合值。例如，在Tip7.Pre-populate anything you can（预先填充你能填充的）中， 我们设计了一个统计类的应用，需要每分钟和每小时的统计信息。我们可以在每分钟增加计数器的同时，也在每小时增加小时的计数器。 如果你还需要更多的聚合值，（例如，每小时的平均访问量），增加一些字段，设计一个批处理任务，在每小时的最后一分钟， 计算好平均值，存放到字段里。这些必要的统计信息都存放在一个文档中，新的文档不断的进行计算，而旧的文档已经被批处理任务处理完毕。
+
+Tip13.Write code to handle data integrity issue
+-----------------------------------------------
+
+用代码来解决数据完整性的问题
+
+考虑到mongodb天生的无结构性，和嵌入式结构的优点，你需要在应用中保证数据的一致性。 数据不一致会导致系统出现问题。 Tip1.Duplicate data for speed，reference data for integrity(数据冗余是为了性能，引用数据是为了完整性。) Tip10.Design documents to be self-sufficient(将文档设计成自给自足的) 如果你听取了上面的两条建议，会产生数据的不一致。对于这些类型的不一致，需要你写一些脚本来检查你的数据。 如果你用到了前面的一些建议，根据你的应用，你可能需要匹配一些批处理作业。例如： 一致性检查，校验计算值和重复数据，使得每个人都有一致的值。 预先填充，创建一些你将来会需要的文档。 聚合器，保持更新你的聚合值。 其他一些可能需要的脚本。 结构检查器，检查你的文档是否包含了特定的字段，甚至是修改那些有问题的字段，或者是通知你有不正确的文档。 备份作业，强制数据同步，锁，备份数据库等定时作业。 在后台运行这些作业，保护你的数据。
+
+Tip14.Use the correct types
+---------------------------
+
+使用正确的数据类型
+
+在存储数据的时候，选择正确的数据类型，你将会很轻松。数据类型影响数据如何被检索，影响mongodb如何对数据排序，影响使用空间的多少。
+
+-- 数值类型 任何被用来作为数值的内容都应该选择数值类型。这意味着如果你希望可以增加字段的值，或者用数值来排序，你就应该使用数值类型。 但是，什么类型的数值呢？通常情况，这是无所谓的，有时候也会有影响。 如果是排序比较的话，32bit整型、64bit整型或者double类型都没有问题。但是，有些特定类型的特定操作就不一样了， 位操作符AND和OR只能应用在整型数据上。 如果由于$inc之类的操作导致数值溢出，数据库会自动将32bit变为64bit，这不需要你操心。
+
+-- 日期类型 和数值类型类似，完全的日期数据应该使用日期类型存储。但是，例如出生日期这样的数据就不精确，谁又知道自己出生时候的毫秒呢？例如这样的数据，使用ISO-format，形如yyyy-mm-dd的字符串，会工作的更好。会比你使用日期类型存储更灵活，而且也可以正确的实现排序。
+
+-- 字符串 在mongodb中，所有的字符串必须是utf-8编码的，因此所有其他编码的字符串必须被转换为utf-8，或者是存储成二进制格式。
+
+-- ObjectId 记住，ObjectId不是字符串。需要记住下面几点：
+
+1.	string不能和ObjectId记性匹配，ObjectId也不能和string进行匹配。
+2.	ObjectId很有用，很多语言驱动都可以从ObjectId中知道文档的创建时间。
+3.	用字符串代表的ObjctId在磁盘空间使用上，将会是ObjectId的两倍还多。
+
+Tip15.Override _id when you have your own simple,unique id
+----------------------------------------------------------
+
+当你的数据有简单的，唯一的主键的时候，可以覆写内部的_id
+
+如果你的数据没有自定义的主键，那么就使用默认的ObejctId吧。可是，如果你的数据有自己的主键，那么就不需要ObjectId， 就可以使用你自定义的主键覆写内部的ObjectId。这可以节约及bit的空间，如果给你的主键做索引的时候会特别有用， 因为可以节约索引空间和资源（在保存数据的时候比较重要）。 有两个不适用你自己的主键的原因需要你考虑：
+
+1.	你必须确认你的主键是唯一的，而且包含了对于重复主键的处理机制。
+2.	你必须记住索引的树形结构，如何随即和非随机的插入数据。
+
+就索引树而言，ObjectId在插入顺序方面表现的很优秀，它们总是自增的，意味着数据总是被放在B树的右边叶子。 mongodb只需将B树的右边保存在内存中就可以了。 相反的，如果_id列是随机值，意味着_id将会被插入树的到处都是。就需要把索引页整个放在内存中，更新很小的一部分， 可能会忽视它，直到它再次滑出内存。这么做是比较低效的。
+
+Tip16.Avoid using a document for _id
+------------------------------------
+
+避免使用文档作为_id列的值
+
+你应该坚决不使用一个document作为_id的值，尽管有些情况可能无法避免。使用一个document作为_id的值会产生下面的问题， 索引一个文档和索引一个内容是文档的字段是完全不同的。因此，如果你没有计划每次查询全部子文档， 你可能需要多个索引，_id,_id.foo,_id.bar。
+
+同样，你不能改变_id，除非你重写整个文档，因此如果子文档有可能变化的，这么做很不实际。
+
+Tip17.Do not use database references
+------------------------------------
+
+不要使用数据库引用
+
+数据库引用是一种引用式的子文档，格式如下：
+
+```
+
+{$id:identifier,$ref:collectionName}
+
+```
+
+还有一个可选的$db字段，用来指明数据库名称。 看起来有点关系数据库的感觉，引用了另外一个集合中的一个文档。但是，实际上没有引用另外一个集合，只是一种引用式的子文档。 这没有什么神奇的，在mongodb中没有连接这种东西。这只是一个包含_id和集合名称的子文档。这意味着，如果想要引用它们， 你必须进行第二次查询。 如果你知道你要引用的集合，你可以节约存储集合_id，甚至是_id和集合名称所占的空间。数据库引用就是浪费空间， 除非你不知道你引用的文档在哪个集合中。 我唯一听过的使用数据库引用并做得很好的例子是，允许用户评论系统中的任何内容。 单独有一个comments集合用来存储全部的comment，其他所有的集合和数据库都有对于这个comments集合的引用。
+
+Tip18.Don't use GridFS for small binary data
+--------------------------------------------
+
+不要使用GridFS存储小的二进制数据
+
+GridFS需要进行两次查询：一次获取文件的元数据，一次获取文件的内容。因此，如果你用GridFS存储小文件，你的应用不能不做双倍的查询， GridFS用来分解大的二进制文件，然后进行存储。 GridFS用来存储大数据，数据大到操作单个文档的限制。任何过大的数据，导致客户端不能一次加载，但是服务端可以一次加载， 对客户端是流的形式的数据，都适合用GridFS来存储。任何在客户端可以一次性加载，例如图片、声音，或者是小视频， 都应该嵌入到主文档中就可以了。
+
+![GridFS存储](mongoDB/GridFs.png)
+
+图1 GridFS将大文件分解为很多小块，存储在chunks中
+
+Tip19.Handle "seamless" failover
+--------------------------------
+
+处理无缝的故障恢复（直译，没找到好的翻译）
+
+人们经常听说mongodb可以无缝的处理故障恢复的问题，很惊讶mongodb什么时候开始进行这些处理的。mongodb进行故障恢复， 不需要外界干预，但是不可能自动的处理一些错误。 假设你向服务器发送一个请求，返回给你一个网络错误。你的驱动程序有两个选择； 如果驱动不能再次连接数据库，也就不能重新发送请求了。但是，假设驱动知道还有一台服务器，它会自动的向那台服务器发送请求吗？ 这依赖于请求。如果你的请求是向primary写数据，可能根本就没有另外一个primary。如果你正在进行的请求是读取数据， 例如在一个slave上需要长时间运行的mapreduce分析，这时候这个slave down机了，驱动不会将这个请求发送到其他服务器。 因此，不会在其他服务器重新尝试请求。 如果错误是暂时的网络错误，驱动可以立即连接到服务器。任然不会重新发送请求。如果驱动发送一个请求遇到了网络错误， 错误超出了数据库的响应范围。因为数据库已经响应过了，你也不希望数据库再处理一次吧。 这是一个棘手的问题，需要应用来解决。无论网络抛出任何的异常，你都必须捕获（这方面可以在驱动文档中找到捕获异常的方法）。 处理异常，并且决定是否重新发送请求。是否需要先检查数据库状态？是否可以放弃，还是需要重试？
+
+Tip20.Handle replica set failure and failover
+---------------------------------------------
+
+处理复制集的故障和故障恢复
+
+你的应用应该有能力处理复制集中遇到的所有可能的故障问题。 假设你的应用抛出一个“找不到master”的错误。有两个可能导致这个错误的原因。你的复制集可能正在进行故障恢复， 恢复一个新的primary，你必须优雅的处理进行primary选择所花费的这段时间。这段时间会持续几秒钟，如果你倒霉的话， 也有可能是30秒或者更多。如果你在网络分区的另一边，可能几个小时看不到master。 找不到master是一个很严重的问题，如果发生这种请求，你的应用是否能接受只读的模式。你的应用应该可以处理短期只读和长期只读。 不管是否存在master，你都应该继续提供读取的服务。
+
+在primary选举阶段，服务器成员会经历简短的不可读，恢复阶段。在这个时期，如果驱动来读取数据，成员会抛出异常，找不到master和slave。
+
+Tip21.Minimize disk access
+--------------------------
+
+将访问磁盘的次数降到最低
+
+从RAM中中访问数据很快，而从磁盘中访问数据有点慢。因此，大多数优化技巧的基础都是最小化访问磁盘的数量。 模糊匹配 从磁盘中读取数据和从内存中读取数据相比要慢100万倍。 大多数碟式（旋转式）硬盘驱动器能在10毫秒内访问到数据，然后从内存中只需要10纳秒就可以访问到数据 （这依赖于你使用的是什么样的硬盘驱动器，什么样的内存，在这里我们只是粗糙的估算一下）。 这意味着磁盘和RAM的访问时间比例是：1毫秒/1纳秒。1毫秒是1百万个1纳秒，因此访问磁盘是访问内存个的1百万倍。 在Linux上通过运行下面的命令，可以测试顺序访问磁盘。
+
+```
+
+sudo hdparm -t /dev/hdwhatever
+
+```
+
+它可能不会返回精确的测量值，就像mongodb使用的是随机的读写，但是还是可以看出你的机器能干什么。 我们能做什么呢？下面是两个简单的方案： - 使用SSD SSD（solid state derives固态硬盘）在很多方面要比旋转式硬盘快很多，但是它们更小，更贵，很难安全的擦除， 而且还是不能和从内存读取的速度相比。不是要阻止你使用SSD，他们可以和mongodb很好的配合，但是它不是万能的。 - 增加更多的RAM 增加更多的RAM意味着你减少了对磁盘的访问。但是，某些时候，你的数据可能不适合进入RAM。 因此，问题变成了：我们如何在磁盘上存储T字节，甚至是P自己的数据？如何编写这样一个，经常访问的数据已经在内存中， 尽可能少的从磁盘中移动数据到内存，应用程序？ 如果你访问数据的方式是实时的、随即的，你将会须要很多的RAM。但是，大多数应用不是这样的， 访问近期的数据要比访问旧的数据次数多，一部分用户要比其他用户更活跃，一部分地域要比其他地域用户多。 这样的应用，应该设计成在内存中保持特定的数据，很少直接访问磁盘。
+
+Tip22.Use indexes to do more with less memory
+---------------------------------------------
+
+通过索引实现用较少的内存做更多的事情 图22.1是一张查询请求的示意图。
+
+![查询流程图](mongoDB查询流程图.png)
+
+图22.1 查询流程图
+
+假设你有一台机器，有256G的数据，16G的内存。大部分数据在一个集合中，并且你正在查询这个集合。mongodb会怎么做呢？ 假设每页包含4K的数据。 mongodb将第一页从磁盘加载到内存中，然后和你的查询比较。然后再加载一页，和你的查询比较，再加载一页。 这样会加载整个256G的数据。没有什么捷径，不查看文档，它不知道那个文档是匹配查询请求的， 因此它必须要查看所有的文档才会知道那些文档是符合查询条件的。因此，需要加载所有256G的数据到内存中 （操作系统需要把旧的数据交换出内存，需要加载新的数据）。这样会花费很长的时间。 如何才能避免在一次查询中不加载所有256G数据到内存呢？我们可以告诉mongodb在字段x上建立索引， mongodb会建立一棵树，保存字段的值。mongodb会预处理这些数据，将集合中x字段的值都加到一个有序数中（如图22.2）。 树的每个节点包含一个x的值，和指向包含x值的文档的指针。
+
+![有序B树](mongoDB有序B树.png)
+
+图22.2 有序B树
+
+树只包含一个执行文档的指针，而不是文档本身，意味着索引要比整个集合小很多。 当你的查询中包含x字段的时候，mongodb会注意到查询条件中包含一个索引字段x，会通过有序树来查询x。 现在，不是查找每一个文档了。mongodb就回问，x是大于当前节点的值？还是小于当前节点的值？如果大于，就去右节点中继续找； 如果小于，就去左节点中继续找。将会以这种方式继续查找，直到找到节点值是x的节点。如果找到了，就会根据节点指针找到对应的文档， 返回文档（如图22.3）。
+
+![索引指向](mongoDB索引指向.png)
+
+图22.3 一个包含值的索引指向一个文档
+
+如果不使用索引，我们需要加载6400万页的数据到内存中。
+
+Pages of data: 256G/(4KB/page)=64 million pages
+
+假设我们的索引是80G。索引是2000万页。
+
+```
+
+Numbers of pages in our index: 80G/(4KB/page)=20 million pages
+
+```
+
+因为索引是有序的，意味着我们不用查找每一个。我们只需要加载特定的节点。那么是多少呢？
+
+```
+
+Numbers of pages of the index that must be loaded into memory: len(20,000,000)=17 pages
+
+```
+
+从6400万页下降到17页！ 当然了，不只是17页。一旦我们在索引中找到结果，就需要将对应的文档加载到内存中，因此还需要加载文档大小的页。 和之前的整个集合相比，还是小了很多。 希望你现在可以想象出索引对于加快查询的帮助有多么大了。
+
+Tip23.Don't always use an index
+-------------------------------
+
+不要总是使用索引
+
+之前讲到了使用索引的好处，但是让我提醒你一下，并不是所有的查询都应该使用索引。假设一下，在之前的例子中， 你获取的是集合中90%的文档，而不是一小部分的文档。如果这种情况下，我们还是用索引的话，我们几乎要查询所有的索引。 也就是说60G的索引都会加载到内存中，根据索引的指针还会加载230G的文档到内存。总共需要加载60G+230G=290G的数据到内存， 这大大超过了不用索引的情况。
+
+因此，索引通常在你查询的只是数据的一小部分的时候很管用。有一条经验法则可以参考，一旦你返回的数据超过一半以上，就不要使用索引了。 如果你在一个字段建立索引，但是要求返回大量的数据，是很低效的。这时候你可以通过再sort中指定{"$natural":1}来告诉mongodb， 本次查询不要使用索引。这样就意味着将从磁盘的顺序返回数据，强制mongodb不使用索引。
+
+```
+
+> db.foo.find().sort({"$natural":1})
+
+```
+
+如果一个查询强制不使用索引，mongodb将会扫描表，意味着通过对比所有的记录来找到符合条件的文档。 每次增加、删除、更新一条新的记录，索引都会更新。假设增加一条记录，mongodb或查询新节点的值需要落在索引树的哪个位置，然后在插入索引。对于删除，也需要找到并删除索引，更新值的话，也需要同样的过程。因此索引对于写操作来说会增加额外的工作。
+
+Tip24.Create indexes that cover your queries
+--------------------------------------------
+
+创建的索引最好能覆盖你的查询
+
+如果你这需要返回特定的字段，在索引中包含这些字段，mongodb将只是做索引的查询，不会随着指针访问文档， 只需要返回索引保存的数据就可以了。因此，假设你在下面的字段建立索引。
+
+```
+
+> db.foo.ensureIndex({"x":1,"y":1,"z":1})
+
+```
+
+然后，如果你只是针对这些字段进行查询，并且只返回这些字段的值，mongodb就没有理由加载整个文档。
+
+```
+
+> db.foo.find({"x":criteria,"y":criteria},{"x":1,"y":1,"z":1,"_id":0})
+
+```
+
+上面的查询只会触及索引的值，不会触及集合。 请注意，我们在返回的字段中包含"_id":0。_id字段默认总是被返回的，但是它不是mongodb索引的一部分。 从查询结果中去除这个字段，意味着查询只需要返回索引的值就可以了。 如果查询只返回比较少的字段，考虑可以将这些字段加入索引，方便你进行覆盖索引的查询，即使你不查询这些字段也没有关系。 例如，上面的查询条件中没有z字段，如果返回结果中包含z字段，也可以把z字段加入索引。
+
+Tip25.Use compound indexes to make multiple queries fast
+--------------------------------------------------------
+
+使用复合索引加速查询
+
+如果有可能的话，创建能被多个查询使用的复合索引。也不总是有可能，但是如果你的多个查询都是相似的条件，还是很必要的。 任何查询，主要匹配了索引的前缀，就可以使用该索引。因此，你建立的索引应该是包含被多个查询共享的，最大数量的条件。 假设你的应用会执行下面的查询。
+
+```
+
+collection.find({"x":criteria,"y":criteria,"z":criteria}) collection.find({"z":criteria,"y":criteria,"w":criteria})  
+collection.find({"y":criteria,"w":criteria})
+
+```
+
+如你所见，y是唯一一个所有查询都用到的字段，因此y字段是一个很好的候选者。z字段在前两个查询中出现， w字段在后两个查询中出现，两者之一将会作为下一个候选者。 我们想要尽可能的命中建立的索引。如果可以确定第一个查询很重要，或者比其他两个频繁，我们建立的索引就要倾向第一个查询。 假设第一个查询的执行次数是其他两个的上千倍，我们就可以建立下面的索引。
+
+```
+
+collection.ensureIndex({"y":1,"z":1,"x":1})
+
+```
+
+第一个查询得到了很高的优化，另外两个的部分查询可以使用这个索引。 如果所有的查询运行次数均等，可以建立下面的索引。
+
+```
+
+collection.ensureIndex({"y":1,"w":1,"z":1})
+
+```
+
+因为条件中都包含有y，因此三个查询都可以使用这个索引，后面两个可以使用w，中间的可以完全的是偶那个这个索引。 你可以通过下面的命令查看一个查询的索引使用情况。
+
+```
+
+collection.find(criteria).explain()
+
+```
+
+MongoDB 与 MySql 指令对照
+-------------------------
+
+传统的关系<a href="http://www.2cto.com/database/" target="_blank"><font color="#0066cc">数据库</font></a>一般由数据库（database）、表（table）、记录（record）三个层次概念组成，MongoDB是由<strong>数据库（database）、集合（collection）、文档对象（document）</strong>三个层次组成。MongoDB对于关系型数据库里的表，但是集合中没有列、行和关系概念，这体现了模式自由的特点。
+
+<table cellspacing="0" class="t_table" ><tr><td><p align="center"><strong>MySQL</strong></p></td><td><p align="center"><strong>MongoDB</strong></p></td><td><p align="center"><strong>说明</strong></p></td></tr><tr><td><p align="left"><a href="http://www.2cto.com/database/mysql/" target="_blank"><font color="#0066cc">mysql</font></a>d</p></td><td><p align="left">mongod</p></td><td><p align="left">服务器守护进程</p></td></tr><tr><td><p align="left">mysql</p></td><td><p align="left">mongo</p></td><td><p align="left">客户端工具</p></td></tr><tr><td><p align="left">mysqldump</p></td><td><p align="left">mongodump</p></td><td><p align="left">逻辑备份工具</p></td></tr><tr><td><p align="left">mysql</p></td><td><p align="left">mongorestore</p></td><td><p align="left">逻辑恢复工具</p></td></tr><tr><td><br />
+</td><td><p align="left">db.repairDatabase()</p></td><td><p align="left">修复数据库</p></td></tr><tr><td><p align="left">mysqldump</p></td><td><p align="left">mongoexport</p></td><td><p align="left">数据导出工具</p></td></tr><tr><td><p align="left">source</p></td><td><p align="left">mongoimport</p></td><td><p align="left">数据导入工具</p></td></tr><tr><td><p align="left">grant * privileges on *.* to …</p></td><td><p align="left">Db.addUser()</p><p align="left">Db.auth()</p></td><td><p align="left">新建用户并权限</p></td></tr><tr><td><p align="left">show databases</p></td><td><p align="left">show dbs</p></td><td><p align="left">显示库列表</p></td></tr><tr><td><p align="left">Show tables</p></td><td><p align="left">Show collections</p></td><td><p align="left">显示表列表</p></td></tr><tr><td><p align="left">Show slave status</p></td><td><p align="left">Rs.status</p></td><td><p align="left">查询主从状态</p></td></tr><tr><td><p align="left">Create table users(a int, b int)</p></td><td><p align="left">db.createCollection(&quot;mycoll&quot;, {capped:true,</p><p align="left">size:100000}) 另：可隐式创建表。</p></td><td><p align="left">创建表</p></td></tr><tr><td><p align="left">Create INDEX idxname ON users(name)</p></td><td><p align="left">db.users.ensureIndex({name:1})</p></td><td><p align="left">创建索引</p></td></tr><tr><td><p align="left">Create INDEX idxname ON users(name,ts DESC)</p></td><td><p align="left">db.users.ensureIndex({name:1,ts:-1})</p></td><td><p align="left">创建索引</p></td></tr><tr><td><p align="left">Insert into users values(1, 1)</p></td><td><p align="left">db.users.insert({a:1, b:1})</p></td><td><p align="left">插入记录</p></td></tr><tr><td><p align="left">Select a, b from users</p></td><td><p align="left">db.users.find({},{a:1, b:1})</p></td><td><p align="left">查询表</p></td></tr><tr><td><p align="left">Select * from users</p></td><td><p align="left">db.users.find()</p></td><td><p align="left">查询表</p></td></tr><tr><td><p align="left">Select * from users where age=33</p></td><td><p align="left">db.users.find({age:33})</p></td><td><p align="left">条件查询</p></td></tr><tr><td><p align="left">Select a, b from users where age=33</p></td><td><p align="left">db.users.find({age:33},{a:1, b:1})</p></td><td><p align="left">条件查询</p></td></tr><tr><td><p align="left">select * from users where age&lt;33</p></td><td><p align="left">db.users.find({'age':{$lt:33}})</p></td><td><p align="left">条件查询</p></td></tr><tr><td><p align="left">select * from users where age&gt;33 and age&lt;=40</p></td><td><p align="left">db.users.find({'age':{$gt:33,$lte:40}})</p></td><td><p align="left">条件查询</p></td></tr><tr><td><p align="left">select * from users where a=1 and b='q'</p></td><td><p align="left">db.users.find({a:1,b:'q'})</p></td><td><p align="left">条件查询</p></td></tr><tr><td><p align="left">select * from users where a=1 or b=2</p></td><td><p align="left">db.users.find( { $or : [ { a : 1 } , { b : 2 } ] } )</p></td><td><p align="left">条件查询</p></td></tr><tr><td><p align="left">select * from users limit 1</p></td><td><p align="left">db.users.findOne()</p></td><td><p align="left">条件查询</p></td></tr><tr><td><p align="left">select * from users where name like &quot;%Joe%&quot;</p></td><td><p align="left">db.users.find({name:/Joe/})</p></td><td><p align="left">模糊查询</p></td></tr><tr><td><p align="left">select * from users where name like &quot;Joe%&quot;</p></td><td><p align="left">db.users.find({name:/^Joe/})</p></td><td><p align="left">模糊查询</p></td></tr><tr><td><p align="left">select count(1) from users</p></td><td><p align="left">Db.users.count()</p></td><td><p align="left">获取表记录数</p></td></tr><tr><td><p align="left">select count(1) from users where age&gt;30</p></td><td><p align="left">db.users.find({age: {'$gt': 30}}).count()</p></td><td><p align="left">获取表记录数</p></td></tr><tr><td><p align="left">select DISTINCT last_name from users</p></td><td><p align="left">db.users.distinct('last_name')</p></td><td><p align="left">去掉重复值</p></td></tr><tr><td><p align="left">select * from users ORDER BY name</p></td><td><p align="left">db.users.find().sort({name:-1})</p></td><td><p align="left">排序</p></td></tr><tr><td><p align="left">select * from users ORDER BY name DESC</p></td><td><p align="left">db.users.find().sort({name:-1})</p></td><td><p align="left">排序</p></td></tr><tr><td><p align="left">EXPLAIN select * from users where z=3</p></td><td><p align="left">db.users.find({z:3}).explain()</p></td><td><p align="left">获取存储路径</p></td></tr><tr><td><p align="left">update users set a=1 where b='q'</p></td><td><p align="left">db.users.update({b:'q'}, {$set:{a:1}}, false, true)</p></td><td><p align="left">更新记录</p></td></tr><tr><td><p align="left">update users set a=a+2 where b='q'</p></td><td><p align="left">db.users.update({b:'q'}, {$inc:{a:2}}, false, true)</p></td><td><p align="left">更新记录</p></td></tr><tr><td><p align="left">delete from users where z=&quot;abc&quot;</p></td><td><p align="left">db.users.remove({z:'abc'})</p></td><td><p align="left">删除记录</p></td></tr><tr><td><br />
+</td><td><p align="left">db. users.remove()</p></td><td><p align="left">删除所有的记录</p></td></tr><tr><td><p align="left">drop database IF EXISTS test;</p></td><td><p align="left">use test</p><p align="left">db.dropDatabase()</p></td><td><p align="left">删除数据库</p></td></tr><tr><td><p align="left">drop table IF EXISTS test;</p></td><td><p align="left">db.mytable.drop()</p></td><td><p align="left">删除表/collection</p></td></tr><tr><td><br />
+</td><td><p align="left">db.addUser(‘test’, ’test’)</p></td><td><p align="left">添加用户</p><p align="left">readOnly--&gt;false</p></td></tr><tr><td><br />
+</td><td><p align="left">db.addUser(‘test’, ’test’, true)</p></td><td><p align="left">添加用户</p><p align="left">readOnly--&gt;true</p></td></tr><tr><td><br />
+</td><td><p align="left">db.addUser(&quot;test&quot;,&quot;test222&quot;)</p></td><td><p align="left">更改密码</p></td></tr><tr><td><br />
+</td><td><p align="left">db.system.users.remove({user:&quot;test&quot;})</p><p align="left">或者db.removeUser('test')</p></td><td><p align="left">删除用户</p></td></tr><tr><td><br />
+</td><td><p align="left">use admin</p></td><td><p align="left">超级用户</p></td></tr><tr><td><br />
+</td><td><p align="left">db.auth(‘test’, ‘test’)</p></td><td><p align="left">用户授权</p></td></tr><tr><td><br />
+</td><td><p align="left">db.system.users.find()</p></td><td><p align="left">查看用户列表</p></td></tr><tr><td><br />
+</td><td><p align="left">show users</p></td><td><p align="left">查看所有用户</p></td></tr><tr><td><br />
+</td><td><p align="left">db.printCollectionStats()</p></td><td><p align="left">查看各collection的状态</p></td></tr><tr><td><br />
+</td><td><p align="left">db.printReplicationInfo()</p></td><td><p align="left">查看主从复制状态</p></td></tr><tr><td><br />
+</td><td><p align="left">show profile</p></td><td><p align="left">查看profiling</p></td></tr><tr><td><br />
+</td><td><p align="left">db.copyDatabase('mail_addr','mail_addr_tmp')</p></td><td><p align="left">拷贝数据库</p></td></tr><tr><td><br />
+</td><td><p align="left">db.users.dataSize()</p></td><td><p align="left">查看collection数据的大小</p></td></tr><tr><td><br />
+</td><td><p align="left">db. users.totalIndexSize()</p></td><td><p align="left">查询索引的大小</p></td></tr></table>
+
+Mongodb
+=======
+
+Mongo DB Native NodeJS Driver
+
+应该是同步版本[网址：]https://github.com/mongodb/node-mongodb-native
+
+Mongoose
+========
+
+Mongoose is a [MongoDB](http://www.mongodb.org/) object modeling tool designed to work in an asynchronous environment.
+
+封装了 MongoDB，是其异步版本！
+
+[![Build Status](https://travis-ci.org/LearnBoost/mongoose.png?branch=3.6.x)](https://travis-ci.org/LearnBoost/mongoose)
+
+Documentation
+-------------
+
+[mongoosejs.com](http://mongoosejs.com/)
+
+Support
+-------
+
+-	[Stack Overflow](http://stackoverflow.com/questions/tagged/mongoose)
+-	[bug reports](https://github.com/learnboost/mongoose/issues/)
+-	[help forum](http://groups.google.com/group/mongoose-orm)
+-	[10gen support](http://www.mongodb.org/display/DOCS/Technical+Support)
+-	(irc) #mongoosejs on freenode
+
+Plugins
+-------
+
+Check out the [plugins search site](http://plugins.mongoosejs.com/) to see hundreds of related modules from the community.
+
+Contributors
+------------
+
+View all 90+ [contributors](https://github.com/learnboost/mongoose/graphs/contributors). Stand up and be counted as a [contributor](https://github.com/LearnBoost/mongoose/blob/master/CONTRIBUTING.md) too!
+
+Live Examples
+-------------
+
+<a href="https://runnable.com/mongoose" target="_blank"><img src="https://runnable.com/external/styles/assets/runnablebtn.png" style="width:67px;height:25px;"></a>
+
+Installation
+------------
+
+First install [node.js](http://nodejs.org/) and [mongodb](http://www.mongodb.org/downloads). Then:
+
+```
+
+$ npm install mongoose
+
+```
+
+Overview
+--------
+
+### Connecting to MongoDB
+
+First, we need to define a connection. If your app uses only one database, you should use `mongose.connect`. If you need to create additional connections, use `mongoose.createConnection`.
+
+Both `connect` and `createConnection` take a `mongodb://` URI, or the parameters `host, database, port, options`.
+
+```
+
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/my_database');
+
+```
+
+Once connected, the `open` event is fired on the `Connection` instance. If you're using `mongoose.connect`, the `Connection` is `mongoose.connection`. Otherwise, `mongoose.createConnection` return value is a `Connection`.
+
+**Important!** Mongoose buffers all the commands until it's connected to the database. This means that you don't have to wait until it connects to MongoDB in order to define models, run queries, etc.
+
+### Defining a Model
+
+Models are defined through the `Schema` interface.
+
+```
+
+var Schema = mongoose.Schema , ObjectId = Schema.ObjectId;
+
+var BlogPost = new Schema({ author : ObjectId , title : String , body : String , date : Date });
+
+```
+
+Aside from defining the structure of your documents and the types of data you're storing, a Schema handles the definition of:
+
+-	[Validators](http://mongoosejs.com/docs/validation.html) (async and sync)
+-	[Defaults](http://mongoosejs.com/docs/api.html#schematype_SchemaType-default)
+-	[Getters](http://mongoosejs.com/docs/api.html#schematype_SchemaType-get)
+-	[Setters](http://mongoosejs.com/docs/api.html#schematype_SchemaType-set)
+-	[Indexes](http://mongoosejs.com/docs/guide.html#indexes)
+-	[Middleware](http://mongoosejs.com/docs/middleware.html)
+-	[Methods](http://mongoosejs.com/docs/guide.html#methods) definition
+-	[Statics](http://mongoosejs.com/docs/guide.html#statics) definition
+-	[Plugins](http://mongoosejs.com/docs/plugins.html)
+-	[pseudo-JOINs](http://mongoosejs.com/docs/populate.html)
+
+The following example shows some of these features:
+
+```
+
+var Comment = new Schema({ name : { type: String, default: 'hahaha' } , age : { type: Number, min: 18, index: true } , bio : { type: String, match: /[a-z]/ } , date : { type: Date, default: Date.now } , buff : Buffer });
+
+// a setter Comment.path('name').set(function (v) { return capitalize(v); });
+
+// middleware Comment.pre('save', function (next) { notify(this.get('email')); next(); });
+
+```
+
+Take a look at the example in `examples/schema.js` for an end-to-end example of a typical setup.
+
+### Accessing a Model
+
+Once we define a model through `mongoose.model('ModelName', mySchema)`, we can access it through the same function
+
+```
+
+var myModel = mongoose.model('ModelName');
+
+```
+
+Or just do it all at once
+
+```
+
+var MyModel = mongoose.model('ModelName', mySchema);
+
+```
+
+We can then instantiate it, and save it:
+
+```
+
+var instance = new MyModel(); instance.my.key = 'hello'; instance.save(function (err) { // });
+
+```
+
+Or we can find documents from the same collection
+
+```
+
+MyModel.find({}, function (err, docs) { // docs.forEach });
+
+```
+
+You can also `findOne`, `findById`, `update`, etc. For more details check out [the docs](http://mongoosejs.com/docs/queries.html).
+
+**Important!** If you opened a separate connection using `mongoose.createConnection()` but attempt to access the model through `mongoose.model('ModelName')` it will not work as expected since it is not hooked up to an active db connection. In this case access your model through the connection you created:
+
+```
+
+var conn = mongoose.createConnection('your connection string'); var MyModel = conn.model('ModelName', schema); var m = new MyModel; m.save() // works
+
+vs
+
+var conn = mongoose.createConnection('your connection string'); var MyModel = mongoose.model('ModelName', schema); var m = new MyModel; m.save() // does not work b/c the default connection object was never connected
+
+```
+
+### Embedded Documents
+
+In the first example snippet, we defined a key in the Schema that looks like:
+
+```
+
+comments: [Comments]
+
+```
+
+Where `Comments` is a `Schema` we created. This means that creating embedded documents is as simple as:
+
+```
+
+// retrieve my model var BlogPost = mongoose.model('BlogPost');
+
+// create a blog post var post = new BlogPost();
+
+// create a comment post.comments.push({ title: 'My comment' });
+
+post.save(function (err) { if (!err) console.log('Success!'); });
+
+```
+
+The same goes for removing them:
+
+```
+
+BlogPost.findById(myId, function (err, post) { if (!err) { post.comments[0].remove(); post.save(function (err) { // do something }); } });
+
+```
+
+Embedded documents enjoy all the same features as your models. Defaults, validators, middleware. Whenever an error occurs, it's bubbled to the `save()` error callback, so error handling is a snap!
+
+Mongoose interacts with your embedded documents in arrays *atomically*, out of the box.
+
+### Middleware
+
+See the [docs](http://mongoosejs.com/docs/middleware.html) page.
+
+#### Intercepting and mutating method arguments
+
+You can intercept method arguments via middleware.
+
+For example, this would allow you to broadcast changes about your Documents every time someone `set`s a path in your Document to a new value:
+
+```
+
+schema.pre('set', function (next, path, val, typel) { // `this` is the current Document this.emit('set', path, val);
+
+// Pass control to the next pre next(); });
+
+```
+
+Moreover, you can mutate the incoming `method` arguments so that subsequent middleware see different values for those arguments. To do so, just pass the new values to `next`:
+
+```
+
+.pre(method, function firstPre (next, methodArg1, methodArg2) { // Mutate methodArg1 next("altered-" + methodArg1.toString(), methodArg2); })
+
+// pre declaration is chainable .pre(method, function secondPre (next, methodArg1, methodArg2) { console.log(methodArg1); // => 'altered-originalValOfMethodArg1'
+
+console.log(methodArg2); // => 'originalValOfMethodArg2'
+
+// Passing no arguments to `next` automatically passes along the current argument values // i.e., the following `next()` is equivalent to `next(methodArg1, methodArg2)` // and also equivalent to, with the example method arg // values, `next('altered-originalValOfMethodArg1', 'originalValOfMethodArg2')` next(); })
+
+```
+
+#### Schema gotcha
+
+`type`, when used in a schema has special meaning within Mongoose. If your schema requires using `type` as a nested property you must use object notation:
+
+\`\`\`
+
+new Schema({ broken: { type: Boolean } , asset : { name: String , type: String // uh oh, it broke. asset will be interpreted as String } });
+
+new Schema({ works: { type: Boolean } , asset : { name: String , type: { type: String } // works. asset is an object with a type property } });\`\`\`
+
+### Driver access
+
+The driver being used defaults to [node-mongodb-native](https://github.com/mongodb/node-mongodb-native) and is directly accessible through `YourModel.collection`. **Note**: using the driver directly bypasses all Mongoose power-tools like validation, getters, setters, hooks, etc.
+
+API Docs
+--------
+
+Find the API docs [here](http://mongoosejs.com/docs/api.html), generated using [dox](http://github.com/visionmedia/dox).
+
+I am actually having some difficulty with querying a range like this { "metaData.dateTime" : { "$gte" : { "$date" : "1970-01-01T00:00:00.000Z"} , "$lt" : { "$date" : "2038-01-20T03:14:08.000Z"}}} 17 • Reply•Share › Avatar Nir Montag Archimedes Trajano • 5 months ago You can go with: {SignUpDate: {$gte: ISODate("2013-09-15T00:00:00Z"), $lt: ISODate("2013-09-21T00:00:00Z")}} 4 • Reply•Share ›
+
+### 修改字段名称
+
+db.collection.update( criteria, objNew, upsert, multi ) db.test.update({}, {$rename : {"abc" : "def"}}, false, true)
+
+1.使用rename
+
+db.students.update( { _id: 1 }, { $rename: { 'nickname': 'alias', 'cell': 'mobile' } } ) 批量appkey改成appid
+
+db.app.update({},{$rename:{"appkey":"appid"}},{multi:true}) http://docs.mongodb.org/manual/reference/operator/rename/
+
+2.使用set，将user表pwd改成passwd
+
+remap = function (x) { if (x.pwd){ db.user.update({_id:x._id}, {$set:{"passwd":x.pwd}, $unset:{"pwd":1}}); } }
+
+db.user.find().forEach(remap); 操作如下：
+
+> db.user.find() { "_id" : ObjectId("50cc3c6ae4b0d3e844d56886"), "name" : "inosql", "pwd" : "inosql" } { "_id" : ObjectId("50cf125f86cc55fc6e3b94eb"), "name" : "c", "pwd" : "c" }
+>
+> remap = function (x) { if (x.pwd){ db.user.update({_id:x._id}, {$set:{"passwd":x.pwd}, $unset:{"pwd":1}}); }} function (x) { if (x.pwd) { db.user.update({_id:x._id}, {$set:{passwd:x.pwd}, $unset:{pwd:1}}); } } db.user.find().forEach(remap); db.user.find() { "_id" : ObjectId("50cc3c6ae4b0d3e844d56886"), "name" : "inosql", "passwd" : "inosql" } { "_id" : ObjectId("50cf125f86cc55fc6e3b94eb"), "name" : "c", "passwd" : "c" }
+
+### numa machine
+
+迁移工作首先要导入旧数据。开始一切倒还正常，不过几小时之后，我无意中发现不知道什么时候开始数据导入的速度下降了，同时我的PHP脚本开始不停的抛出异常： cursor timed out (timeout: 30000, time left: 0:0, status: 0) 我一时判断不出问题所在，想想先在PHP脚本里加大Timeout的值应付一下： MongoCursor::$timeout = -1; 可惜这样并没有解决问题，错误反倒变着花样的出现了： max number of retries exhausted, couldn't send query couldn't send query: Broken pipe 无奈之下用strace跟踪了一下PHP脚本： shell> strace -p <PID> 发现进程卡在了recvfrom操作上： recvfrom(<FD>, 通过如下命令查询recvfrom操作的含义是：receive a message from a socket shell> apropos recvfrom 还可以按照下面的方式确认一下： shell> lsof -p <PID> shell> ls -l /proc/<PID>/fd/<FD> 此时查询MongoDB当前操作，发现几乎每个操作会消耗大量的时间： shell> echo "db.currentOp()" | /path/to/mongo 同时运行mongostat显示很高的locked值。 … 重复做了很多工作，但始终无法找到问题的症结在哪里，只好求助官方论坛，那里的技术支持都很热心，在我描述了问题后，没过多久就有了回复，建议我检查一下是不是索引不佳所致，为了验证这种可能，我激活了Profiler记录慢操作： mongo> use <DB> mongo> db.setProfilingLevel(1); 不过结果显示基本都是insert操作（因为我是导入数据为主），本身就不需要索引： mongo> use <DB> mongo> db.system.profile.find().sort({$natural:-1}) … 问题到了这里，似乎已经走投无路了，为了死马当活马医，我又重复了几次迁移旧数据的过程，结果自然是次次都出问题，但幸运的是我发现每当出问题的时候，在top命令的结果中，总有一个名叫irqbalance的进程居高不下，搜索了一下，结果很多介绍irqbalance的文章中都提及了NUMA，让我一下子记起之前在日志中看到的警告信息，于是乎按照信息里介绍的，重新启动了一下MongoDB： shell> numactl --interleave=all /path/to/mongod 一切都正常了。为了解决这个问题，浪费了很多精神，实在没有力气再解释NUMA到底是什么东西了，有想了解的网友可以参考老外的文章，里面的介绍很翔实。
+
+MongoDB批量返回查询结果，批量大小最大不能超过BSON文档的大小。对于大多数查询，第一批返回101个文档或文档刚好超过1MB,后续批量大小是4MB。重置默认的批量大小，请看靠batchSize()和limit()方法的信息。

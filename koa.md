@@ -456,6 +456,18 @@ rt.post('/api/reg', user.reg);
 - 实现用户注册页面
 - 实现用户注册接口
 
+## MongoDB 数据库
+
+>Mongoose 是 MongoDB数据库node.js下的ODM(Object Document Mapper，对象文档映射)。    
+以对象方式，提供数据校验、关联、连接池等各种更高级功能。
+
+- 安装：npm i mongoose -S
+- 安装原生驱动：npm install mongodb --save
+- 原生驱动是基于字符串方式的文档模型操作，灵活但是容易出错，在密集写入场景可使用。
+- mongoose 在原生驱动上做了封装，密集操作时，性能上比原生操作慢一点点，但更健壮，推荐在常规场景使用。
+- mongoose详细操作请参见专门的[mongoose使用说明]()
+
+
 运行测试
 --------
 

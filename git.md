@@ -258,7 +258,9 @@ git 常用指令
 	- git add . # 添加所有文件，A → B
 	- git commit -m "代码提交信息" # 文件提交，B → C
 	- git commit --amend # 与上次commit合并, *B → C
-	- git push <remote> <branch> --force # amend后，需强制push
+	- git push <remote> <branch> --force 
+		# 远程主机的版本比本地新，推送会报错，要求先git pull合并差异，然后推送,  如果一定要推送，可以使用–force选项，结果导致在远程主机产生一个”非直进式”的合并(non-fast-forward merge)。除非你很确定要这样做，否则应该尽量避免使用–force选项。
+	- git push origin --tags # git push不会推送标签(tag)，除非使用–tags选项
 - 远程同步
 	-	git remote add origin git@github.com:phoenixtoday/git-usage.git # 增加远程服务器代码库地址
 		如果是克隆的代码库，已经设置，无需另行设置，

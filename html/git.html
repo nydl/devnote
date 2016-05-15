@@ -186,7 +186,9 @@ color.diff=auto
 <li>git add . # 添加所有文件，A → B</li>
 <li>git commit -m &quot;代码提交信息&quot; # 文件提交，B → C</li>
 <li>git commit --amend # 与上次commit合并, *B → C</li>
-<li>git push <remote> <branch> --force # amend后，需强制push</li>
+<li>git push <remote> <branch> --force <h1 id="-git-pull-force-non-fast-forward-merge-force-">远程主机的版本比本地新，推送会报错，要求先git pull合并差异，然后推送,  如果一定要推送，可以使用–force选项，结果导致在远程主机产生一个”非直进式”的合并(non-fast-forward merge)。除非你很确定要这样做，否则应该尽量避免使用–force选项。</h1>
+</li>
+<li>git push origin --tags # git push不会推送标签(tag)，除非使用–tags选项</li>
 </ul>
 </li>
 <li>远程同步<ul>
