@@ -1,0 +1,61 @@
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<link href="css/markdown.css" rel="stylesheet" />
+
+<link href="css/prettify.css" rel="stylesheet" />
+
+<script src="http://apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script src="js/prettify.js"></script>  
+
+<h1 id="vs-code">VS Code</h1>
+<p>最好用的跨平台文本编辑器，推荐使用。</p>
+<h2 id="-">特点</h2>
+<ul>
+<li>跨平台，开源，免费，启动非常快，目录作为项目管理，集成 git版本管理，使用 node 作为外部任务，能打开大文件，并且编辑不卡顿</li>
+<li>是目前发现<strong>最好用的编辑器</strong>，之前使用的 Sublime、Pad ++ 等都不用了！</li>
+<li>同步预览：拆分 md文件，在拆分的文件上点击右上角预览，或者使用 cmd+shift+v 切换到预览视图，即可同步预览。</li>
+<li>tab设置：编辑器似乎能跟踪每个文件的tab设置，如果一个文件开始设置tab自动转空格，用户设置tab改为不转空格，
+新的用户设置对原来编辑过的文件不起作用，非常神奇，不知道是bug还是一个特色功能。
+  需要变更 tab 设置，只能将原文件更名，创建新文件，把内容拷贝过来！</li>
+</ul>
+<h2 id="markdown-html">Markdown 转 html</h2>
+<ol>
+<li>npm install -g marked</li>
+<li>Create tasks.json<br>F1 and type in &#39;Configure Task Runner&#39;, press Enter to select it.
+Select Others.
+tasks.json file in your workspace .vscode folder with the following content:<br>{
+ // See <a href="http://go.microsoft.com/fwlink/?LinkId=733558">http://go.microsoft.com/fwlink/?LinkId=733558</a>
+ // for the documentation about the tasks.json format
+ &quot;version&quot;: &quot;0.1.0&quot;,
+ &quot;command&quot;: &quot;echo&quot;,
+ &quot;isShellCommand&quot;: true,
+ &quot;args&quot;: [&quot;Hello World&quot;],
+ &quot;showOutput&quot;: &quot;always&quot;
+}
+we change the contents as follows:<br>{
+ // See <a href="http://go.microsoft.com/fwlink/?LinkId=733558">http://go.microsoft.com/fwlink/?LinkId=733558</a>
+ // for the documentation about the tasks.json format
+ &quot;version&quot;: &quot;0.1.0&quot;,
+ &quot;command&quot;: &quot;marked&quot;,
+ &quot;isShellCommand&quot;: true,
+ &quot;args&quot;: [&quot;sample.md&quot;, &quot;-o&quot;, &quot;sample.html&quot;],
+ &quot;showOutput&quot;: &quot;always&quot;
+}
+Use ⌃Space to see the available settings.</li>
+<li>Run the Build Task<br>As this is the only task in the file, you can execute it by simply pressing ⇧⌘B (Run Build Task).</li>
+</ol>
+<h2 id="-">第三方插件</h2>
+<ul>
+<li>[<strong>插件网址</strong>：]<a href="https://marketplace.visualstudio.com/VSCode">https://marketplace.visualstudio.com/VSCode</a></li>
+<li><strong>已安装插件</strong>：cmd+p，输入 ext+空格，即可浏览所安装的插件，点击 x 即可卸载</li>
+<li><strong>安装插件</strong>：ext install xxx 安装插件</li>
+<li><strong>更新插件</strong>：ext update 更新插件</li>
+<li><p><strong>推荐插件</strong>：
+  ext install beautify，js、css、html、json 美化，推荐！</p>
+<pre><code>  Run with F1 Beautify
+</code></pre><p>  ext install vscode-eslint
+  ext install JavaScriptSnippets
+  ext install jshint</p>
+</li>
+</ul>

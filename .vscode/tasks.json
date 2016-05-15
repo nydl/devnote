@@ -4,6 +4,6 @@
 	"version": "0.1.0",
 	"command": "marked",
 	"isShellCommand": true,
-	"args": ["koa.md", "-o", "koa.html"],
-	"showOutput": "always"
+	"args": ["koa.md", "-o", "html/koa.html"],
+	"showOutput":"silent"
 }
