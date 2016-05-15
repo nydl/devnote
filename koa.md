@@ -1,10 +1,45 @@
-﻿KOA
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<link href="css/markdown.css" rel="stylesheet" />
+
+<link href="css/prettify.css" rel="stylesheet" />
+
+<script src="http://apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script src="js/prettify.js"></script>  
+
+KOA
 ===
 
 类似express的框架，由 Express 同一作者 koa，致力于成为一个更小、更健壮、更富有表现力的 Web 框架。
 支持async await es7语法，可以免除重复繁琐的回调函数嵌套，并极大地提升常用错误处理效率。
 Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量优雅的函数库，使得编写 Web 应用变得得心应手。
 
+<!-- TOC depthFrom:1 depthTo:6 withLinks:true orderedList:false updateOnSave:true -->
+
+    - [网站](#网站)
+    - [示例代码](#示例代码)
+    - [静态文件服务](#静态文件服务)
+    - [路由](#路由)
+        - [创建路由](#创建路由)
+        - [示例代码](#示例代码)
+    - [jade模板](#jade模板)
+    - [用户逻辑层封装](#用户逻辑层封装)
+        - [级联概念](#级联概念)
+        - [代码示例：](#代码示例)
+        - [示例解析](#示例解析)
+        - [级联调用形象示意图](#级联调用形象示意图)
+    - [代码解析](#代码解析)
+        - [app.listen(...)](#applisten)
+        - [app.callback()](#appcallback)
+        - [app.use(function)](#appusefunction)
+        - [app.keys=](#appkeys)
+    - [中间件](#中间件)
+
+<!-- /TOC -->
+
+## 网站
 **官方网站**: http://koajs.com  
 **GitHub**：https://github.com/koajs/koa
 **中文文档**：http://koajs.cn/  
@@ -302,45 +337,41 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 - 匹配路由参数：`.param(param, middleware) ⇒ Router`
 - 匹配所有操作：`.all([path], middleware, [...]) ⇒ Router`
 - 前置中间件处理
-  ```js
-  语法：.use([path], middleware, [...]) ⇒ Router
-  
-  示例：
-  // 路由处理之前，执行的中间件
-  router.use(session(), authorize());
-  // 符合/user路径时，执行用户授权检查中间件
-  router.use('/user', userAuth());
-  // 符合/user路径时，执行子路由匹配！
-  router.use('/user', userRouter.routes());
-  ```
+	```js
+	语法：.use([path], middleware, [...]) ⇒ Router
+	示例：
+	// 路由处理之前，执行的中间件
+	router.use(session(), authorize());
+	// 符合/user路径时，执行用户授权检查中间件
+	router.use('/user', userAuth());
+	// 符合/user路径时，执行子路由匹配！
+	router.use('/user', userRouter.routes());
+	```
 - 重定向    
-  ```js
-  outer.redirect(source, destination, code) ⇒ Router  
-  router.redirect('/login', 'sign-in');
-  
-  ```
+	```js
+	outer.redirect(source, destination, code) ⇒ Router  
+	router.redirect('/login', 'sign-in');
+	```
 - 多重路由：对一个路径，多个顺连的处理函数
-  ```js
-  router.get(
-    '/users/:id',
-    (ctx, next) => {
-      ctx.user = await User.findOne(this.params.id);
-      await next();
-    },
-    ctx => {
-      console.log(ctx.user);
-      // => { id: 17, name: "Alex" }
-    }
-  );
-  
-  ```
+	```js
+	router.get(
+		'/users/:id',
+		(ctx, next) => {
+			ctx.user = await User.findOne(this.params.id);
+			await next();
+		},
+		ctx => {
+			console.log(ctx.user);
+			// => { id: 17, name: "Alex" }
+		}
+	);  
+	```
 - 路由嵌套：路由处理可以是另一个子路由，注意子路由是基于父路由的！
-  ```js
-  userRt.post('/reg', next => {...}); // responds to "/user/reg"
-  userRt.get('/get', next => {...});  // responds to "/user/get"
-  forums.use('/user', userRt.routes(), posts.allowedMethods());
-  
-  ```
+	```js
+	userRt.post('/reg', next => {...}); // responds to "/user/reg"
+	userRt.get('/get', next => {...});  // responds to "/user/get"
+	forums.use('/user', userRt.routes(), posts.allowedMethods());
+	```
 - ES7 async/await 支持.
 - Named URL parameters.
 - Named routes with URL generation.
@@ -402,6 +433,22 @@ app.use(rt.routes()).use(router.allowedMethods());
   console.log('koa start on port 3003');
   app.listen(3003);
   ```
+
+## 用户逻辑层封装
+
+- 添加用户路由入口，修改 `\router\index.js`
+	```
+	import userRouter from './user';
+	// 用户子路由处理
+	rt.use('/user', userRouter.routes());
+	```
+- 添加用户路由处理，增加 `\router\user.js`
+// 用户页面
+rt.get('/reg', reg);
+// 注册用户，post
+rt.post('/api/reg', user.reg);
+- 实现用户注册页面
+- 实现用户注册接口
 
 运行测试
 --------
@@ -611,7 +658,8 @@ app.on('error', function(err, ctx){
   https://github.com/ucms/ucms-plugin-file-store/blob/master/src/index.js
 - 或者使用koa提供的 koa-convert 对之前的koa中间件进行封装调用
   - 安装 `$ npm install koa-convert`
-  - 使用示例：  
+  - 使用示例：
+  
   ``` js
   const Koa = require('koa') // koa v2.x
   const convert = require('koa-convert')
@@ -635,4 +683,7 @@ app.on('error', function(err, ctx){
       // after
     })
   }
-  ```  
+  
+  ```
+  
+  
