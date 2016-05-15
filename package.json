@@ -1,0 +1,27 @@
+{
+  "name": "devnote",
+  "version": "1.0.0",
+  "description": "dev note",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nydl/devnote.git"
+  },
+  "keywords": [
+    "node.js",
+    "koa"
+  ],
+  "author": "walter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nydl/devnote/issues"
+  },
+  "homepage": "https://github.com/nydl/devnote#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-markdown": "^1.2.0"
+  }
+}

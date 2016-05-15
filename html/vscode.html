@@ -22,10 +22,11 @@
 <h2 id="markdown-html">Markdown 转 html</h2>
 <ol>
 <li>npm install -g marked</li>
-<li>Create tasks.json<br>F1 and type in &#39;Configure Task Runner&#39;, press Enter to select it.
+<li><p>Create tasks.json<br>F1 and type in &#39;Configure Task Runner&#39;, press Enter to select it.
 Select Others.
-tasks.json file in your workspace .vscode folder with the following content:<br>{
- // See <a href="http://go.microsoft.com/fwlink/?LinkId=733558">http://go.microsoft.com/fwlink/?LinkId=733558</a>
+tasks.json :</p>
+<pre><code class="lang-js">{
+ // See http://go.microsoft.com/fwlink/?LinkId=733558
  // for the documentation about the tasks.json format
  &quot;version&quot;: &quot;0.1.0&quot;,
  &quot;command&quot;: &quot;echo&quot;,
@@ -33,7 +34,8 @@ tasks.json file in your workspace .vscode folder with the following content:<br>
  &quot;args&quot;: [&quot;Hello World&quot;],
  &quot;showOutput&quot;: &quot;always&quot;
 }
-we change the contents as follows:<br>{
+</code></pre>
+<p>we change the contents as follows:<br>{
  // See <a href="http://go.microsoft.com/fwlink/?LinkId=733558">http://go.microsoft.com/fwlink/?LinkId=733558</a>
  // for the documentation about the tasks.json format
  &quot;version&quot;: &quot;0.1.0&quot;,
@@ -42,20 +44,77 @@ we change the contents as follows:<br>{
  &quot;args&quot;: [&quot;sample.md&quot;, &quot;-o&quot;, &quot;sample.html&quot;],
  &quot;showOutput&quot;: &quot;always&quot;
 }
-Use ⌃Space to see the available settings.</li>
+Use ⌃Space to see the available settings.</p>
+</li>
 <li>Run the Build Task<br>As this is the only task in the file, you can execute it by simply pressing ⇧⌘B (Run Build Task).</li>
 </ol>
-<h2 id="-">第三方插件</h2>
+<h2 id="markdown-html">Markdown 批量转 html</h2>
+<ol>
+<li>安装任务执行环境<pre><code class="lang-js"> npm i -g gulp-cli
+ npm i gulp -D
+ npm i gulp-markdown -D
+</code></pre>
+</li>
+<li><p>创建 Gulp 任务 gulpfile.js，也就是用js编写的类似 bat、cmd一样的批量处理执行脚本</p>
+<pre><code class="lang-js"> var gulp = require(&#39;gulp&#39;);
+ var markdown = require(&#39;gulp-markdown&#39;);
+
+ // 执行转换任务
+ gulp.task(&#39;markdown&#39;, function() {
+     return gulp.src(&#39;**/*.md&#39;)
+         .pipe(markdown())
+         // 统一转换到 html 目录
+         .pipe(gulp.dest(&#39;html&#39;));
+         // 原目录转换
+         // .pipe(gulp.dest(function(f) {
+         //         return f.base;
+         // }));    
+ });
+
+ // 缺省任务
+ gulp.task(&#39;default&#39;, function() {
+     // 对所有 md 文件进行监视，发现修改自动执行 转换任务！
+     gulp.watch(&#39;**/*.md&#39;, [&#39;markdown&#39;]);
+ });
+</code></pre>
+<p> 运行 gulp markdown，所有md文件被批量转换到html目录！</p>
+</li>
+<li><p>修改 tasks.json 文件，对 md 文件进行监视
+ set a watch on the default Gulp task we just created.</p>
+<pre><code class="lang-js"> {
+ &quot;version&quot;: &quot;0.1.0&quot;,
+ &quot;command&quot;: &quot;gulp&quot;,
+ &quot;isShellCommand&quot;: true,
+ &quot;tasks&quot;: [{
+         &quot;taskName&quot;: &quot;default&quot;,
+         &quot;isBuildCommand&quot;: true,
+         &quot;showOutput&quot;: &quot;always&quot;,
+         &quot;isWatching&quot;: true
+     }]
+ }
+</code></pre>
+</li>
+<li>运行 gulp Build 任务
+ ⇧⌘B (Run Build Task)，md文件修改后，自动转换为 html文件。<br> 并且在状态栏左下角有个同步的圆形图标，点击可完成同步！ </li>
+<li>停止 自动监视任务
+ 重新 ⇧⌘B，会弹出 “终止运行中的任务”，点击终止即可！
+ 或者 点击 F1，输入 &gt;terminate Running Task，回车即可！</li>
+</ol>
+<h2 id="-">插件管理</h2>
 <ul>
 <li>[<strong>插件网址</strong>：]<a href="https://marketplace.visualstudio.com/VSCode">https://marketplace.visualstudio.com/VSCode</a></li>
 <li><strong>已安装插件</strong>：cmd+p，输入 ext+空格，即可浏览所安装的插件，点击 x 即可卸载</li>
 <li><strong>安装插件</strong>：ext install xxx 安装插件</li>
 <li><strong>更新插件</strong>：ext update 更新插件</li>
-<li><p><strong>推荐插件</strong>：
-  ext install beautify，js、css、html、json 美化，推荐！</p>
-<pre><code>  Run with F1 Beautify
-</code></pre><p>  ext install vscode-eslint
-  ext install JavaScriptSnippets
-  ext install jshint</p>
-</li>
+</ul>
+<h2 id="-">推荐插件</h2>
+<ul>
+<li>ext install beautify<br>  js、css、html、json 格式化插件，推荐使用！
+  按F1，在命令行输入 beautify，执行即可将当前文本自动格式化！    </li>
+<li>ext install vscode-eslint
+  代码规范提示</li>
+<li>ext install JavaScriptSnippets
+  js 关键字缩写</li>
+<li>ext install jshint
+  js 输入提示</li>
 </ul>

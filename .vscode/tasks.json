@@ -2,8 +2,13 @@
 	// See https://go.microsoft.com/fwlink/?LinkId=733558
 	// for the documentation about the tasks.json format
 	"version": "0.1.0",
-	"command": "marked",
+	"command": "gulp",
 	"isShellCommand": true,
-	"args": ["koa.md", "-o", "html/koa.html"],
-	"showOutput":"silent"
+	"tasks": [{
+		"taskName": "default",
+		"isBuildCommand": true,
+		"showOutput": "always",
+		"isWatching": true
+	}],
+	"showOutput": "always"
 }
