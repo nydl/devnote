@@ -339,6 +339,7 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 - 前置中间件处理
 	```js
 	语法：.use([path], middleware, [...]) ⇒ Router
+	
 	示例：
 	// 路由处理之前，执行的中间件
 	router.use(session(), authorize());
@@ -346,11 +347,13 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 	router.use('/user', userAuth());
 	// 符合/user路径时，执行子路由匹配！
 	router.use('/user', userRouter.routes());
+	
 	```
 - 重定向    
 	```js
 	outer.redirect(source, destination, code) ⇒ Router  
 	router.redirect('/login', 'sign-in');
+	
 	```
 - 多重路由：对一个路径，多个顺连的处理函数
 	```js
@@ -365,12 +368,14 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 			// => { id: 17, name: "Alex" }
 		}
 	);  
+	
 	```
 - 路由嵌套：路由处理可以是另一个子路由，注意子路由是基于父路由的！
 	```js
 	userRt.post('/reg', next => {...}); // responds to "/user/reg"
 	userRt.get('/get', next => {...});  // responds to "/user/get"
 	forums.use('/user', userRt.routes(), posts.allowedMethods());
+	
 	```
 - ES7 async/await 支持.
 - Named URL parameters.
@@ -441,6 +446,7 @@ app.use(rt.routes()).use(router.allowedMethods());
 	import userRouter from './user';
 	// 用户子路由处理
 	rt.use('/user', userRouter.routes());
+	
 	```
 - 添加用户路由处理，增加 `\router\user.js`
 // 用户页面
