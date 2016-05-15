@@ -195,6 +195,9 @@ color.diff=auto
 <li>git pull # 更新本地仓库至最新改动， D → A</li>
 <li>git fetch # 获取远程仓库更新， D → C</li>
 <li>git push origin master # 推送至master分支, C → D</li>
+<li>git push # 推送本地版本库到云端，需设置确实推送分支
+  git config --global push.default matching # 推送所有匹配分支
+  git config --global push.default simple   # 推送当前分支</li>
 </ul>
 </li>
 <li>查看信息<ul>

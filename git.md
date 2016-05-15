@@ -265,6 +265,9 @@ git 常用指令
 	- git pull # 更新本地仓库至最新改动， D → A
 	- git fetch # 获取远程仓库更新， D → C
 	- git push origin master # 推送至master分支, C → D
+	- git push # 推送本地版本库到云端，需设置确实推送分支
+		git config --global push.default matching # 推送所有匹配分支
+		git config --global push.default simple   # 推送当前分支
 - 查看信息
 	- git log # 查看提交记录日志
 	- git status # 查看修改状态
