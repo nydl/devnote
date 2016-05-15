@@ -1,7 +1,5 @@
 # 诺亚大陆系统开发技术笔记
 
-------
-
 开发一套大型系统社交+电商系统，涉及前端（ios、安卓、pc、微信）、后台、接口、数据库、缓存、负载均衡、集群等方方面面的知识和技能。
 我们将开发中所涉及的技能、知识、思想记录并整理出来，将其中承载的价值分享、传播给更多人。   
 如果你想成为一名全栈或某一方面的编程专家，请跟着我们一起探索、前进。
@@ -65,8 +63,15 @@
     Use ⌃Space to see the available settings.
   3. Run the Build Task  
     As this is the only task in the file, you can execute it by simply pressing ⇧⌘B (Run Build Task).
+- [第三方插件](https://marketplace.visualstudio.com/VSCode)
+  - cmd+p，输入 ext+空格，即可浏览所安装的插件，点击 x 即可卸载
+  - ext install xxx 安装插件
+  - ext update 更新插件
+  - ext install beautify，js、css、html、json 美化，推荐！
+  
+  
 
-----
+---
 <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/cn/">
 <img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/cn/88x31.png" />
 </a></br>本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/cn/">知识共享署名-非商业性使用 3.0 中国大陆许可协议</a>进行许可。 

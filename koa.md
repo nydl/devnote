@@ -596,13 +596,13 @@ app.listen(3000);
 用于启动一个服务的快捷方法，以下范例代码在 3000 端口启动了一个空服务：
 
 ```js
-var koa = require('koa');  
-var app = koa();  
-app.listen(3000);  
+var koa = require('koa');
+var app = koa();
+app.listen(3000);
 
 app.listen 是 http.createServer 的简单包装，它实际上这样运行：
 
-http.createServer(app.callback()).listen(3000);  
+http.createServer(app.callback()).listen(3000);
 ```
 
 如果有需要，你可以在多个端口上启动一个 app，比如同时支持 HTTP 和 HTTPS：
