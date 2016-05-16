@@ -14,6 +14,7 @@
 
 ## 笔记清单
 
+- [js2016 发展趋势必读](https://github.com/nydl/devnote/blob/master/js2016.md)
 - [koa 2.0 node.js的web服务框架](https://github.com/nydl/devnote/blob/master/koa.md)
 - 离线 html 浏览，html目录增加了 html、css、js 文件，脱离github环境可直接打开 html文件浏览
 - [Visual Studio Code使用](https://github.com/nydl/devnote/blob/master/vscode.md)
@@ -30,9 +31,11 @@
 - [简书](http://www.jianshu.com) 目前使用比较多的在线工具，免费需注册！
 - [Cmd Markdown](https://www.zybuluo.com/mdeditor) 有在线及客户端，基本功能免费，界面不错，tab无法设置！
 - [dillinger](http://dillinger.io)国外的在线工具
-- **编写注意**：代码部分，顶格没有问题，如果在列表中，不是顶格，则中间或最后必须有空行，否则不作为代码显示，原因不明！  
-  按语法规范，4个空格或一个tab都昨晚代码处理，实际上，github必须空一行才行
-
+- 源代码显示
+  - 代码部分，顶格没有问题，如果在列表中，不是顶格，则中间或最后必须有空行，否则不作为代码显示！  
+  - 按语法规范，4个空格或一个tab都作为代码处理，实际上，github 要求中间必须空一行才行，一般在最后空行。
+  - 如果设置为tab自动转为2个空格，理论上不作为代码，实际上还是能识别为代码。
+  - vs code默认自动将tab转空格，如果保留tab，缩进的代码在编辑时，不能自动识别为代码
 
 
 ---
