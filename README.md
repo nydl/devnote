@@ -14,7 +14,7 @@
 
 ## 笔记清单
 
-- [js2016 发展趋势必读](https://github.com/nydl/devnote/blob/master/js2016.md)
+- [js 2016 发展趋势必读](https://github.com/nydl/devnote/blob/master/js2016.md)
 - [koa 2.0 node.js的web服务框架](https://github.com/nydl/devnote/blob/master/koa.md)
 - 离线 html 浏览，html目录增加了 html、css、js 文件，脱离github环境可直接打开 html文件浏览
 - [Visual Studio Code使用](https://github.com/nydl/devnote/blob/master/vscode.md)
