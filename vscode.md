@@ -20,8 +20,8 @@ VS Code
 - 是目前发现**最好用的编辑器**，之前使用的 Sublime、Pad ++ 等都不用了！
 - 同步预览：拆分 md文件，在拆分的文件上点击右上角预览，或者使用 cmd+shift+v 切换到预览视图，即可同步预览。
 - tab设置：编辑器似乎能跟踪每个文件的tab设置，如果一个文件开始设置tab自动转空格，用户设置tab改为不转空格，
-  新的用户设置对原来编辑过的文件不起作用，非常神奇，不知道是bug还是一个特色功能。
-	需要变更 tab 设置，只能将原文件更名，创建新文件，把内容拷贝过来！
+  新的设置对原来编辑过的文件不起作用，非常神奇，不知道是bug还是一个特色功能。  
+  需要变更 tab 设置，只能将原文件更名，新建一个，拷贝文本过来！
 
 ## Markdown 转 html
   
@@ -30,7 +30,7 @@ VS Code
 	F1 and type in 'Configure Task Runner', press Enter to select it.
 	Select Others.
 	tasks.json :
-	```js  
+  ```js  
 	{
 		// See http://go.microsoft.com/fwlink/?LinkId=733558
 		// for the documentation about the tasks.json format
@@ -40,7 +40,7 @@ VS Code
 		"args": ["Hello World"],
 		"showOutput": "always"
 	}
-	
+
 	we change the contents as follows:  
 	{
 		// See http://go.microsoft.com/fwlink/?LinkId=733558
@@ -131,5 +131,6 @@ VS Code
 	js 关键字缩写
 - ext install jshint
 	js 输入提示
+- [Markdown-TOC](https://github.com/AlanWalk/Markdown-TOC)
   
   

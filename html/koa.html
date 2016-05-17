@@ -9,33 +9,61 @@
 <script src="js/prettify.js"></script>  
 
 <h1 id="koa">KOA</h1>
+<blockquote>
 <p>类似express的框架，由 Express 同一作者 koa，致力于成为一个更小、更健壮、更富有表现力的 Web 框架。
 支持async await es7语法，可以免除重复繁琐的回调函数嵌套，并极大地提升常用错误处理效率。
 Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量优雅的函数库，使得编写 Web 应用变得得心应手。</p>
-<!-- TOC depthFrom:1 depthTo:6 withLinks:true orderedList:false updateOnSave:true -->
-<pre><code>- [网站](#网站)
-- [示例代码](#示例代码)
-- [静态文件服务](#静态文件服务)
-- [路由](#路由)
-    - [创建路由](#创建路由)
-    - [示例代码](#示例代码)
-- [jade模板](#jade模板)
-- [用户逻辑层封装](#用户逻辑层封装)
-    - [级联概念](#级联概念)
-    - [代码示例：](#代码示例)
-    - [示例解析](#示例解析)
-    - [级联调用形象示意图](#级联调用形象示意图)
-- [代码解析](#代码解析)
-    - [app.listen(...)](#applisten)
-    - [app.callback()](#appcallback)
-    - [app.use(function)](#appusefunction)
-    - [app.keys=](#appkeys)
-- [中间件](#中间件)
-</code></pre><!-- /TOC -->
+</blockquote>
+<h2 id="-">目录</h2>
+<ul>
+<li><a href="#网站">网站</a></li>
+<li><a href="#更多资源">更多资源</a></li>
+<li><a href="#开始使用">开始使用</a></li>
+<li><a href="#项目配置">项目配置</a></li>
+<li><a href="#项目配置文件">项目配置文件</a></li>
+<li><a href="#示例代码">示例代码</a></li>
+<li><a href="#静态文件服务">静态文件服务</a></li>
+<li><a href="#路由">路由</a><ul>
+<li><a href="#创建路由">创建路由</a></li>
+<li><a href="#示例代码">示例代码</a></li>
+</ul>
+</li>
+<li><a href="#jade模板">jade模板</a></li>
+<li><a href="#参数设置">参数设置</a><ul>
+<li><a href="#参数存放">参数存放</a></li>
+<li><a href="#configappjs-参数文件举例">config/app.js 参数文件举例</a></li>
+<li><a href="#配置文件使用示例">配置文件使用示例</a></li>
+</ul>
+</li>
+<li><a href="#用户逻辑层封装">用户逻辑层封装</a></li>
+<li><a href="#mongodb-数据库">MongoDB 数据库</a><ul>
+<li><a href="#model-中存放数据模型">model 中存放数据模型</a></li>
+</ul>
+</li>
+<li><a href="#日志">日志</a></li>
+<li><a href="#部署运行">部署运行</a><ul>
+<li><a href="#无中断重启">无中断重启</a></li>
+<li><a href="#级联概念">级联概念</a></li>
+<li><a href="#代码示例">代码示例：</a></li>
+<li><a href="#示例解析">示例解析</a></li>
+<li><a href="#级联调用形象示意图">级联调用形象示意图</a></li>
+</ul>
+</li>
+<li><a href="#代码解析">代码解析</a><ul>
+<li><a href="#applisten">app.listen(...)</a></li>
+<li><a href="#appcallback">app.callback()</a></li>
+<li><a href="#appusefunction">app.use(function)</a></li>
+<li><a href="#appkeys">app.keys=</a></li>
+</ul>
+</li>
+<li><a href="#中间件">中间件</a></li>
+</ul>
+<p><div id='网站'/></p>
 <h2 id="-">网站</h2>
 <p><strong>官方网站</strong>: <a href="http://koajs.com">http://koajs.com</a><br><strong>GitHub</strong>：<a href="https://github.com/koajs/koa">https://github.com/koajs/koa</a>
 <strong>中文文档</strong>：<a href="http://koajs.cn/">http://koajs.cn/</a><br><strong>KOA实战</strong>:<a href="http://book.apebook.org/minghe/koa-action/index.html">http://book.apebook.org/minghe/koa-action/index.html</a>
 <strong>示例</strong>: <a href="https://github.com/koajs/examples">https://github.com/koajs/examples</a></p>
+<p><div id='更多资源'/></p>
 <h2 id="-">更多资源</h2>
 <ul>
 <li><a href="docs/api/index.md">接口文档</a> documentation</li>
@@ -52,134 +80,47 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 <li><a href="https://github.com/koajs/workshop">Workshop</a> - A workshop to learn the basics of koa, Express&#39; spiritual successor.</li>
 <li><a href="http://knowthen.com/episode-3-koajs-quickstart-guide/">Introduction Screencast</a> - An introduction to<br>installing and getting started with Koa</li>
 </ul>
+<p><div id='开始使用'/></p>
 <h2 id="-">开始使用</h2>
+<ul>
+<li>安装git，<a href="https://github.com/nydl/devnote/blob/master/git.md">git安装请参见 git笔记</a></li>
+<li>克隆 koastart项目
+进入命令行（win+r），切换到 d盘，在d盘创建一个 prj目录，用了存放项目文件，操作示意：<pre><code class="lang-js">d:
+cd /
+mkdir prj 
+cd prj 
+clone https://github.com/nydl/koastart.git koastart
+</code></pre>
+</li>
+<li>安装最新的 node.js </li>
+<li>npm镜像：npm 修改npm服务器为淘宝镜像服务器，加快安装速度  <ul>
+<li>npm config set registry <a href="https://registry.npm.taobao.org">https://registry.npm.taobao.org</a>  </li>
+<li>npm config set disturl <a href="https://npm.taobao.org/dist">https://npm.taobao.org/dist</a></li>
+</ul>
+</li>
+<li>安装第三方库：<code>$ npm i</code></li>
+<li>编译代码：<code>$ npm run build</code></li>
+<li>运行文件：<code>$ node lib/app</code>，提示 koa 服务运行</li>
+<li>通过浏览器访问服务：<a href="http://127.0.0.1:3000">http://127.0.0.1:3000</a> 或 <a href="http://127.0.0.1:3000/koa.html，如果能看到内容，恭喜你，koa">http://127.0.0.1:3000/koa.html，如果能看到内容，恭喜你，koa</a> web服务搭建成功，可以开始你的成长之旅！</li>
+</ul>
+<h2 id="-">项目配置</h2>
 <ul>
 <li>koa 2.0 需要使用 Babel，需要安装 Babel转换器<ul>
 <li>使用了es7的语法，如 async、await</li>
 </ul>
 </li>
-<li>package.json 项目配置参考文件：<pre><code class="lang-js">{
-&quot;name&quot;: &quot;koastart&quot;,
-&quot;version&quot;: &quot;0.1.0&quot;,
-&quot;description&quot;: &quot;&quot;,
-&quot;main&quot;: &quot;index.js&quot;,
-&quot;scripts&quot;: {
-  &quot;lint&quot;: &quot;node_modules/.bin/eslint ./src&quot;,
-  &quot;test&quot;: &quot;node_modules/.bin/eslint ./src&quot;,
-  &quot;build&quot;: &quot;node_modules/.bin/babel src -d lib&quot;,
-  &quot;prepublish&quot;: &quot;node_modules/.bin/babel src -d lib&quot;
-},
-&quot;author&quot;: &quot;&quot;,
-&quot;license&quot;: &quot;MIT&quot;,
-&quot;private&quot;: true,
-&quot;dependencies&quot;: {
-  &quot;filesize-parser&quot;: &quot;^1.3.1&quot;,
-  &quot;fs-promise&quot;: &quot;^0.5.0&quot;,
-  &quot;jsrsasign&quot;: &quot;^5.0.11&quot;,
-  &quot;koa&quot;: &quot;^2.0.0&quot;,
-  &quot;koa-bodyparser&quot;: &quot;^3.0.0&quot;,
-  &quot;koa-router&quot;: &quot;^7.0.0&quot;,
-  &quot;koa-send&quot;: &quot;^3.2.0&quot;,
-  &quot;mysql&quot;: &quot;^2.10.2&quot;,
-  &quot;nodemailer&quot;: &quot;^2.3.0&quot;,
-  &quot;progress&quot;: &quot;^1.1.8&quot;,
-  &quot;qiniu&quot;: &quot;^6.1.9&quot;,
-  &quot;read&quot;: &quot;^1.0.7&quot;,
-  &quot;request&quot;: &quot;^2.69.0&quot;,
-  &quot;sequelize&quot;: &quot;^3.19.3&quot;,
-  &quot;uid-safe&quot;: &quot;^2.0.0&quot;,
-  &quot;umzug&quot;: &quot;^1.9.0&quot;
-},
-&quot;devDependencies&quot;: {
-  &quot;babel-cli&quot;: &quot;^6.8.0&quot;,
-  &quot;babel-eslint&quot;: &quot;^6.0.4&quot;,
-  &quot;babel-plugin-syntax-async-functions&quot;: &quot;^6.5.0&quot;,
-  &quot;babel-plugin-syntax-object-rest-spread&quot;: &quot;^6.5.0&quot;,
-  &quot;babel-plugin-transform-async-to-generator&quot;: &quot;^6.3.13&quot;,
-  &quot;babel-plugin-transform-es2015-arrow-functions&quot;: &quot;^6.5.2&quot;,
-  &quot;babel-plugin-transform-es2015-destructuring&quot;: &quot;^6.3.15&quot;,
-  &quot;babel-plugin-transform-es2015-modules-commonjs&quot;: &quot;^6.3.16&quot;,
-  &quot;babel-plugin-transform-es2015-parameters&quot;: &quot;^6.5.0&quot;,
-  &quot;babel-plugin-transform-es2015-spread&quot;: &quot;^6.5.2&quot;,
-  &quot;babel-plugin-transform-object-rest-spread&quot;: &quot;^6.5.0&quot;,
-  &quot;babel-plugin-transform-strict-mode&quot;: &quot;^6.5.2&quot;,
-  &quot;babel-register&quot;: &quot;^6.3.13&quot;,
-  &quot;eslint&quot;: &quot;^2.9.0&quot;,
-  &quot;eslint-config-airbnb&quot;: &quot;^9.0.1&quot;,
-  &quot;eslint-plugin-import&quot;: &quot;^1.8.0&quot;,
-  &quot;eslint-plugin-jsx-a11y&quot;: &quot;^1.2.0&quot;,
-  &quot;eslint-plugin-react&quot;: &quot;^5.1.1&quot;,
-  &quot;sequelize-cli&quot;: &quot;^2.3.1&quot;
-}
-}
-</code></pre>
-</li>
-<li>.babelrc 转换配置文件<pre><code class="lang-js">{
-&quot;plugins&quot;: [
-  &quot;syntax-object-rest-spread&quot;,
-  &quot;syntax-async-functions&quot;,
-  &quot;transform-es2015-arrow-functions&quot;,
-  &quot;transform-async-to-generator&quot;,
-  &quot;transform-es2015-modules-commonjs&quot;,
-  &quot;transform-es2015-destructuring&quot;,
-  &quot;transform-es2015-spread&quot;,
-  &quot;transform-object-rest-spread&quot;,
-  &quot;transform-es2015-parameters&quot;,
-  &quot;transform-strict-mode&quot;
-]
-}
-</code></pre>
-</li>
-<li><p>.eslintrc 转换配置文件</p>
-<pre><code class="lang-js">{
-&quot;extends&quot;: &quot;eslint-config-airbnb/base&quot;,
-&quot;parser&quot;: &quot;babel-eslint&quot;,
-&quot;env&quot;: {
-  &quot;browser&quot;: true,
-  &quot;node&quot;: true,
-  &quot;mocha&quot;: true
-},
-&quot;rules&quot;: {
-  // Disable for console/alert
-  &quot;no-console&quot;: 0,
-  &quot;no-alert&quot;: 0,
-
-  &quot;indent&quot;: [2, 2, {&quot;SwitchCase&quot;: 1}]
-},
-&quot;plugins&quot;: [
-  &quot;import&quot;
-],
-&quot;settings&quot;: {
-  &quot;import/parser&quot;: &quot;babel-eslint&quot;,
-  &quot;import/resolve&quot;: {
-    &quot;moduleDirectory&quot;: [&quot;node_modules&quot;, &quot;src&quot;]
-  }
-},
-&quot;globals&quot;: {
-  &quot;__DEV__&quot;: true,
-  &quot;__OPTION__&quot;: true
-}
-}
-</code></pre>
-</li>
-<li>npm镜像：npm 修改npm服务器为淘宝镜像服务器，加快安装速度
-npm config set registry <a href="https://registry.npm.taobao.org">https://registry.npm.taobao.org</a>
-npm config set disturl <a href="https://npm.taobao.org/dist">https://npm.taobao.org/dist</a></li>
-<li>安装第三方库： <code>$ npm i</code></li>
-<li>运行示例代码：<ul>
-<li>下载示例并解压到指定路径</li>
-<li>进入该目录，运行 <code>npm install</code> 自动完成相关组件安装</li>
-<li>进入各个示例中，运行 node app 即可运行各种示例</li>
-</ul>
-</li>
-<li>js版本：需将webstorm 中的 js 设置为 JSX Harmoney，最大限度支持新语法</li>
+<li>强烈推荐使用 web storm 编辑项目</li>
+<li>web storm 设置：<ul>
+<li>js 版本：JSX Harmoney，最大限度支持新语法</li>
 <li>ESLint：Java Script 中开启 ESLint,提供代码编写规范检查</li>
 <li>Babel自动转换：使用 js 6后，webstorm会提示 一个 自动转换为 5 的 插件：
-  File watcher &#39;Babel&#39; is available for thie file. Description:&#39;Transpiles ECMAScript 6 code to ECMAScript 5&#39;
+File watcher &#39;Babel&#39; is available for thie file. Description:&#39;Transpiles ECMAScript 6 code to ECMAScript 5&#39;
 这个插件在你修改文件时，会自动将es6、es7语法文件转换为es5或es6的文件。<br>建议不要使用，会影响编码效率，学习、测试可以使用，涉及多个文件引用时，引用文件如果采用了新语法，会报错。
 也可以通过tools手动添加。</li>
-<li>批量转换：<code>npm run build</code>，npm 会在项目的 package.json 文件中寻找 scripts 区域中的命令。<br>其实npm test和npm start是npm run test和npm run start的简写。事实上，你可以使用npm run来运行scripts里的任何条目。<br>使用npm run的方便之处在于，npm会自动把node_modules/.bin加入$PATH，这样你可以直接运行依赖程序和开发依赖程序，不用全局安装了。 只要npm上的包提供命令行接口，你就可以直接使用它们，方便吧。</li>
-<li>webstorm调试：<ul>
+</ul>
+</li>
+<li>js编译：<code>npm run build</code>，npm 会在项目的 package.json 文件中寻找 scripts 区域中的命令。<br>其实npm test和npm start是npm run test和npm run start的简写。事实上，你可以使用npm run来运行scripts里的任何条目。<br>使用npm run的方便之处在于，npm会自动把node_modules/.bin加入$PATH，这样你可以直接运行依赖程序和开发依赖程序，不用全局安装了。 只要npm上的包提供命令行接口，你就可以直接使用它们，方便吧。</li>
+<li>webstorm 调试：<ul>
 <li>添加调试文件时，使用 babel-node 代替 标准 node
 比如 osx 上：
 /Users/way/.nvm/versions/node/v5.10.1/bin/node
@@ -191,6 +132,115 @@ npm config set disturl <a href="https://npm.taobao.org/dist">https://npm.taobao.
 </li>
 <li>如果浏览器提示错误，在浏览器上先连一下调试端口，然后打开web端口，即可触发调试</li>
 </ul>
+<h2 id="-">项目配置文件</h2>
+<ul>
+<li>package.json 项目配置参考文件：<pre><code class="lang-js">{
+  &quot;name&quot;: &quot;koastart&quot;,
+  &quot;version&quot;: &quot;0.1.0&quot;,
+  &quot;description&quot;: &quot;&quot;,
+  &quot;main&quot;: &quot;index.js&quot;,
+  &quot;scripts&quot;: {
+    &quot;lint&quot;: &quot;node_modules/.bin/eslint ./src&quot;,
+    &quot;test&quot;: &quot;node_modules/.bin/eslint ./src&quot;,
+    &quot;build&quot;: &quot;node_modules/.bin/babel src -d lib&quot;,
+    &quot;prepublish&quot;: &quot;node_modules/.bin/babel src -d lib&quot;
+  },
+  &quot;author&quot;: &quot;&quot;,
+  &quot;license&quot;: &quot;MIT&quot;,
+  &quot;private&quot;: true,
+  &quot;dependencies&quot;: {
+    &quot;filesize-parser&quot;: &quot;^1.3.1&quot;,
+    &quot;fs-promise&quot;: &quot;^0.5.0&quot;,
+    &quot;jsrsasign&quot;: &quot;^5.0.11&quot;,
+    &quot;koa&quot;: &quot;^2.0.0&quot;,
+    &quot;koa-bodyparser&quot;: &quot;^3.0.0&quot;,
+    &quot;koa-router&quot;: &quot;^7.0.0&quot;,
+    &quot;koa-send&quot;: &quot;^3.2.0&quot;,
+    &quot;mysql&quot;: &quot;^2.10.2&quot;,
+    &quot;nodemailer&quot;: &quot;^2.3.0&quot;,
+    &quot;progress&quot;: &quot;^1.1.8&quot;,
+    &quot;qiniu&quot;: &quot;^6.1.9&quot;,
+    &quot;read&quot;: &quot;^1.0.7&quot;,
+    &quot;request&quot;: &quot;^2.69.0&quot;,
+    &quot;sequelize&quot;: &quot;^3.19.3&quot;,
+    &quot;uid-safe&quot;: &quot;^2.0.0&quot;,
+    &quot;umzug&quot;: &quot;^1.9.0&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;babel-cli&quot;: &quot;^6.8.0&quot;,
+    &quot;babel-eslint&quot;: &quot;^6.0.4&quot;,
+    &quot;babel-plugin-syntax-async-functions&quot;: &quot;^6.5.0&quot;,
+    &quot;babel-plugin-syntax-object-rest-spread&quot;: &quot;^6.5.0&quot;,
+    &quot;babel-plugin-transform-async-to-generator&quot;: &quot;^6.3.13&quot;,
+    &quot;babel-plugin-transform-es2015-arrow-functions&quot;: &quot;^6.5.2&quot;,
+    &quot;babel-plugin-transform-es2015-destructuring&quot;: &quot;^6.3.15&quot;,
+    &quot;babel-plugin-transform-es2015-modules-commonjs&quot;: &quot;^6.3.16&quot;,
+    &quot;babel-plugin-transform-es2015-parameters&quot;: &quot;^6.5.0&quot;,
+    &quot;babel-plugin-transform-es2015-spread&quot;: &quot;^6.5.2&quot;,
+    &quot;babel-plugin-transform-object-rest-spread&quot;: &quot;^6.5.0&quot;,
+    &quot;babel-plugin-transform-strict-mode&quot;: &quot;^6.5.2&quot;,
+    &quot;babel-register&quot;: &quot;^6.3.13&quot;,
+    &quot;eslint&quot;: &quot;^2.9.0&quot;,
+    &quot;eslint-config-airbnb&quot;: &quot;^9.0.1&quot;,
+    &quot;eslint-plugin-import&quot;: &quot;^1.8.0&quot;,
+    &quot;eslint-plugin-jsx-a11y&quot;: &quot;^1.2.0&quot;,
+    &quot;eslint-plugin-react&quot;: &quot;^5.1.1&quot;,
+    &quot;sequelize-cli&quot;: &quot;^2.3.1&quot;
+  }
+}
+</code></pre>
+</li>
+<li><p>.babelrc 转换配置文件</p>
+<pre><code class="lang-js">{
+  &quot;plugins&quot;: [
+    &quot;syntax-object-rest-spread&quot;,
+    &quot;syntax-async-functions&quot;,
+    &quot;transform-es2015-arrow-functions&quot;,
+    &quot;transform-async-to-generator&quot;,
+    &quot;transform-es2015-modules-commonjs&quot;,
+    &quot;transform-es2015-destructuring&quot;,
+    &quot;transform-es2015-spread&quot;,
+    &quot;transform-object-rest-spread&quot;,
+    &quot;transform-es2015-parameters&quot;,
+    &quot;transform-strict-mode&quot;
+  ]
+}
+</code></pre>
+</li>
+<li><p>.eslintrc 转换配置文件</p>
+<pre><code class="lang-js">{
+  &quot;extends&quot;: &quot;eslint-config-airbnb/base&quot;,
+  &quot;parser&quot;: &quot;babel-eslint&quot;,
+  &quot;env&quot;: {
+    &quot;browser&quot;: true,
+    &quot;node&quot;: true,
+    &quot;mocha&quot;: true
+  },
+  &quot;rules&quot;: {
+    // Disable for console/alert
+    &quot;no-console&quot;: 0,
+    &quot;no-alert&quot;: 0,
+
+    &quot;indent&quot;: [2, 2, {&quot;SwitchCase&quot;: 1}]
+  },
+  &quot;plugins&quot;: [
+    &quot;import&quot;
+  ],
+  &quot;settings&quot;: {
+    &quot;import/parser&quot;: &quot;babel-eslint&quot;,
+    &quot;import/resolve&quot;: {
+      &quot;moduleDirectory&quot;: [&quot;node_modules&quot;, &quot;src&quot;]
+    }
+  },
+  &quot;globals&quot;: {
+    &quot;__DEV__&quot;: true,
+    &quot;__OPTION__&quot;: true
+  }
+}
+</code></pre>
+</li>
+</ul>
+<p><div id='示例代码'/>  </p>
 <h2 id="-">示例代码</h2>
 <ul>
 <li><p>Hello World</p>
@@ -225,6 +275,7 @@ app.listen(3000);
 </code></pre>
 </li>
 </ul>
+<p><div id='静态文件服务'/>  </p>
 <h2 id="-">静态文件服务</h2>
 <ul>
 <li><a href="https://github.com/koajs/send">koa-send</a> tj参与的文件发送基本库
@@ -298,6 +349,7 @@ app.use(staticFile(&#39;./public&#39;));
 </code></pre>
 </li>
 </ul>
+<p><div id='路由'/> </p>
 <h2 id="-">路由</h2>
 <ul>
 <li><a href="https://github.com/alexmingoia/koa-router">koa-router</a> 人气最高的路由中间件</li>
@@ -323,40 +375,40 @@ router
 <li>匹配路由参数：<code>.param(param, middleware) ⇒ Router</code></li>
 <li>匹配所有操作：<code>.all([path], middleware, [...]) ⇒ Router</code></li>
 <li><p>前置中间件处理</p>
-<pre><code class="lang-js">  语法：.use([path], middleware, [...]) ⇒ Router
+<pre><code class="lang-js">语法：.use([path], middleware, [...]) ⇒ Router
 
-  示例：
-  // 路由处理之前，执行的中间件
-  router.use(session(), authorize());
-  // 符合/user路径时，执行用户授权检查中间件
-  router.use(&#39;/user&#39;, userAuth());
-  // 符合/user路径时，执行子路由匹配！
-  router.use(&#39;/user&#39;, userRouter.routes());
+示例：
+// 路由处理之前，执行的中间件
+router.use(session(), authorize());
+// 符合/user路径时，执行用户授权检查中间件
+router.use(&#39;/user&#39;, userAuth());
+// 符合/user路径时，执行子路由匹配！
+router.use(&#39;/user&#39;, userRouter.routes());
 </code></pre>
 </li>
 <li><p>重定向    </p>
-<pre><code class="lang-js">  outer.redirect(source, destination, code) ⇒ Router  
-  router.redirect(&#39;/login&#39;, &#39;sign-in&#39;);
+<pre><code class="lang-js">outer.redirect(source, destination, code) ⇒ Router  
+router.redirect(&#39;/login&#39;, &#39;sign-in&#39;);
 </code></pre>
 </li>
 <li><p>多重路由：对一个路径，多个顺连的处理函数</p>
-<pre><code class="lang-js">  router.get(
-      &#39;/users/:id&#39;,
-      (ctx, next) =&gt; {
-          ctx.user = await User.findOne(this.params.id);
-          await next();
-      },
-      ctx =&gt; {
-          console.log(ctx.user);
-          // =&gt; { id: 17, name: &quot;Alex&quot; }
-      }
-  );
+<pre><code class="lang-js">router.get(
+  &#39;/users/:id&#39;,
+  (ctx, next) =&gt; {
+    ctx.user = await User.findOne(this.params.id);
+    await next();
+  },
+  ctx =&gt; {
+    console.log(ctx.user);
+    // =&gt; { id: 17, name: &quot;Alex&quot; }
+  }
+);
 </code></pre>
 </li>
 <li><p>路由嵌套：路由处理可以是另一个子路由，注意子路由是基于父路由的！</p>
-<pre><code class="lang-js">  userRt.post(&#39;/reg&#39;, next =&gt; {...}); // responds to &quot;/user/reg&quot;
-  userRt.get(&#39;/get&#39;, next =&gt; {...});  // responds to &quot;/user/get&quot;
-  forums.use(&#39;/user&#39;, userRt.routes(), posts.allowedMethods());
+<pre><code class="lang-js">userRt.post(&#39;/reg&#39;, next =&gt; {...}); // responds to &quot;/user/reg&quot;
+userRt.get(&#39;/get&#39;, next =&gt; {...});  // responds to &quot;/user/get&quot;
+forums.use(&#39;/user&#39;, userRt.routes(), posts.allowedMethods());
 </code></pre>
 </li>
 <li>ES7 async/await 支持.</li>
@@ -381,6 +433,7 @@ rt.get(&#39;/&#39;, next =&gt; {...});
 
 app.use(rt.routes()).use(router.allowedMethods());
 </code></pre>
+<p><div id='jade模板'/> </p>
 <h2 id="jade-">jade模板</h2>
 <blockquote>
 <p>jade 已经更名为pug，不是解析最快（毫秒差距无足轻重），但是是最简洁、层次最清晰的模板   </p>
@@ -418,12 +471,76 @@ app.listen(3003);
 </code></pre>
 </li>
 </ul>
+<p><div id='参数存放'/> </p>
+<h2 id="-">参数设置</h2>
+<p>任何程序都需要一些参数设置文件来设置参数，程序运行时，能根据参数工作，这样在环境等变化时，就不需要修改代码，只需修改参数配置即可。  </p>
+<h3 id="-">参数存放</h3>
+<ul>
+<li>参数一般分为两种，一种是存在文件里面，一种是存在数据库里面。  </li>
+<li>存在文件里面，程序启动时加载，运行过程中，文件变化，需重启程序。  <ul>
+<li>文件配置一般统一存放在 专门的 config 目录，统一管理。  </li>
+<li>参数文件可使用 json 或 js文件，json是纯数据，不支持 备注，而 js支持备注，推荐 使用 js 作为参数配置文件</li>
+<li>一般都会有 app.js，作为应用基本配置文件，请注意，这个文件在 config目录下面，不要与 src、lib、bin下面的 app.就是搞混了。</li>
+</ul>
+</li>
+<li>存在数据库中，需要编写程序，实现自动加载、更新<ul>
+<li>由于是自己的代码控制，在参数变化时，设置刷新标记，在不影响业务时，实现参数重新加载。  </li>
+<li>一般会吧常用参数存放在内存中，触发或自动定时更新。</li>
+<li>数据库参数通过远程可修改，而文件参数需登录到服务器才能修改</li>
+<li>建议尽量使用数据库方式存储参数，一些隐秘的、基本的、不经常变化的存在文件里面。</li>
+<li>数据库一般有个参数字典表，可设置为 code 名称，表示 参数代码。</li>
+</ul>
+</li>
+</ul>
+<h3 id="config-app-js-">config/app.js 参数文件举例</h3>
+<pre><code class="lang-js">export default {
+  app: {
+    host: &#39;paiapp.com&#39;, // 域名 或 ip地址，登记时需要返回给登记者
+    port: 3000, // 4502-4534  silverlight
+    debug: true    // 调试环境还是生产环境
+  },
+  theme: {
+    name: &#39;default&#39;
+  },
+  session: {
+    secret: &#39;546gsfqwerqe4tgfghfghdfujtrt&#39;,
+    expires: 1200, // 服务端session有效期，单位秒，空闲超时强制清除，客户端最好5分钟一次登记！超时20分钟不活动，判断为离线，个人聊天时无需精确状态消息，在close中不广播离线状态，在这里广播 离线状态？
+    checktime: 60  // 多长时间 检查一次，单位秒
+  },
+  log: {
+    level: &#39;ALL&#39; /* OFF FATAL ERROR WARN INFO DEBUG TRACE ALL */
+  },
+  // mongodb 数据库
+  db: {
+    conn: &#39;mongodb://localhost/pai&#39;,
+    poolSize: 5
+  },
+  // 缓存服务器
+  redis: { 
+    host: &#39;localhost&#39;,
+    port: 6379, // 6379在是手机按键上MERZ对应的号码，而MERZ取自意大利歌女Alessia Merz的名字
+    password: &#39;&#39;
+  },
+  upfile: {
+    maxSize: 20 // 上传最大文件大小，单位兆数，默认10兆，大约500万条政策数据
+  }
+};
+</code></pre>
+<h3 id="-">配置文件使用示例</h3>
+<pre><code class="lang-js">import cfg from &#39;../../config/app.js&#39;;
+
+// 缺省连接池为 5个
+const conn = mongoose.createConnection(
+  cfg.db.conn,
+  {server: {poolSize: cfg.db.poolSize}}
+);
+</code></pre>
 <h2 id="-">用户逻辑层封装</h2>
 <ul>
 <li><p>添加用户路由入口，修改 <code>\router\index.js</code></p>
-<pre><code>  import userRouter from &#39;./user&#39;;
-  // 用户子路由处理
-  rt.use(&#39;/user&#39;, userRouter.routes());
+<pre><code>import userRouter from &#39;./user&#39;;
+// 用户子路由处理
+rt.use(&#39;/user&#39;, userRouter.routes());
 </code></pre></li>
 <li>添加用户路由处理，增加 <code>\router\user.js</code>
 // 用户页面
@@ -442,8 +559,63 @@ rt.post(&#39;/api/reg&#39;, user.reg);</li>
 <li>安装原生驱动：npm install mongodb --save</li>
 <li>原生驱动是基于字符串方式的文档模型操作，灵活但是容易出错，在密集写入场景可使用。</li>
 <li>mongoose 在原生驱动上做了封装，密集操作时，性能上比原生操作慢一点点，但更健壮，推荐在常规场景使用。</li>
-<li>mongoose详细操作请参见专门的<a href="">mongoose使用说明</a></li>
+<li>mongoose详细操作请参见专门的<a href="https://github.com/nydl/devnote/blob/master/mongoose.md">mongoose 使用说明</a></li>
+<li>mongoDB详细说明请参见专门的<a href="https://github.com/nydl/devnote/blob/master/mongoDB.md">mongoDB 使用说明</a></li>
 </ul>
+<h3 id="model-">model 中存放数据模型</h3>
+<p>model中增加了两个文件：db.js 和 user.js，一个是管理数据库连接，一个是管理用户数据。</p>
+<p>db.js 代码如下：</p>
+<pre><code class="lang-js">
+</code></pre>
+<p><div id='日志'/> </p>
+<h2 id="-">日志</h2>
+<ul>
+<li><a href="https://github.com/winstonjs/winston">winston</a>
+5000多 star，人气最高，功能强大，使用相对稍复杂</li>
+<li><a href="https://github.com/nomiddlename/log4js-node">log4js</a>
+1400多 star，使用简单，一般项目足够使用</li>
+</ul>
+<h2 id="-">部署运行</h2>
+<ul>
+<li><a href="https://github.com/remy/nodemon/">nodemon</a>
+开发时使用，自动监控文件变化，自动重新加载
+c:\program&gt;nodemon d:/js/node/app.js 
+监视的是c:\program这个启动目录，而不是d:/js/node这个目录</li>
+<li><a href="https://github.com/Unitech/pm2">pm2</a>
+生产时使用</li>
+<li><a href="https://github.com/petruisfan/node-supervisor">supervisor</a>
+逐渐被 nodemon 替代</li>
+<li><a href="https://github.com/foreverjs/forever">forever</a> 
+逐渐被 pm2 替换</li>
+</ul>
+<h3 id="-">无中断重启</h3>
+<p>由于node是单线程工作（多线程可实现线程的单独加载），运行时所有代码已经加载到通用内存，修改代码后，需关闭服务，重新加载新代码执行。<br>不仅仅是代码，包括一些配置参数修改了，也需重启服务，所以建议参数不要放入config文件，统一放到数据库中，通过后台刷新标记进行动态加载。</p>
+<p>重启服务可能会影响正在运行的业务，比如一个用户正在支付，重启就打断了支付流程。<br>结合 nginx 反向代理，部署多套 node，可以实现业务无中断重启。<br>该原理就是重启前，与 nginx协商好，停止分配连接，等当前连接处理完毕，即可重启。重启后，再通知 nginx 分发连接，进行处理。
+理论上需要部署多台 node 服务器，如果只有一台，可以在一台上部署两套 node，两个端口，分别使用 一半的 cpu 来处理。</p>
+<p>pm2 等工具实际上多进程运行工具，如果每个进程使用一套内存代码，理论上可以实现类似的功能，就是多个进程在处理完当前请求后，自动加载新的代码，这样一个个进程单独更新，实现无终端重启。</p>
+<p>我们用 express.js 服务来举例，koa 也是类似的！</p>
+<pre><code class="lang-js">app = express.createServer() 
+... 
+app.listen(31337)
+</code></pre>
+<p>对服务的做如下调整（示意代码，真实代码待后续测试成功补上）：</p>
+<pre><code class="lang-js">app = express.createServer() ... 
+gracefullyClosing = false 
+app.use (req, res, next) -&gt; 
+return next() unless gracefullyClosing 
+res.setHeader &quot;Connection&quot;, &quot;close&quot; 
+res.send 502, &quot;Server is in the process of restarting&quot;
+
+httpServer = app.listen(31337) 
+process.on &#39;SIGTERM&#39;, -&gt; gracefullyClosing = true
+</code></pre>
+<p>nginx 反向代理服务设置如下（示意代码）：</p>
+<pre><code class="lang-js">upstream silly_face_society_upstream {
+  server 127.0.0.1:61337;
+  server 127.0.0.1:61338;
+  keepalive 64;
+}
+</code></pre>
 <h2 id="-">运行测试</h2>
 <p><code>$ make test</code></p>
 <h2 id="-application-">应用（Application）</h2>
