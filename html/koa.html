@@ -83,24 +83,29 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 <p><div id='开始使用'/></p>
 <h2 id="-">开始使用</h2>
 <ul>
-<li>安装git，<a href="https://github.com/nydl/devnote/blob/master/git.md">git安装请参见 git笔记</a></li>
+<li>安装git，<a href="https://github.com/nydl/devnote/blob/master/git.md">git安装请参见 git笔记</a>
+一般安默认选项提示安装，最后选择路径时，选择最后一个。<br>安装完毕 命令行中 输入 git --version 可以看到 安装的 版本，如果看不到，说明安装有问题！<br>如果已安装，无需重复安装。</li>
 <li>克隆 koastart项目
-进入命令行（win+r），切换到 d盘，在d盘创建一个 prj目录，用了存放项目文件，操作示意：<pre><code class="lang-js">d:
-cd /
-mkdir prj 
-cd prj 
+进入命令行（windows系统win+r键），切换到 d 盘，在d盘创建一个 prj 目录，用了存放项目文件，操作示意：  <pre><code class="lang-js">d:  
+cd /  
+mkdir prj   
+cd prj   
+// 将项目克隆到 d盘 prj目录下的 koastart 路径！
 clone https://github.com/nydl/koastart.git koastart
 </code></pre>
 </li>
-<li>安装最新的 node.js </li>
-<li>npm镜像：npm 修改npm服务器为淘宝镜像服务器，加快安装速度  <ul>
+<li>安装最新的 node.js，如果已经安装，跳过！
+测试：在命令行下面 输入 <code>node -v</code>，如果能看到node的版本，说明安装正确。<br>node 版本更新非常快，2015年5月18日的最新版本是 6.10，尽量使用最新的稳定版本。</li>
+<li>npm镜像：npm 修改npm服务器为淘宝镜像服务器，加快安装速度，这个只需执行一次，之前执行过了，跳过！    <ul>
 <li>npm config set registry <a href="https://registry.npm.taobao.org">https://registry.npm.taobao.org</a>  </li>
 <li>npm config set disturl <a href="https://npm.taobao.org/dist">https://npm.taobao.org/dist</a></li>
 </ul>
 </li>
-<li>安装第三方库：<code>$ npm i</code></li>
-<li>编译代码：<code>$ npm run build</code></li>
-<li>运行文件：<code>$ node lib/app</code>，提示 koa 服务运行</li>
+<li>安装第三方库：<code>npm i</code>，注意，一定要在 koastart 这个路径执行！！！</li>
+<li>编译代码：<code>npm run build</code>，注意，一定要在 koastart这个路径执行！！！
+该命令生成 在 lib 目录下生成可执行代码！</li>
+<li>运行文件：<code>node lib/app</code>，提示 koa 服务运行，服务端口3000，说明运行成功！
+注意，一定要在 koastart 这个路径执行！！！</li>
 <li>通过浏览器访问服务：<a href="http://127.0.0.1:3000">http://127.0.0.1:3000</a> 或 <a href="http://127.0.0.1:3000/koa.html，如果能看到内容，恭喜你，koa">http://127.0.0.1:3000/koa.html，如果能看到内容，恭喜你，koa</a> web服务搭建成功，可以开始你的成长之旅！</li>
 </ul>
 <h2 id="-">项目配置</h2>
@@ -478,9 +483,9 @@ export default rt;
 <li><a href="https://github.com/pugjs/pug">pug</a> jade 更名为 pug</li>
 <li><a href="https://github.com/chrisyip/koa-pug">koa-pug</a> pug koa的封装</li>
 <li><a href="http://jade-lang.com">jade官网</a></li>
-<li><a href="https://github.com/donpark/html2jade">html2jade</a> 转换库</li>
-<li><a href="http://html2jade.org">html2jade web</a> 在线转换</li>
-<li><a href="http://jumplink.github.io/jade2html2jade/">jade2html2jade</a> 双向转换</li>
+<li><a href="https://github.com/donpark/html2jade">html2jade 转换代码库，用于程序内部使用</a></li>
+<li><a href="http://html2jade.org">html2jade 网页在线转换（推荐）</a></li>
+<li><a href="http://jumplink.github.io/jade2html2jade/">jade2html2jade双向转换（中文会自动转码）</a> </li>
 <li><p>示例代码：</p>
 <pre><code class="lang-js">import Koa from &#39;koa&#39;;
 import Pug from &#39;koa-pug&#39;;
