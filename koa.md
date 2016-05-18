@@ -571,14 +571,182 @@ rt.post('/api/reg', user.reg);
 - mongoose详细操作请参见专门的[mongoose 使用说明](https://github.com/nydl/devnote/blob/master/mongoose.md)
 - mongoDB详细说明请参见专门的[mongoDB 使用说明](https://github.com/nydl/devnote/blob/master/mongoDB.md)
 
-### model 中存放数据模型
+### 数据模型定义
 
 model中增加了两个文件：db.js 和 user.js，一个是管理数据库连接，一个是管理用户数据。
 
-db.js 代码如下：
+db.js 封装了数据库连接的创建与获取，代码如下：
 ```js
+const mongoose = require('mongoose');
+import cfg from '../../config/app.js';
+
+// 缺省连接池为 5个
+const conn = mongoose.createConnection(
+  cfg.db.conn,
+  {server: {poolSize: cfg.db.poolSize}}
+);
+
+conn.on('error', err => console.log(err));
+
+export default conn;
 
 ```
+
+user.js 定义了数据库中 users表的字段，注意，mongodb里面存储的表名会自动加“s”，比如 user，数据库里面就是 users。
+```js
+ const mongoose = require('mongoose');
+const schema = mongoose.Schema;
+const ObjectId = schema.ObjectId;
+
+/**
+ * User 模型定义
+ * name: { type: String, index: true }
+ */
+const userSchema = schema({
+  // pai号，目前暂定为 8 位
+  pid: { type: String, required: true, unique: true }, // pai号，必须有值，必须唯一，重复无法插入
+  mobile: {type: String, required: true, unique: true}, // 手机号，企业、群组没有手机，可设置为固定电话，或者创办人手机前加 G，避免手机重复
+  email: {type: String, sparse: true, unique: true},  // 邮箱，稀疏索引，支持多个无值都能插入，有值必须唯一，不能填空，不能null
+
+  unitId: Number,   // 单位 Id，自增长索引，可选
+  unitOid: ObjectId, // 单位ObjectId
+  unitPid: String,  // 单位 pid
+
+  rid: {type: String},     // 第三方系统id号，如 马蜂窝的 uid
+  from: {type: String},    // 用户来源，比如 mfw 表示马蜂窝
+
+  name: {type: String, index: true}, // 真实姓名，用于朋友之间显示的名称
+  alias: String,    // 别名，类似微信的备注名称，可修改好友的名称为别名
+  nick: String,     // 昵称，用于陌生人显示的名称
+  mark: String,     // 个性签名，微博、QQ、微信在名字后面显示 sign api接口的 sign 冲突
+  sex: String,      // 性别，男、女，企业、群组无
+  password: String, // md5 编码
+
+  // 类别 0：待定，作为普通个人用户处理 1：普通个人 2：企业用户 3：群组，群组依附于会员存在 4：公众，包括 个人、媒体、企业等需社会化营销的用户
+  type: Number,     // 普通、企业 的分享，是否可向公众 转发、关注，从而产生粉丝，类似轻微博，粉丝只能看到用户通讯录之外的粉丝和关注，对通讯录进行保护
+  verify: Boolean,  // 实名认证、验证，坐过飞机的，自动通过认证
+  rating: Number,   // 等级  星级  可建立梦幻的、值得骄傲的，代表身份的等级制，包括 分享数量、粉丝数量、转发数量等
+  tag: [],          // 标签，如 明星,记者,机票出票
+
+  imei: String,     // 手机设备串号，可用于绑定
+  ip: String,       // 当前计算机IP地址，一般是变化的
+  pcid: String,     // 计算机设备号，如 cpuid，硬盘id，网卡mac地址等用于标识当前计算机设备，用于绑定登录
+
+  icon: String,     // 用户图标
+  url: String,      // 用户工作网址
+  host: String,     // 登记、归属主机
+  unitNo: String,   // 邀请码，单位号，用于识别所属主机及单位，用于所动该用户单位
+  status: Number,   // 用户状态 0：新用户待定 1：确认 2：复核 3：删除 4：过期
+
+  // pai状态 0：未登记（未登录） 离线 1：登记 上线（一般用于登录状态判断） 2:在线（普通空闲状态） 3：忙碌 4：免打扰 5：隐身 6：离开
+  // 离线后第一次登录，状态填1，成功登录后，根据上次状态判断，如上次为隐身，则进入隐身，否则 进入 2 在线状态，这样方便统计用户登录情况
+  // 状态说明，如 打字中，就餐等。。。
+  // 工作状态 0:缺席（未上岗） 1：上岗（开始上班，类似登录） 2:就绪（可分派业务） 3:忙碌（电话会话） 4:暂停（不分派业务） 5：外呼 6：离席
+  // 工作状态说明，如 离席 会议、就餐等。。。state: {type: Array, default: [0, '', 0, '']},
+
+  friend: [],      // 好友，安装了pai
+  contact: [],      // 联系人，一个人一般都有100-1000的联系人，这些都是需要转化pai用户的目标
+
+  group: [],       // 加入的群组
+  member: [],       // 群组成员，对群组用户有效
+
+  // 订阅别人，关注别人，用于主动获取订阅者、关注者状态
+  sub: {
+    sta: [],       // 状态订阅者，有时只需要状态
+    all: [],       // 所有关注，微博的 关注
+    msg: [],       // 消息分享订阅者
+    pic: []       // 相册订阅者
+  },
+  // 被别人订阅，被关注
+  subed: {
+    sta: [],       // 状态订阅者
+    all: [],       // 所有订阅者，微博的粉丝
+    msg: [],       // 分享订阅者
+    pic: []       // 相册订阅者
+  },
+
+  desc: String,     // 个人简介
+  notes: String,    // 备注
+  remark: String,   // 内部备注，内部可见
+  sellId: ObjectId, // 推荐者、销售员UserId
+  sellPid: String,   // 销售员pid
+  seller: String,   // 销售员名称
+
+  serviceId: ObjectId,  // 客服Id
+  servicePid: String,  // 客服名称
+  servicer: String,  // 客服名称
+
+  adminId: ObjectId, // 管理人id
+  adminPid: String,
+  admin: String,    // 管理人名称，公众、群组用户 需设置管理员，方便联系
+
+  addUserId: ObjectId, // 创建用户, ObjectId 唯一，不可被修改！
+  addPid: String, // 创建用户
+  addUser: String, // 创建用户
+  addTime: {type: Date, default: Date.now}, // 创建时间
+
+  upUserId: ObjectId, // 更新用户
+  upPid: String, // 更新用户
+  upUser: String, // 更新用户
+  upTime: Date  // 更新时间
+});
+
+// 通过 require db.conn 来返回指定的数据库 User 模型
+export default function userM(conn) {
+  // 定义 model
+  mongoose.model('user', userSchema);
+  // 获取 model
+  return (conn || mongoose).model('user');
+}
+
+```
+
+## 写入数据
+
+我们来写个测试代码，向 数据库中的 users表 插入一条记录：
+
+```js
+/**
+ * Data generation
+ */
+import conn from './db';
+function add(pid) {
+  const UserM = userM(conn);
+
+  UserM.create({
+    pid: pid,
+    name: 'test',
+    showName: 'test',
+    Sex: '男',
+    mobile: '13900000001',
+    unitNo: '0086.11112222',
+    status: 1,
+    upTime: new Date('2016/05/16 23:00:00'),
+  }, err => {
+    if (err) {
+      console.error(err.message);
+    } else {
+      console.log('create data!');
+    }
+  });
+}
+
+/**
+ * Test
+ */
+add('88880003');
+```
+
+## 查看写入的数据
+
+- 启动 mongodb 数据库服务，如何启动，请参见 mongoDB文档
+- 打开命令行，使用 mongo 来查看数据，执行指令如下：
+  ```js
+  mongo // mongodb 客户端工具
+  use pai // 切换数据库
+  db.users.find() // 列出所有users表记录
+  db.users.find().count() // users表记录数量
+  ``` 
 
 <div id='日志'/> 
 ## 日志
