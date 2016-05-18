@@ -425,15 +425,57 @@ new Router([opts])
 
 ### 示例代码
 
-``` js
-import Koa from 'koa'; // koa web 服务框架
+app.js 中加载路由中间件
+```js
+// 加载路由中间件,处理路由匹配,无法匹配的,回到静态文件处理,静态文件找不到的,返回不存在错误!
+app.use(router.routes());
+```
+
+route 目录下面增加 index.js文件：
+```js
 import Router from 'koa-router';
 
 const rt = new Router();
-rt.get('/', next => {...});
 
-app.use(rt.routes()).use(router.allowedMethods());
+// 首页
+rt.get('/', ctx => {
+  ctx.render( 'h1 Hello, #{name}！', { name: 'Route!' }, { fromString: true }, false);
+});
+
+export default rt;
 ```
+
+访问 http://localhost:3000/ 就能看到 Hello Route！
+
+### 增加子路由
+
+在大型系统中，一般会将路由分解到不同的文件中，而不是集中写在一个总路由中。
+
+修改  route/index.js
+``` js
+import userRouter from './user';
+
+// 用户子路由处理
+rt.use('/user', userRouter.routes());
+```
+
+增加 route/user.js
+``` js
+import Router from 'koa-router';
+const log = require('log4js').getLogger('route/user');
+
+const rt = new Router();
+
+// 返回用户注册页面
+rt.get('/reg', ctx => {
+  log.warn('enter user/reg page.');
+  ctx.render('h1 Hello#{name}!', { name: 'user reg！' }, { fromString: true }, false);
+});
+
+export default rt;
+```
+
+访问 http://localhost:3000/user/reg 就能看到 Hello user reg！
 
 <div id='jade模板'/> 
 ## jade模板
@@ -542,23 +584,6 @@ const conn = mongoose.createConnection(
 
 ```
 
-## 用户逻辑层封装
-
-- 添加用户路由入口，修改 `\router\index.js`
-  ```
-  import userRouter from './user';
-  // 用户子路由处理
-  rt.use('/user', userRouter.routes());
-
-  ```
-- 添加用户路由处理，增加 `\router\user.js`
-// 用户页面
-rt.get('/reg', reg);
-// 注册用户，post
-rt.post('/api/reg', user.reg);
-- 实现用户注册页面
-- 实现用户注册接口
-
 ## MongoDB 数据库
 
 >Mongoose 是 MongoDB数据库node.js下的ODM(Object Document Mapper，对象文档映射)。    
@@ -592,7 +617,7 @@ export default conn;
 
 ```
 
-user.js 定义了数据库中 users表的字段，注意，mongodb里面存储的表名会自动加“s”，比如 user，数据库里面就是 users。
+user.js 定义了数据库中 users表（mongodb 称之为文档，不叫表，我们习惯还是叫表）的字段，注意，mongodb里面存储的表名会自动加“s”，比如 user，数据库里面就是 users。
 ```js
  const mongoose = require('mongoose');
 const schema = mongoose.Schema;
@@ -701,7 +726,7 @@ export default function userM(conn) {
 
 ```
 
-## 写入数据
+### 写入数据
 
 我们来写个测试代码，向 数据库中的 users表 插入一条记录：
 
@@ -737,7 +762,7 @@ function add(pid) {
 add('88880003');
 ```
 
-## 查看写入的数据
+### 查看写入的数据
 
 - 启动 mongodb 数据库服务，如何启动，请参见 mongoDB文档
 - 打开命令行，使用 mongo 来查看数据，执行指令如下：
@@ -747,6 +772,30 @@ add('88880003');
   db.users.find() // 列出所有users表记录
   db.users.find().count() // users表记录数量
   ``` 
+
+## 用户逻辑封装
+
+用户数据库表（mongodb 称之为文档，不叫表，我们习惯还是叫表）定义完毕，并且通过 mongoose 生成了 对象模型 model，接下来我们需要封装一个用户类，将所有用户操作数据库以及用户相关逻辑存放在这个用户类中，方便统一管理。
+
+为了易懂，这个文件还是取名为 user.js，目录为 logic，注意，user.js 已经出现了3次，分别在 model、route、logic，分别代表 数据模型、业务逻辑、路由交互。
+
+### 使用 babel 支持 类静态属性
+ 
+类封装，需要用到 类的静态属性、静态方法等，静态方法在 es5/6中已经得到支持，静态属性还没有，需要安装 babel 插件！
+
+安装：`npm i -D babel-plugin-syntax-class-properties`
+启用：在 .babelrc中的 "plugins" 增加
+"syntax-class-properties",
+
+
+
+### 增加子路由
+
+// 注册用户，post
+rt.post('/api/reg', user.reg);
+- 实现用户注册接口
+
+
 
 <div id='日志'/> 
 ## 日志

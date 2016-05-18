@@ -425,14 +425,46 @@ forums.use(&#39;/user&#39;, userRt.routes(), posts.allowedMethods());
 | [opts] | <code>Object</code> |  |
 | [opts.prefix] | <code>String</code> | prefix router paths |</p>
 <h3 id="-">示例代码</h3>
-<pre><code class="lang-js">import Koa from &#39;koa&#39;; // koa web 服务框架
-import Router from &#39;koa-router&#39;;
+<p>app.js 中加载路由中间件</p>
+<pre><code class="lang-js">// 加载路由中间件,处理路由匹配,无法匹配的,回到静态文件处理,静态文件找不到的,返回不存在错误!
+app.use(router.routes());
+</code></pre>
+<p>route 目录下面增加 index.js文件：</p>
+<pre><code class="lang-js">import Router from &#39;koa-router&#39;;
 
 const rt = new Router();
-rt.get(&#39;/&#39;, next =&gt; {...});
 
-app.use(rt.routes()).use(router.allowedMethods());
+// 首页
+rt.get(&#39;/&#39;, ctx =&gt; {
+  ctx.render( &#39;h1 Hello, #{name}！&#39;, { name: &#39;Route!&#39; }, { fromString: true }, false);
+});
+
+export default rt;
 </code></pre>
+<p>访问 <a href="http://localhost:3000/">http://localhost:3000/</a> 就能看到 Hello Route！</p>
+<h3 id="-">增加子路由</h3>
+<p>在大型系统中，一般会将路由分解到不同的文件中，而不是集中写在一个总路由中。</p>
+<p>修改  route/index.js</p>
+<pre><code class="lang-js">import userRouter from &#39;./user&#39;;
+
+// 用户子路由处理
+rt.use(&#39;/user&#39;, userRouter.routes());
+</code></pre>
+<p>增加 route/user.js</p>
+<pre><code class="lang-js">import Router from &#39;koa-router&#39;;
+const log = require(&#39;log4js&#39;).getLogger(&#39;route/user&#39;);
+
+const rt = new Router();
+
+// 返回用户注册页面
+rt.get(&#39;/reg&#39;, ctx =&gt; {
+  log.warn(&#39;enter user/reg page.&#39;);
+  ctx.render(&#39;h1 Hello#{name}!&#39;, { name: &#39;user reg！&#39; }, { fromString: true }, false);
+});
+
+export default rt;
+</code></pre>
+<p>访问 <a href="http://localhost:3000/user/reg">http://localhost:3000/user/reg</a> 就能看到 Hello user reg！</p>
 <p><div id='jade模板'/> </p>
 <h2 id="jade-">jade模板</h2>
 <blockquote>
@@ -535,21 +567,6 @@ const conn = mongoose.createConnection(
   {server: {poolSize: cfg.db.poolSize}}
 );
 </code></pre>
-<h2 id="-">用户逻辑层封装</h2>
-<ul>
-<li><p>添加用户路由入口，修改 <code>\router\index.js</code></p>
-<pre><code>import userRouter from &#39;./user&#39;;
-// 用户子路由处理
-rt.use(&#39;/user&#39;, userRouter.routes());
-</code></pre></li>
-<li>添加用户路由处理，增加 <code>\router\user.js</code>
-// 用户页面
-rt.get(&#39;/reg&#39;, reg);
-// 注册用户，post
-rt.post(&#39;/api/reg&#39;, user.reg);</li>
-<li>实现用户注册页面</li>
-<li>实现用户注册接口</li>
-</ul>
 <h2 id="mongodb-">MongoDB 数据库</h2>
 <blockquote>
 <p>Mongoose 是 MongoDB数据库node.js下的ODM(Object Document Mapper，对象文档映射)。<br>以对象方式，提供数据校验、关联、连接池等各种更高级功能。</p>
@@ -578,7 +595,7 @@ conn.on(&#39;error&#39;, err =&gt; console.log(err));
 
 export default conn;
 </code></pre>
-<p>user.js 定义了数据库中 users表的字段，注意，mongodb里面存储的表名会自动加“s”，比如 user，数据库里面就是 users。</p>
+<p>user.js 定义了数据库中 users表（mongodb 称之为文档，不叫表，我们习惯还是叫表）的字段，注意，mongodb里面存储的表名会自动加“s”，比如 user，数据库里面就是 users。</p>
 <pre><code class="lang-js"> const mongoose = require(&#39;mongoose&#39;);
 const schema = mongoose.Schema;
 const ObjectId = schema.ObjectId;
@@ -684,7 +701,7 @@ export default function userM(conn) {
   return (conn || mongoose).model(&#39;user&#39;);
 }
 </code></pre>
-<h2 id="-">写入数据</h2>
+<h3 id="-">写入数据</h3>
 <p>我们来写个测试代码，向 数据库中的 users表 插入一条记录：</p>
 <pre><code class="lang-js">/**
  * Data generation
@@ -716,7 +733,7 @@ function add(pid) {
  */
 add(&#39;88880003&#39;);
 </code></pre>
-<h2 id="-">查看写入的数据</h2>
+<h3 id="-">查看写入的数据</h3>
 <ul>
 <li>启动 mongodb 数据库服务，如何启动，请参见 mongoDB文档</li>
 <li>打开命令行，使用 mongo 来查看数据，执行指令如下：<pre><code class="lang-js">mongo // mongodb 客户端工具
@@ -725,6 +742,20 @@ db.users.find() // 列出所有users表记录
 db.users.find().count() // users表记录数量
 </code></pre>
 </li>
+</ul>
+<h2 id="-">用户逻辑封装</h2>
+<p>用户数据库表（mongodb 称之为文档，不叫表，我们习惯还是叫表）定义完毕，并且通过 mongoose 生成了 对象模型 model，接下来我们需要封装一个用户类，将所有用户操作数据库以及用户相关逻辑存放在这个用户类中，方便统一管理。</p>
+<p>为了易懂，这个文件还是取名为 user.js，目录为 logic，注意，user.js 已经出现了3次，分别在 model、route、logic，分别代表 数据模型、业务逻辑、路由交互。</p>
+<h3 id="-babel-">使用 babel 支持 类静态属性</h3>
+<p>类封装，需要用到 类的静态属性、静态方法等，静态方法在 es5/6中已经得到支持，静态属性还没有，需要安装 babel 插件！</p>
+<p>安装：<code>npm i -D babel-plugin-syntax-class-properties</code>
+启用：在 .babelrc中的 &quot;plugins&quot; 增加
+&quot;syntax-class-properties&quot;,</p>
+<h3 id="-">增加子路由</h3>
+<p>// 注册用户，post
+rt.post(&#39;/api/reg&#39;, user.reg);</p>
+<ul>
+<li>实现用户注册接口</li>
 </ul>
 <p><div id='日志'/> </p>
 <h2 id="-">日志</h2>
