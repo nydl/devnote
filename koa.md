@@ -61,30 +61,31 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 <div id='更多资源'/>
 ## 更多资源
 
--	[接口文档](docs/api/index.md) documentation
--	[Badgeboard](https://koajs.github.io/badgeboard) and list of official modules
--	[示例](https://github.com/facebook/react-native/tree/master/Examples)
--	[中间件](https://github.com/koajs/koa/wiki) list
+-	[接口文档](https://github.com/koajs/koa/tree/master/docs/api/index.md)
+-	[官方模块列表](https://koajs.github.io/badgeboard)
+-	[中间件列表](https://github.com/koajs/koa/wiki)
 -	[Wiki](https://github.com/koajs/koa/wiki)
--	[G+ Community](https://plus.google.com/communities/101845768320796750641)
 -	[Reddit Community](http://reddit.com/r/koajs)
--	[Mailing list](https://groups.google.com/forum/#!forum/koajs)
--	[使用指南](docs/guide.md)
--	[FAQ](docs/faq.md)
--	[Kick-Off-Koa](https://github.com/koajs/kick-off-koa) - An intro to koa via a set of self-guided workshops.
--	[Workshop](https://github.com/koajs/workshop) - A workshop to learn the basics of koa, Express' spiritual successor.
--	[Introduction Screencast](http://knowthen.com/episode-3-koajs-quickstart-guide/) - An introduction to   
-  installing and getting started with Koa
+-	[邮件列表](https://groups.google.com/forum/#!forum/koajs)
+-	[使用指南](https://github.com/koajs/koa/tree/master/docs/guide.md)
+-	[FAQ](https://github.com/koajs/koa/tree/master/docs/faq.md)
+-	[Kick-Off-Koa](https://github.com/koajs/kick-off-koa) 
+  An intro to koa via a set of self-guided workshops.
+-	[Workshop](https://github.com/koajs/workshop) 
+  A workshop to learn the basics of koa, Express' spiritual successor.
+-	[Introduction Screencast](http://knowthen.com/episode-3-koajs-quickstart-guide/)
+   An introduction to installing and getting started with Koa
 
 <div id='开始使用'/>
 ## 开始使用
 
 - 安装git，[git安装请参见 git笔记](https://github.com/nydl/devnote/blob/master/git.md)
   一般安默认选项提示安装，最后选择路径时，选择最后一个。  
-  安装完毕 命令行中 输入 git --version 可以看到 安装的 版本，如果看不到，说明安装有问题！  
+  安装完毕 命令行中 输入 `git --version` 可以看到 安装的 版本，如果看不到，说明安装有问题！  
   如果已安装，无需重复安装。
 - 克隆 koastart项目
-  进入命令行（windows系统win+r键），切换到 d 盘，在d盘创建一个 prj 目录，用了存放项目文件，操作示意：  
+  进入命令行（windows系统win+r键），切换到 d 盘，在d盘创建一个 prj 目录，用了存放项目文件，操作示意：
+    
   ```js
   d:  
   cd /  
@@ -92,6 +93,7 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
   cd prj   
   // 将项目克隆到 d盘 prj目录下的 koastart 路径！
   clone https://github.com/nydl/koastart.git koastart
+  
   ```
 - 安装最新的 node.js，如果已经安装，跳过！
   测试：在命令行下面 输入 `node -v`，如果能看到node的版本，说明安装正确。  
@@ -104,7 +106,10 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
   该命令生成 在 lib 目录下生成可执行代码！
 - 运行文件：`node lib/app`，提示 koa 服务运行，服务端口3000，说明运行成功！
   注意，一定要在 koastart 这个路径执行！！！
-- 通过浏览器访问服务：http://127.0.0.1:3000 或 http://127.0.0.1:3000/koa.html，如果能看到内容，恭喜你，koa web服务搭建成功，可以开始你的成长之旅！
+- 通过浏览器访问服务：http://127.0.0.1:3000 或 http://127.0.0.1:3000/koa.html，  
+  如果能看到内容，恭喜你，koa web服务搭建成功，可以开始你的成长之旅！
+- 通过 `ipconfig` 指令查看本机ip地址，手机与计算机在同一网络时，通过手机也可以浏览你的网站
+  相当于将你的计算机作为服务器，在开发、调试手机、微信页面时，非常方便，不用专门的服务器。
 
 ## 项目配置
 
@@ -133,6 +138,8 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 - 如果浏览器提示错误，在浏览器上先连一下调试端口，然后打开web端口，即可触发调试
   
 ## 项目配置文件
+
+>所有项目配置文件已经在 clone时自动下载到你的计算机，无需另外设置，列在这里，有兴趣的同学可以看看。
 
 - package.json 项目配置参考文件：
   ```js
@@ -272,11 +279,168 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 
   // response
   app.use(ctx =>{
-    ctx.body = 'Hello World';
+    ctx.body = 'Hello World！';
   });
 
   app.listen(3000);
   ```
+  
+<div id='日志'/> 
+## 日志
+
+>系统内置的 console.log、console.warn、console.error在简单程序时，可以输出控制台，但是在大型系统设计时，console就不够用，需要更强大的日志功能，比如常用的安日期存储日志、分离错误日志、专用日志服务器、可配置的日志级别，在调试时输出所有日志，投产后只输出错误日志等。
+
+常用日志目前有两种，使用的人都非常多：
+
+- [winston](https://github.com/winstonjs/winston)
+  5000多 star，人气最高，功能强大，使用相对稍复杂
+- [log4js](https://github.com/nomiddlename/log4js-node)
+  1400多 star，使用简单，一般项目足够使用。  
+  安装：`npm install log4js -S`
+- [log4js各种示例](https://github.com/nomiddlename/log4js-node/tree/master/examples)
+- [log4js完整示例](https://github.com/nomiddlename/log4js-example)
+
+### log4js 功能
+
+- 彩色控制台输出 stdout or stderr
+- 替代了 console.log functions (optional)
+- 基于大小的文件滚动输出
+- 邮件输出
+- GELF 输出
+- hook.io 输出
+- Loggly appender
+- Logstash UDP 网络输出
+- 多处理器输出 (多工作进程时有用)
+- connect/express 服务的标准日志中间件
+- 可设置日志消息的模板
+- 针对不同的日志类别，可设置不同的日志级别 (比如一部分日志级别为 DEBUG, 另外的只输出 ERRORS)
+
+## log4js 使用
+
+- 跟踪：logger.trace('Entering cheese testing');
+  一般用于详细跟踪执行过程，投产需关闭
+- 调试：logger.debug('Got cheese.');
+  特定部分的调试信息，投产需关闭  
+- 信息：logger.info('Cheese is Gouda.');
+  普通日志信息，提示作用，投产可关闭可打开
+- 告警：logger.warn('Cheese is quite smelly.');
+  告警信息，投产需打开
+- 错误：logger.error('Cheese is too ripe!');
+  错误信息，投产需打开
+- 致命错误：logger.fatal('Cheese was breeding ground for listeria.');
+  会引起崩溃的严重错误，投产需打开
+  
+## log4js.json 配置文件
+
+- appenders 是日志输出数组，可配置多个日志输出
+- type 是输出类型，有控制台、文件、日期文件等
+- pattern 日期后缀模板
+- replaceConsole 替换cosole输出
+- 加入 console 会将 console.log 记录到日志文件
+- category 类别，实际上就是名称，一般可以不设置。
+  如果设置了，需要`const log = log4js.getLogger(category);`使用。  
+  如果没有设置，为全局输出，对所有类别均适用，比如 `const log = log4js.getLogger('modualname');`，没有找到匹配的名称，则自动匹配没有设置 category的输出！
+- level 等级：ALL TRACE DEBUG INFO WARN ERROR FATAL OFF，控制输出级别，设置 ERROR，只输出 ERROR、FATAL、
+- "[all]" 针对所有没有设置 category 的全局输出的级别代称。
+
+### log4js.json配置文件举例：
+
+```js
+{
+  "appenders": [
+    {
+      "type":"console"
+    },
+    {
+      "type": "file",
+      "filename": "log/all.log",
+      "maxLogSize": 104857600,
+      "numBackups": 3
+    },
+    {
+      "type": "logLevelFilter",
+      "level": "ERROR",
+      "appender": {
+        "type": "file",
+        "filename": "log/err.log",
+        "maxLogSize": 104857600,
+        "numBackups": 3
+      }
+    },
+    {
+      "type": "logLevelFilter",
+      "level": "ERROR",
+      "appender": {
+        "type": "dateFile",
+        "filename": "log/err/err",
+        "alwaysIncludePattern": true,
+        "pattern": "-yyMMdd.log"
+      }
+    },
+    {
+      "type": "dateFile",
+      "filename": "log/hour/hour",
+      "alwaysIncludePattern": true,
+      "pattern": "-yyMMddhh.log"
+    },
+    {
+      "category": "http",
+      "type": "dateFile",
+      "filename": "log/http/http",
+      "alwaysIncludePattern": true,
+      "pattern": "-yyMMdd.log"
+    }
+  ],
+
+  "replaceConsole": true,
+  "levelOpt": "ALL TRACE DEBUG INFO WARN ERROR FATAL OFF",
+  "levels": {
+    "http": "ALL",
+    "[all]": "INFO"
+  }
+}
+
+```
+
+### 实际代码
+
+```js
+// 引用 第三方日志库，需安装好
+import log4js from 'log4js';
+/*
+ * 创建日志目录
+ */
+try {
+  if (!fs.existsSync('./log'))
+    fs.mkdirSync('./log');
+
+  if (!fs.existsSync('./log/err'))
+    fs.mkdirSync('./log/err');
+
+  if (!fs.existsSync('./log/hour'))
+    fs.mkdirSync('./log/hour');
+
+  if (!fs.existsSync('./log/http'))
+    fs.mkdirSync('./log/http');
+} catch (e) {
+  console.error('Create log directory exp: %s', e.message);
+}
+
+// 获得日志输出，找不到index，则匹配所有没有命名的全局输出
+const log = log4js.getLogger('index');
+// 日志配置加载，每隔 300秒检查设置变更！
+log4js.configure('./config/log4js.json', { reloadSecs: 300 });
+
+// 测试
+console.log('start log...'); // 等同于 info
+log.trace('Entering cheese testing');
+log.debug('Got cheese.');
+log.info('Cheese is Gouda.');
+log.warn('Cheese is quite smelly.');
+log.error('Cheese is too ripe!');
+log.fatal('Cheese was breeding ground for listeria.');
+
+```
 
 <div id='静态文件服务'/>  
 ## 静态文件服务
@@ -792,10 +956,18 @@ add('88880003');
  
 类封装，需要用到 类的静态属性、静态方法等，静态方法在 es5/6中已经得到支持，静态属性还没有，需要安装 babel 插件！
 
-安装：`npm i -D babel-plugin-syntax-class-properties`
-启用：在 .babelrc中的 "plugins" 增加
-"syntax-class-properties",
+安装：
+```js
+npm i -D babel-plugin-syntax-class-properties
+npm i -D babel-plugin-transform-class-properties
 
+```
+启用：在 .babelrc中的 "plugins" 增加
+```js
+"syntax-class-properties",ı
+"transform-class-properties"
+
+```
 
 
 ### 增加子路由
@@ -806,13 +978,6 @@ rt.post('/api/reg', user.reg);
 
 
 
-<div id='日志'/> 
-## 日志
-
-- [winston](https://github.com/winstonjs/winston)
-  5000多 star，人气最高，功能强大，使用相对稍复杂
-- [log4js](https://github.com/nomiddlename/log4js-node)
-  1400多 star，使用简单，一般项目足够使用
 
 ## 部署运行
 

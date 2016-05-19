@@ -66,27 +66,29 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 <p><div id='更多资源'/></p>
 <h2 id="-">更多资源</h2>
 <ul>
-<li><a href="docs/api/index.md">接口文档</a> documentation</li>
-<li><a href="https://koajs.github.io/badgeboard">Badgeboard</a> and list of official modules</li>
-<li><a href="https://github.com/facebook/react-native/tree/master/Examples">示例</a></li>
-<li><a href="https://github.com/koajs/koa/wiki">中间件</a> list</li>
+<li><a href="https://github.com/koajs/koa/tree/master/docs/api/index.md">接口文档</a></li>
+<li><a href="https://koajs.github.io/badgeboard">官方模块列表</a></li>
+<li><a href="https://github.com/koajs/koa/wiki">中间件列表</a></li>
 <li><a href="https://github.com/koajs/koa/wiki">Wiki</a></li>
-<li><a href="https://plus.google.com/communities/101845768320796750641">G+ Community</a></li>
 <li><a href="http://reddit.com/r/koajs">Reddit Community</a></li>
-<li><a href="https://groups.google.com/forum/#!forum/koajs">Mailing list</a></li>
-<li><a href="docs/guide.md">使用指南</a></li>
-<li><a href="docs/faq.md">FAQ</a></li>
-<li><a href="https://github.com/koajs/kick-off-koa">Kick-Off-Koa</a> - An intro to koa via a set of self-guided workshops.</li>
-<li><a href="https://github.com/koajs/workshop">Workshop</a> - A workshop to learn the basics of koa, Express&#39; spiritual successor.</li>
-<li><a href="http://knowthen.com/episode-3-koajs-quickstart-guide/">Introduction Screencast</a> - An introduction to<br>installing and getting started with Koa</li>
+<li><a href="https://groups.google.com/forum/#!forum/koajs">邮件列表</a></li>
+<li><a href="https://github.com/koajs/koa/tree/master/docs/guide.md">使用指南</a></li>
+<li><a href="https://github.com/koajs/koa/tree/master/docs/faq.md">FAQ</a></li>
+<li><a href="https://github.com/koajs/kick-off-koa">Kick-Off-Koa</a> 
+An intro to koa via a set of self-guided workshops.</li>
+<li><a href="https://github.com/koajs/workshop">Workshop</a> 
+A workshop to learn the basics of koa, Express&#39; spiritual successor.</li>
+<li><a href="http://knowthen.com/episode-3-koajs-quickstart-guide/">Introduction Screencast</a>
+An introduction to installing and getting started with Koa</li>
 </ul>
 <p><div id='开始使用'/></p>
 <h2 id="-">开始使用</h2>
 <ul>
 <li>安装git，<a href="https://github.com/nydl/devnote/blob/master/git.md">git安装请参见 git笔记</a>
-一般安默认选项提示安装，最后选择路径时，选择最后一个。<br>安装完毕 命令行中 输入 git --version 可以看到 安装的 版本，如果看不到，说明安装有问题！<br>如果已安装，无需重复安装。</li>
-<li>克隆 koastart项目
-进入命令行（windows系统win+r键），切换到 d 盘，在d盘创建一个 prj 目录，用了存放项目文件，操作示意：  <pre><code class="lang-js">d:  
+一般安默认选项提示安装，最后选择路径时，选择最后一个。<br>安装完毕 命令行中 输入 <code>git --version</code> 可以看到 安装的 版本，如果看不到，说明安装有问题！<br>如果已安装，无需重复安装。</li>
+<li><p>克隆 koastart项目
+进入命令行（windows系统win+r键），切换到 d 盘，在d盘创建一个 prj 目录，用了存放项目文件，操作示意：</p>
+<pre><code class="lang-js">d:  
 cd /  
 mkdir prj   
 cd prj   
@@ -106,7 +108,9 @@ clone https://github.com/nydl/koastart.git koastart
 该命令生成 在 lib 目录下生成可执行代码！</li>
 <li>运行文件：<code>node lib/app</code>，提示 koa 服务运行，服务端口3000，说明运行成功！
 注意，一定要在 koastart 这个路径执行！！！</li>
-<li>通过浏览器访问服务：<a href="http://127.0.0.1:3000">http://127.0.0.1:3000</a> 或 <a href="http://127.0.0.1:3000/koa.html，如果能看到内容，恭喜你，koa">http://127.0.0.1:3000/koa.html，如果能看到内容，恭喜你，koa</a> web服务搭建成功，可以开始你的成长之旅！</li>
+<li>通过浏览器访问服务：<a href="http://127.0.0.1:3000">http://127.0.0.1:3000</a> 或 <a href="http://127.0.0.1:3000/koa.html，">http://127.0.0.1:3000/koa.html，</a><br>如果能看到内容，恭喜你，koa web服务搭建成功，可以开始你的成长之旅！</li>
+<li>通过 <code>ipconfig</code> 指令查看本机ip地址，手机与计算机在同一网络时，通过手机也可以浏览你的网站
+相当于将你的计算机作为服务器，在开发、调试手机、微信页面时，非常方便，不用专门的服务器。</li>
 </ul>
 <h2 id="-">项目配置</h2>
 <ul>
@@ -138,6 +142,9 @@ File watcher &#39;Babel&#39; is available for thie file. Description:&#39;Transp
 <li>如果浏览器提示错误，在浏览器上先连一下调试端口，然后打开web端口，即可触发调试</li>
 </ul>
 <h2 id="-">项目配置文件</h2>
+<blockquote>
+<p>所有项目配置文件已经在 clone时自动下载到你的计算机，无需另外设置，列在这里，有兴趣的同学可以看看。</p>
+</blockquote>
 <ul>
 <li><p>package.json 项目配置参考文件：</p>
 <pre><code class="lang-js">{
@@ -274,13 +281,160 @@ app.use(async (ctx,next)=&gt;{
 
 // response
 app.use(ctx =&gt;{
-  ctx.body = &#39;Hello World&#39;;
+  ctx.body = &#39;Hello World！&#39;;
 });
 
 app.listen(3000);
 </code></pre>
 </li>
 </ul>
+<p><div id='日志'/> </p>
+<h2 id="-">日志</h2>
+<blockquote>
+<p>系统内置的 console.log、console.warn、console.error在简单程序时，可以输出控制台，但是在大型系统设计时，console就不够用，需要更强大的日志功能，比如常用的安日期存储日志、分离错误日志、专用日志服务器、可配置的日志级别，在调试时输出所有日志，投产后只输出错误日志等。</p>
+</blockquote>
+<p>常用日志目前有两种，使用的人都非常多：</p>
+<ul>
+<li><a href="https://github.com/winstonjs/winston">winston</a>
+5000多 star，人气最高，功能强大，使用相对稍复杂</li>
+<li><a href="https://github.com/nomiddlename/log4js-node">log4js</a>
+1400多 star，使用简单，一般项目足够使用。<br>安装：<code>npm install log4js -S</code></li>
+<li><a href="https://github.com/nomiddlename/log4js-node/tree/master/examples">log4js各种示例</a></li>
+<li><a href="https://github.com/nomiddlename/log4js-example">log4js完整示例</a></li>
+</ul>
+<h3 id="log4js-">log4js 功能</h3>
+<ul>
+<li>彩色控制台输出 stdout or stderr</li>
+<li>替代了 console.log functions (optional)</li>
+<li>基于大小的文件滚动输出</li>
+<li>邮件输出</li>
+<li>GELF 输出</li>
+<li>hook.io 输出</li>
+<li>Loggly appender</li>
+<li>Logstash UDP 网络输出</li>
+<li>多处理器输出 (多工作进程时有用)</li>
+<li>connect/express 服务的标准日志中间件</li>
+<li>可设置日志消息的模板</li>
+<li>针对不同的日志类别，可设置不同的日志级别 (比如一部分日志级别为 DEBUG, 另外的只输出 ERRORS)</li>
+</ul>
+<h2 id="log4js-">log4js 使用</h2>
+<ul>
+<li>跟踪：logger.trace(&#39;Entering cheese testing&#39;);
+一般用于详细跟踪执行过程，投产需关闭</li>
+<li>调试：logger.debug(&#39;Got cheese.&#39;);
+特定部分的调试信息，投产需关闭  </li>
+<li>信息：logger.info(&#39;Cheese is Gouda.&#39;);
+普通日志信息，提示作用，投产可关闭可打开</li>
+<li>告警：logger.warn(&#39;Cheese is quite smelly.&#39;);
+告警信息，投产需打开</li>
+<li>错误：logger.error(&#39;Cheese is too ripe!&#39;);
+错误信息，投产需打开</li>
+<li>致命错误：logger.fatal(&#39;Cheese was breeding ground for listeria.&#39;);
+会引起崩溃的严重错误，投产需打开</li>
+</ul>
+<h2 id="log4js-json-">log4js.json 配置文件</h2>
+<ul>
+<li>appenders 是日志输出数组，可配置多个日志输出</li>
+<li>type 是输出类型，有控制台、文件、日期文件等</li>
+<li>pattern 日期后缀模板</li>
+<li>replaceConsole 替换cosole输出</li>
+<li>加入 console 会将 console.log 记录到日志文件</li>
+<li>category 类别，实际上就是名称，一般可以不设置。
+如果设置了，需要<code>const log = log4js.getLogger(category);</code>使用。<br>如果没有设置，为全局输出，对所有类别均适用，比如 <code>const log = log4js.getLogger(&#39;modualname&#39;);</code>，没有找到匹配的名称，则自动匹配没有设置 category的输出！</li>
+<li>level 等级：ALL TRACE DEBUG INFO WARN ERROR FATAL OFF，控制输出级别，设置 ERROR，只输出 ERROR、FATAL、</li>
+<li>&quot;[all]&quot; 针对所有没有设置 category 的全局输出的级别代称。</li>
+</ul>
+<h3 id="log4js-json-">log4js.json配置文件举例：</h3>
+<pre><code class="lang-js">{
+  &quot;appenders&quot;: [
+    {
+      &quot;type&quot;:&quot;console&quot;
+    },
+    {
+      &quot;type&quot;: &quot;file&quot;,
+      &quot;filename&quot;: &quot;log/all.log&quot;,
+      &quot;maxLogSize&quot;: 104857600,
+      &quot;numBackups&quot;: 3
+    },
+    {
+      &quot;type&quot;: &quot;logLevelFilter&quot;,
+      &quot;level&quot;: &quot;ERROR&quot;,
+      &quot;appender&quot;: {
+        &quot;type&quot;: &quot;file&quot;,
+        &quot;filename&quot;: &quot;log/err.log&quot;,
+        &quot;maxLogSize&quot;: 104857600,
+        &quot;numBackups&quot;: 3
+      }
+    },
+    {
+      &quot;type&quot;: &quot;logLevelFilter&quot;,
+      &quot;level&quot;: &quot;ERROR&quot;,
+      &quot;appender&quot;: {
+        &quot;type&quot;: &quot;dateFile&quot;,
+        &quot;filename&quot;: &quot;log/err/err&quot;,
+        &quot;alwaysIncludePattern&quot;: true,
+        &quot;pattern&quot;: &quot;-yyMMdd.log&quot;
+      }
+    },
+    {
+      &quot;type&quot;: &quot;dateFile&quot;,
+      &quot;filename&quot;: &quot;log/hour/hour&quot;,
+      &quot;alwaysIncludePattern&quot;: true,
+      &quot;pattern&quot;: &quot;-yyMMddhh.log&quot;
+    },
+    {
+      &quot;category&quot;: &quot;http&quot;,
+      &quot;type&quot;: &quot;dateFile&quot;,
+      &quot;filename&quot;: &quot;log/http/http&quot;,
+      &quot;alwaysIncludePattern&quot;: true,
+      &quot;pattern&quot;: &quot;-yyMMdd.log&quot;
+    }
+  ],
+
+  &quot;replaceConsole&quot;: true,
+  &quot;levelOpt&quot;: &quot;ALL TRACE DEBUG INFO WARN ERROR FATAL OFF&quot;,
+  &quot;levels&quot;: {
+    &quot;http&quot;: &quot;ALL&quot;,
+    &quot;[all]&quot;: &quot;INFO&quot;
+  }
+}
+</code></pre>
+<h3 id="-">实际代码</h3>
+<pre><code class="lang-js">// 引用 第三方日志库，需安装好
+import log4js from &#39;log4js&#39;;
+/*
+ * 创建日志目录
+ */
+try {
+  if (!fs.existsSync(&#39;./log&#39;))
+    fs.mkdirSync(&#39;./log&#39;);
+
+  if (!fs.existsSync(&#39;./log/err&#39;))
+    fs.mkdirSync(&#39;./log/err&#39;);
+
+  if (!fs.existsSync(&#39;./log/hour&#39;))
+    fs.mkdirSync(&#39;./log/hour&#39;);
+
+  if (!fs.existsSync(&#39;./log/http&#39;))
+    fs.mkdirSync(&#39;./log/http&#39;);
+} catch (e) {
+  console.error(&#39;Create log directory exp: %s&#39;, e.message);
+}
+
+// 获得日志输出，找不到index，则匹配所有没有命名的全局输出
+const log = log4js.getLogger(&#39;index&#39;);
+// 日志配置加载，每隔 300秒检查设置变更！
+log4js.configure(&#39;./config/log4js.json&#39;, { reloadSecs: 300 });
+
+// 测试
+console.log(&#39;start log...&#39;); // 等同于 info
+log.trace(&#39;Entering cheese testing&#39;);
+log.debug(&#39;Got cheese.&#39;);
+log.info(&#39;Cheese is Gouda.&#39;);
+log.warn(&#39;Cheese is quite smelly.&#39;);
+log.error(&#39;Cheese is too ripe!&#39;);
+log.fatal(&#39;Cheese was breeding ground for listeria.&#39;);
+</code></pre>
 <p><div id='静态文件服务'/>  </p>
 <h2 id="-">静态文件服务</h2>
 <ul>
@@ -754,22 +908,19 @@ db.users.find().count() // users表记录数量
 <p>为了易懂，这个文件还是取名为 user.js，目录为 logic，注意，user.js 已经出现了3次，分别在 model、route、logic，分别代表 数据模型、业务逻辑、路由交互。</p>
 <h3 id="-babel-">使用 babel 支持 类静态属性</h3>
 <p>类封装，需要用到 类的静态属性、静态方法等，静态方法在 es5/6中已经得到支持，静态属性还没有，需要安装 babel 插件！</p>
-<p>安装：<code>npm i -D babel-plugin-syntax-class-properties</code>
-启用：在 .babelrc中的 &quot;plugins&quot; 增加
-&quot;syntax-class-properties&quot;,</p>
+<p>安装：</p>
+<pre><code class="lang-js">npm i -D babel-plugin-syntax-class-properties
+npm i -D babel-plugin-transform-class-properties
+</code></pre>
+<p>启用：在 .babelrc中的 &quot;plugins&quot; 增加</p>
+<pre><code class="lang-js">&quot;syntax-class-properties&quot;,ı
+&quot;transform-class-properties&quot;
+</code></pre>
 <h3 id="-">增加子路由</h3>
 <p>// 注册用户，post
 rt.post(&#39;/api/reg&#39;, user.reg);</p>
 <ul>
 <li>实现用户注册接口</li>
-</ul>
-<p><div id='日志'/> </p>
-<h2 id="-">日志</h2>
-<ul>
-<li><a href="https://github.com/winstonjs/winston">winston</a>
-5000多 star，人气最高，功能强大，使用相对稍复杂</li>
-<li><a href="https://github.com/nomiddlename/log4js-node">log4js</a>
-1400多 star，使用简单，一般项目足够使用</li>
 </ul>
 <h2 id="-">部署运行</h2>
 <ul>
