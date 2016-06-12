@@ -1,0 +1,400 @@
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<link href="css/markdown7.css" media="all" rel="stylesheet" type="text/css" />
+
+<h1 id="jade">JADE</h1>
+<p>非常简洁、强大的html模版，express 内置标准模版！
+虽然在上万行的测试效率方面比 ejs 低，但是，实际上模版文件一般也就几百行，
+毫秒级别的差异可忽略不计！</p>
+<p>但是，代码数要少好几倍！
+强烈推荐！！！</p>
+<p>语法：<a href="http://naltatis.github.io/jade-syntax-docs/">http://naltatis.github.io/jade-syntax-docs/</a>
+源码: <a href="https://github.com/visionmedia/jade">https://github.com/visionmedia/jade</a></p>
+<p>html 转换为jade
+  <a href="http://html2jade.org/">http://html2jade.org/</a></p>
+<p>jade转换为html
+  Jade watcher</p>
+<h2 id="-">功能</h2>
+<ul>
+<li>client-side support</li>
+<li>great readability</li>
+<li>flexible indentation</li>
+<li>block-expansion</li>
+<li>mixins</li>
+<li>static includes</li>
+<li>attribute interpolation</li>
+<li>code is escaped by default for security</li>
+<li>contextual error reporting at compile &amp; run time</li>
+<li>executable for compiling jade templates via the command line</li>
+<li>html 5 mode (the default doctype)</li>
+<li>optional memory caching</li>
+<li>combine dynamic and static tag classes</li>
+<li>parse tree manipulation via <em>filters</em></li>
+<li>template inheritance</li>
+<li>block append / prepend</li>
+<li>supports <a href="http://expressjs.com">Express JS</a> out of the box</li>
+<li>transparent iteration over objects, arrays, and even non-enumerables via <code>each</code></li>
+<li>block comments</li>
+<li>no tag prefix</li>
+<li>filters<ul>
+<li>:stylus must have <a href="http://github.com/LearnBoost/stylus">stylus</a> installed</li>
+<li>:less must have <a href="http://github.com/cloudhead/less.js">less.js</a> installed</li>
+<li>:markdown must have <a href="http://github.com/evilstreak/markdown-js">markdown-js</a>, <a href="http://github.com/visionmedia/node-discount">node-discount</a>, or <a href="http://github.com/chjj/marked">marked</a> installed</li>
+<li>:cdata</li>
+<li>:coffeescript must have <a href="http://jashkenas.github.com/coffee-script/">coffee-script</a> installed</li>
+</ul>
+</li>
+<li><a href="https://github.com/brianc/jade-mode">Emacs Mode</a></li>
+<li><a href="https://github.com/digitaltoad/vim-jade">Vim Syntax</a></li>
+<li><a href="http://github.com/miksago/jade-tmbundle">TextMate Bundle</a></li>
+<li><a href="https://github.com/aaronmccall/jade.mode">Coda/SubEtha syntax Mode</a></li>
+<li><a href="http://tjholowaychuk.com/post/1004255394/jade-screencast-template-engine-for-nodejs">Screencasts</a></li>
+<li><a href="https://github.com/donpark/html2jade">html2jade</a> converter</li>
+</ul>
+<h2 id="-">示例</h2>
+<pre><code class="lang-jade">!!! 5
+html
+  head
+    meta(charset=&#39;utf-8&#39;)
+    title my jade template
+  body
+    h1 Hello #{name}
+</code></pre>
+<p>输出：</p>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;my jade template&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello Bob&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2 id="-">标记</h2>
+<p>直接写标记，不需要 &lt;&gt;，不需要配套的结束标记，代码量少好几倍，更清晰更简短！
+层次关系通过 空格实现，非常直观！</p>
+<p>div 可省略
+#user
+.user.user2</p>
+<h3 id="-">单行嵌套</h3>
+<p>  ul.nav
+    li.active: a(href=&quot;#&quot;) Home
+    li: a(href=&quot;#about&quot;) About
+    li: a(href=&quot;#contact&quot;) Contact</p>
+<pre><code>注意 : 及 ) 后的空格，如果没有空格，将得不到正确结果
+</code></pre><h3 id="doctypes">Doctypes</h3>
+<p>To add a doctype simply use !!!, or doctype followed by an optional value:</p>
+<p><code>!!!</code>
+or
+<code>doctype</code>
+Will output the html 5 doctype, however:</p>
+<p><code>!!! transitional</code>
+Will output the <code>transitional doctype</code>.</p>
+<p>Doctypes are case-insensitive, so the following are equivalent:</p>
+<pre><code>doctype Basic
+doctype basic
+</code></pre><p>it&#39;s also possible to simply pass a doctype literal:</p>
+<pre><code>doctype html PUBLIC &quot;-//W3C//DTD XHTML Basic 1.1//EN&quot;
+</code></pre><p>yielding:</p>
+<pre><code>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML Basic 1.1//EN&quot;&gt;
+</code></pre><p>Below are the doctypes defined by default, which can easily be extended:</p>
+<pre><code>var doctypes = exports.doctypes = {
+  &#39;5&#39;: &#39;&lt;!DOCTYPE html&gt;&#39;,
+  &#39;default&#39;: &#39;&lt;!DOCTYPE html&gt;&#39;,
+  &#39;xml&#39;: &#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;&#39;,
+  &#39;transitional&#39;: &#39;&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;&#39;,
+  &#39;strict&#39;: &#39;&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;&#39;,
+  &#39;frameset&#39;: &#39;&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Frameset//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd&quot;&gt;&#39;,
+  &#39;1.1&#39;: &#39;&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.1//EN&quot; &quot;http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd&quot;&gt;&#39;,
+  &#39;basic&#39;: &#39;&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML Basic 1.1//EN&quot; &quot;http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd&quot;&gt;&#39;,
+  &#39;mobile&#39;: &#39;&lt;!DOCTYPE html PUBLIC &quot;-//WAPFORUM//DTD XHTML Mobile 1.2//EN&quot; &quot;http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12.dtd&quot;&gt;&#39;
+};
+</code></pre><p>To alter the default simply change:</p>
+<pre><code>jade.doctypes.default = &#39;whatever you want&#39;;
+</code></pre><h3 id="-">属性</h3>
+<pre><code>a(href=&#39;/login&#39;, title=&#39;View login page&#39;) Login
+注意 Login 之前的空格！
+</code></pre><h2 id="-">文本</h2>
+<p>通过 . 或 | 实现，注意 p. 中间不能有 空格<br>注意，script、style 两个标记的文本不需要 | 符号，可直接写！</p>
+<pre><code>html
+  body
+    | &lt;h1&gt;Title&lt;/h1&gt;
+    | &lt;p&gt;foo bar baz&lt;/p&gt;
+</code></pre><p>或者：</p>
+<pre><code>html
+  body.
+    &lt;h1&gt;Title&lt;/h1&gt;
+    &lt;p&gt;foo bar baz&lt;/p&gt;
+</code></pre><p>注意，点前面不能有空格！</p>
+<p>jade 空格<br>|男&nbsp;&nbsp;&nbsp;&nbsp;    </p>
+<h2 id="-">变量</h2>
+<p>jade变量属于 js 代码的一种，jade 模版 不通过 代码标记-，也能智能识别 js 代码，
+因此，代码中的变量，能自动转换为字符串！</p>
+<p>任何模版都支持变量，一般都通过 = 来实现，jade则支持好几种：</p>
+<ul>
+<li><p>= 或 != </p>
+<pre><code>  \- var foo = &#39;bar&#39;
+  = foo
+  h1= foo    
+</code></pre><p>  注意 =前面不能有空格！！！</p>
+<p>  = 对 &lt;&gt; 会自动转码，确保一些html标记按原文输出，<br>  != 则 不会转码，内嵌的 html 标记将 按标记输出，相当于 能获得 标记效果！</p>
+<pre><code>  {&quot;name&quot;: &quot;Hello &lt;em&gt;World&lt;/em&gt;&quot;}
+  li= name  &lt;li&gt;Hello &amp;lt;em&amp;gt;World&amp;lt;/em&amp;gt;&lt;/li&gt;
+  li!= name &lt;li&gt;Hello &lt;em&gt;World&lt;/em&gt;&lt;/li&gt;
+</code></pre></li>
+<li><p>字符串嵌入变量引用 #{} 或 !{}
+  同时，与 = 一样的效果，undefined时， #{} 自动转换为 undefined字符串    </p>
+<pre><code>  a(href=&#39;/user/&#39; + user.id)= user.name
+作为变量处理！
+</code></pre><p>  等同：</p>
+<pre><code>  a(href=&#39;/user/#{user.id}&#39;)= user.name
+内嵌写法！
+</code></pre><p>  如对 undefined变量显示空字符串，则需对变量进行判断！<br>  a(href=&#39;/user/#{user.id?user.id:&#39;&#39;}&#39;)= user.name</p>
+</li>
+</ul>
+<h2 id="-">代码</h2>
+<p>Jade目前支持三种类型的可执行代码，第一种以-为前缀，不会被缓冲：</p>
+<p>更加智能，书写非常流程，爽！不像其他 模版，需要前缀、后缀！</p>
+<ul>
+<li>前缀- 实现，如 - var foo = &#39;bar&#39;</li>
+<li><p>智能推断，如 if, else if, else, until, while, unless 
+unless user.isAnonymous
+  p You&#39;re logged in as #{user.name}</p>
+</li>
+<li><p>= 对于 p textarea等 非 value 可直接使用 =
+如
+  p=nick
+  a=nick</p>
+<p>  input#txNick.input-xlarge(type=&quot;text&quot;, name=&quot;txNick&quot;, value=nick)
+  undefined 会输出空
+  input#txShowName.input-xlarge(type=&quot;text&quot;, name=&quot;txAlias&quot;, value=&quot;#{alias}&quot;)
+  undefined 会输出 undefined字符串！</p>
+</li>
+<li><p>!=</p>
+</li>
+<li><p>var foo = &#39;bar&#39;;
+这可被用于条件或循环：</p>
+</li>
+<li><p>for (var key in obj)
+p= obj[key]
+由于Jade的缓冲技术，下面的代码是有效的：</p>
+</li>
+<li><p>if (foo)
+ul
+  li yay
+  li foo
+  li worked</p>
+</li>
+<li>else
+p oh no! you are not in csser.com</li>
+</ul>
+<p>如果 foo 未定义，会报错！</p>
+<p>if typeof foo !== &quot;undefined&quot;</p>
+<p>甚至详细的迭代循环：</p>
+<ul>
+<li>if (items.length)
+ul<ul>
+<li>items.forEach(function(item){
+li= item</li>
+<li>})
+任何你希望的都可以实现！</li>
+</ul>
+</li>
+</ul>
+<p>接下来我们转义了缓冲代码，用于缓冲返回值，以等号（=）作为前缀：</p>
+<ul>
+<li>var foo = &#39;bar&#39;
+= foo
+h1= foo
+输出： bar<h1>bar</h1>. 被&#39;=&#39;缓冲的代码会默认经过转义以增强安全性，要输出为转义的值需要使用 !=：</li>
+</ul>
+<p>p!= aVarContainingMoreHTML
+一个允许使用&quot;vanilla&quot;Javascript的例外，是 - each 标记，其表现形式为：</p>
+<ul>
+<li><p>each VAL[, KEY] in OBJ
+实现循环数组的例子：</p>
+</li>
+<li><p>var items = [&quot;one&quot;, &quot;two&quot;, &quot;three&quot;]</p>
+</li>
+<li>each item in items
+li= item
+输出:</li>
+</ul>
+<li>one</li>
+<li>two</li>
+<li>three</li>
+循环对象的键和值：
+
+- var obj = { foo: &#39;bar&#39; }
+- each val, key in obj
+  li #{key}: #{val}
+这会输出 <li>foo: bar</li>
+
+<p>也可以进行嵌套循环：</p>
+<ul>
+<li>each user in users<ul>
+<li>each role in user.roles
+li= role
+当一个属性为undefined，Jade会输出空串，例如：</li>
+</ul>
+</li>
+</ul>
+<p>textarea= user.signature
+近期的Jade版本会输出空字符串而不是undefined：</p>
+<textarea></textarea>
+
+
+
+
+<h2 id="-">迭代</h2>
+<p>所有模版都支持迭代，否则无法实现列表！</p>
+<pre><code>- var items = [&quot;one&quot;, &quot;two&quot;, &quot;three&quot;]
+each item in items
+  li= item
+</code></pre><p>outputs:</p>
+<pre><code>&lt;li&gt;one&lt;/li&gt;
+&lt;li&gt;two&lt;/li&gt;
+&lt;li&gt;three&lt;/li&gt;
+</code></pre><p>iterating an array with index:</p>
+<pre><code>items = [&quot;one&quot;, &quot;two&quot;, &quot;three&quot;]
+each item, i in items
+  li #{item}: #{i}
+</code></pre><p>outputs:</p>
+<pre><code>&lt;li&gt;one: 0&lt;/li&gt;
+&lt;li&gt;two: 1&lt;/li&gt;
+&lt;li&gt;three: 2&lt;/li&gt;
+</code></pre><p>iterating an object&#39;s keys and values:</p>
+<pre><code>obj = { foo: &#39;bar&#39; }
+each val, key in obj
+  li #{key}: #{val}
+</code></pre><p>would output <code>&lt;li&gt;foo: bar&lt;/li&gt;</code></p>
+<p>Internally Jade converts these statements to regular JavaScript loops such as users.forEach(function(user){, 
+so lexical scope and nesting applies as it would with regular JavaScript:</p>
+<pre><code>each user in users
+  each role in user.roles
+    li= role
+</code></pre><p>You may also use for if you prefer:</p>
+<pre><code>for user in users
+  for role in user.roles
+    li= role
+</code></pre><h2 id="-">注释</h2>
+<p>注释通过 // 实现，如果不需要输出，则用 //-</p>
+<h2 id="-">过滤器</h2>
+<p>相当于插件，一般模版都不支持过滤器，比如 内置的 markdown过滤器，也就是说可以写入 markdown，输出 html！</p>
+<p>:markdown</p>
+<h1 id="markdown">Markdown</h1>
+<p>  I often like including markdown documents in my jade templates.
+:coffee
+  console.log &#39;This is coffee script&#39;</p>
+<pre><code>body
+  :markdown
+    Woah! jade _and_ markdown, very **cool**
+    we can even link to [stuff](http://google.com)
+</code></pre><p>输出：</p>
+<pre><code>&lt;body&gt;&lt;p&gt;Woah! jade &lt;em&gt;and&lt;/em&gt; markdown, very &lt;strong&gt;cool&lt;/strong&gt; we can even link to &lt;a href=&quot;http://google.com&quot;&gt;stuff&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;
+</code></pre><h2 id="-">继承</h2>
+<p>一般模版没有继承。继承通过 <code>block</code> and <code>extends</code> 关键字实现。<br>express 支持 jade 继承功能！
+一般 内容模块会从 母版继承！</p>
+<p>block 缺省时覆盖, 也可 prepend, or append blocks. </p>
+<h2 id="-include">包含 include</h2>
+<p>一个jade 文件可包含另外一个文件，包括 js、css、jade，缺省为 jade后缀！</p>
+<pre><code>html
+  include includes/head
+  body
+    h1 My Site
+    p Welcome to my super amazing site.
+    include includes/foot
+</code></pre><h2 id="-mixin">混入 mixin</h2>
+<p>插入 片段，类似 ejs 的 partials 功能，如果跨文件，则 需通过 include将独立文件包含进来！
+ejs 则 不需要 包含，通过 名称约定完成，jade 更加灵活！</p>
+<pre><code>mixin book(name, price)
+  li #{name} for #{price} €
+
+ul#books
+  +book(&quot;Book A&quot;, 12.99)
+  +book(&quot;Book B&quot;, 5.99)
+</code></pre><p>输出：</p>
+<pre><code>&lt;ul id=&quot;books&quot;&gt;
+  &lt;li&gt;Book A for 12.99 €&lt;/li&gt;
+  &lt;li&gt;Book B for 5.99 €&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre><h2 id="-">传值</h2>
+<p>Passing Variables to Your Templates via the Response Object
+Variables can be passed down to a template as a parameter to the response object, but functions cannot. Here is an example showing how to set and access these variables.</p>
+<pre><code>var locals = { title: &#39;My page title&#39;, includes: {charting: true} };
+app.render( &#39;mypage&#39;, locals );
+</code></pre><p>Template File</p>
+<pre><code>&lt;% if( locals.includes.charting ) { %&gt;
+&lt;p&gt;Charting is included&lt;/p&gt;
+&lt;% } %&gt;
+&lt;p&gt;locals:&lt;%- JSON.stringify(locals) %&gt;&lt;/p&gt;
+</code></pre><p>Functions cannot be passed down via the response object. That means there is no replacement for the template-initiated processing that dynamic helpers provided.
+Another trick is to use middleware to add properties or methods to the request object then, on render, pass derived properties to the render method. This is how the connect-flash modules operates.
+Passing Variables to Your Templates via the App Object
+You can pass app-level variables to your templates by attaching properties or functions to app.settings. Although this is referred to as app.locals in the documentation, you can’t actually set app.locals.myvar to a value and see this in your template. I presume this is another case of documentation written for people who already understand the application, meaning it wasn’t written for me.
+To set an app-level variable or function you either call app.set() or set a property of app.settings as shown below.
+In app.js</p>
+<pre><code>app.set(&#39;tLaunch&#39;,new Date());
+app.settings.appName = &#39;MyApp&#39;;    // Equivalent to using app.set(appName,&#39;MyApp&#39;);
+app.set(&#39;appVersion&#39;,function() { config.getAppVersion() });
+</code></pre><p>To read the app-level variable in your template you reference settings.myvar. To call the function you call settings.myfunc(). Remember, you can’t pass any parameters to the function, so you can’t get request-specific data using this function.
+Template File</p>
+<pre><code>&lt;p&gt;The time my app was launched:&lt;%- settings.tLaunch.toString() %&gt;&lt;/p&gt;
+&lt;p&gt;App Name:&lt;%- settings.appName %&gt;&lt;/p&gt;
+&lt;p&gt;App Version:&lt;%- settings.appVersion() %&gt;&lt;/p&gt;
+</code></pre><p>app.locals
+Application local variables are provided to all templates rendered within the application. This is useful for providing helper functions to templates, as well as app-level data.</p>
+<p>app.locals.title = &#39;My App&#39;;
+app.locals.strftime = require(&#39;strftime&#39;);
+The app.locals object is a JavaScript Function, which when invoked with an object will merge properties into itself, providing a simple way to expose existing objects as local variables.</p>
+<p>app.locals({
+  title: &#39;My App&#39;,
+  phone: &#39;1-250-858-9990&#39;,
+  email: &#39;me@myapp.com&#39;
+});</p>
+<p>app.locals.title
+// =&gt; &#39;My App&#39;</p>
+<p>app.locals.email
+// =&gt; &#39;me@myapp.com&#39;
+By default Express exposes only a single app-level local variable, settings.</p>
+<p>app.set(&#39;title&#39;, &#39;My App&#39;);
+// use settings.title in a view</p>
+<h2 id="radio-select">radio select</h2>
+<pre><code>  .control-group
+    label.control-label(for=&quot;txSex&quot;) 性别
+    .controls
+      label.radio.inline
+        input#txSex1.inline(type=&quot;radio&quot;, name=&quot;txSex&quot;, value=&quot;男&quot;, checked=sex==&quot;男&quot;)
+        | 男&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+      label.radio.inline
+        input#txSex2.inline(type=&quot;radio&quot;, name=&quot;txSex&quot;, value=&quot;女&quot;, checked=sex==&quot;女&quot;)
+        女
+  .control-group
+    label.control-label(for=&quot;txType&quot;) 类别
+    .controls
+      select#txType(name=&quot;txType&quot;)
+        option(value=1,selected=type==1) 个人
+        option(value=2,selected=type==2) 企业
+        option(value=3,selected=type==3) 群组
+        option(value=4,selected=type==4) 公众
+</code></pre><p>Boolean Attributes</p>
+<p>Boolean attributes are mirrored by Jade, and accept bools, aka true or false. When no value is specified true is assumed.</p>
+<p>input(type=&#39;checkbox&#39;, checked)
+input(type=&#39;checkbox&#39;, checked=true)
+input(type=&#39;checkbox&#39;, checked=false)
+input(type=&#39;checkbox&#39;, checked=true.toString())</p>
+<p><input type="checkbox" checked="checked" /></p>
+<p><input type="checkbox" checked="checked" /></p>
+<p><input type="checkbox" /></p>
+<input type="checkbox" checked="true" />
+
+
+
+<h2 id="undefined-">undefined 处理</h2>
+<p>  后台 render对象 与 jade模版引用的变量不一致，导致缺失的字段全部显示 undefined 字符串！
+    input#txNick.input-xlarge(type=&quot;text&quot;, name=&quot;txNick&quot;, value=nick)
+    undefined 会输出空
+    input#txShowName.input-xlarge(type=&quot;text&quot;, name=&quot;txAlias&quot;, value=&quot;#{alias}&quot;)
+    undefined 会输出 undefined字符串！</p>

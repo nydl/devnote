@@ -1,0 +1,332 @@
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<link href="css/markdown.css" rel="stylesheet" />
+
+<link href="css/prettify.css" rel="stylesheet" />
+
+<script src="http://apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script src="js/prettify.js"></script>  
+
+<h1 id="eslint">eslint</h1>
+<p>最好的js书写风格、语法、错误检查及在线提示。</p>
+<blockquote>
+<p>ESLint 由 JavaScript 红宝书 作者 Nicholas C. Zakas 编写， 2013 年发布第一个版本。 NCZ 的初衷不是重复造一个轮子，而是在际需求得不到 JSHint 团队响应 的情况下做出的选择：以可扩展、每条规则独立、不内置编码风格为理念编写一个 lint 工具。</p>
+</blockquote>
+<h2 id="eslint-">ESLint 主要有以下特点：</h2>
+<ul>
+<li>默认规则包含所有 JSLint、JSHint 中存在的规则，易迁移；</li>
+<li>规则可配置性高：可设置「警告」、「错误」两个 error 等级，或者直接禁用；</li>
+<li>包含代码风格检测的规则（可以丢掉 JSCS 了）；</li>
+<li>支持插件扩展、自定义规则。</li>
+</ul>
+<h2 id="-">配置</h2>
+<ul>
+<li>可以通过以下三种方式配置 ESLint:</li>
+<li>使用 .eslintrc 文件（支持 JSON 和 YAML 两种语法）；</li>
+<li>在 package.json 中添加 eslintConfig 配置块；</li>
+<li>直接在代码文件中定义。</li>
+</ul>
+<h2 id="-eslintrc-">本项目使用的 .eslintrc 文件</h2>
+<ul>
+<li>继承 eslint-config-airbnb/base</li>
+<li><p>需安装以下插件    </p>
+<pre><code class="lang-js">&quot;eslint&quot;: &quot;^2.9.0&quot;,
+&quot;eslint-config-airbnb&quot;: &quot;^9.0.1&quot;,
+&quot;eslint-plugin-import&quot;: &quot;^1.8.0&quot;,
+&quot;eslint-plugin-jsx-a11y&quot;: &quot;^1.2.0&quot;,
+&quot;eslint-plugin-react&quot;: &quot;^5.1.1&quot;,
+</code></pre>
+</li>
+<li><p>文件内容</p>
+<pre><code>  {
+      &quot;extends&quot;: &quot;eslint-config-airbnb/base&quot;,
+      &quot;parser&quot;: &quot;babel-eslint&quot;,
+      &quot;env&quot;: {
+          &quot;browser&quot;: true,
+          &quot;node&quot;: true,
+          &quot;mocha&quot;: true
+      },
+      &quot;rules&quot;: {
+          // Disable for console/alert
+          &quot;no-console&quot;: 0,
+          &quot;no-alert&quot;: 0,
+
+          &quot;indent&quot;: [2, 2, {&quot;SwitchCase&quot;: 1}],
+          &quot;object-curly-spacing&quot;: 0
+      },
+      &quot;plugins&quot;: [
+          &quot;import&quot;
+      ],
+      &quot;settings&quot;: {
+          &quot;import/parser&quot;: &quot;babel-eslint&quot;,
+          &quot;import/resolve&quot;: {
+              &quot;moduleDirectory&quot;: [&quot;node_modules&quot;, &quot;src&quot;]
+          }
+      },
+      &quot;globals&quot;: {
+          &quot;__DEV__&quot;: true,
+          &quot;__OPTION__&quot;: true
+      }
+  }
+</code></pre></li>
+</ul>
+<h2 id="-eslintrc-">以下是详细 .eslintrc 文件示例和解释：</h2>
+<pre><code class="lang-js">{  
+  &quot;env&quot;: {  
+    &quot;browser&quot;: true,  
+    &quot;node&quot;: true,  
+    &quot;commonjs&quot;: true  
+  },  
+  &quot;ecmaFeatures&quot;: {  
+    // lambda表达式  
+    &quot;arrowFunctions&quot;: true,  
+    // 解构赋值  
+    &quot;destructuring&quot;: true,  
+    // class  
+    &quot;classes&quot;: true,  
+    // http://es6.ruanyifeng.com/#docs/function#函数参数的默认值  
+    &quot;defaultParams&quot;: true,  
+    // 块级作用域，允许使用let const  
+    &quot;blockBindings&quot;: true,  
+    // 允许使用模块，模块内默认严格模式  
+    &quot;modules&quot;: true,  
+    // 允许字面量定义对象时，用表达式做属性名  
+    // http://es6.ruanyifeng.com/#docs/object#属性名表达式  
+    &quot;objectLiteralComputedProperties&quot;: true,  
+    // 允许对象字面量方法名简写  
+    /*var o = { 
+        method() { 
+          return &quot;Hello!&quot;; 
+        } 
+     }; 
+
+     等同于 
+
+     var o = { 
+       method: function() { 
+         return &quot;Hello!&quot;; 
+       } 
+     }; 
+    */  
+    &quot;objectLiteralShorthandMethods&quot;: true,  
+    /* 
+      对象字面量属性名简写 
+      var foo = &#39;bar&#39;; 
+      var baz = {foo}; 
+      baz // {foo: &quot;bar&quot;} 
+
+      // 等同于 
+      var baz = {foo: foo}; 
+    */  
+    &quot;objectLiteralShorthandProperties&quot;: true,  
+    // http://es6.ruanyifeng.com/#docs/function#rest参数  
+    &quot;restParams&quot;: true,  
+    // http://es6.ruanyifeng.com/#docs/function#扩展运算符  
+    &quot;spread&quot;: true,  
+    // http://es6.ruanyifeng.com/#docs/iterator#for---of循环  
+    &quot;forOf&quot;: true,  
+    // http://es6.ruanyifeng.com/#docs/generator  
+    &quot;generators&quot;: true,  
+    // http://es6.ruanyifeng.com/#docs/string#模板字符串  
+    &quot;templateStrings&quot;: true,  
+    &quot;superInFunctions&quot;: true,  
+    // http://es6.ruanyifeng.com/#docs/object#对象的扩展运算符  
+    &quot;experimentalObjectRestSpread&quot;: true  
+  },  
+
+  &quot;rules&quot;: {  
+    // 定义对象的set存取器属性时，强制定义get  
+    &quot;accessor-pairs&quot;: 2,  
+    // 指定数组的元素之间要以空格隔开(,后面)， never参数：[ 之前和 ] 之后不能带空格，always参数：[ 之前和 ] 之后必须带空格  
+    &quot;array-bracket-spacing&quot;: [2, &quot;never&quot;],  
+    // 在块级作用域外访问块内定义的变量是否报错提示  
+    &quot;block-scoped-var&quot;: 0,  
+    // if while function 后面的{必须与if在同一行，java风格。  
+    &quot;brace-style&quot;: [2, &quot;1tbs&quot;, { &quot;allowSingleLine&quot;: true }],  
+    // 双峰驼命名格式  
+    &quot;camelcase&quot;: 2,  
+    // 数组和对象键值对最后一个逗号， never参数：不能带末尾的逗号, always参数：必须带末尾的逗号，  
+    // always-multiline：多行模式必须带逗号，单行模式不能带逗号  
+    &quot;comma-dangle&quot;: [2, &quot;never&quot;],  
+    // 控制逗号前后的空格  
+    &quot;comma-spacing&quot;: [2, { &quot;before&quot;: false, &quot;after&quot;: true }],  
+    // 控制逗号在行尾出现还是在行首出现  
+    // http://eslint.org/docs/rules/comma-style  
+    &quot;comma-style&quot;: [2, &quot;last&quot;],  
+    // 圈复杂度  
+    &quot;complexity&quot;: [2,9],  
+    // 以方括号取对象属性时，[ 后面和 ] 前面是否需要空格, 可选参数 never, always  
+    &quot;computed-property-spacing&quot;: [2,&quot;never&quot;],  
+    // 强制方法必须返回值，TypeScript强类型，不配置  
+    &quot;consistent-return&quot;: 0,  
+    // 用于指统一在回调函数中指向this的变量名，箭头函数中的this已经可以指向外层调用者，应该没卵用了  
+    // e.g [0,&quot;that&quot;] 指定只能 var that = this. that不能指向其他任何值，this也不能赋值给that以外的其他值  
+    &quot;consistent-this&quot;: 0,  
+    // 强制在子类构造函数中用super()调用父类构造函数，TypeScrip的编译器也会提示  
+    &quot;constructor-super&quot;: 0,  
+    // if else while for do后面的代码块是否需要{ }包围，参数：  
+    //    multi  只有块中有多行语句时才需要{ }包围  
+    //    multi-line  只有块中有多行语句时才需要{ }包围, 但是块中的执行语句只有一行时，  
+    //                   块中的语句只能跟和if语句在同一行。if (foo) foo++; else doSomething();  
+    //    multi-or-nest 只有块中有多行语句时才需要{ }包围, 如果块中的执行语句只有一行，执行语句可以零另起一行也可以跟在if语句后面  
+    //    [2, &quot;multi&quot;, &quot;consistent&quot;] 保持前后语句的{ }一致  
+    //    default: [2, &quot;all&quot;] 全都需要{ }包围  
+    &quot;curly&quot;: [2, &quot;all&quot;],  
+    // switch语句强制default分支，也可添加 // no default 注释取消此次警告  
+    &quot;default-case&quot;: 2,  
+    // 强制object.key 中 . 的位置，参数:  
+    //      property，&#39;.&#39;号应与属性在同一行  
+    //      object, &#39;.&#39; 号应与对象名在同一行  
+    &quot;dot-location&quot;: [2, &quot;property&quot;],  
+    // 强制使用.号取属性  
+    //    参数： allowKeywords：true 使用保留字做属性名时，只能使用.方式取属性  
+    //                          false 使用保留字做属性名时, 只能使用[]方式取属性 e.g [2, {&quot;allowKeywords&quot;: false}]  
+    //           allowPattern:  当属性名匹配提供的正则表达式时，允许使用[]方式取值,否则只能用.号取值 e.g [2, {&quot;allowPattern&quot;: &quot;^[a-z]+(_[a-z]+)+$&quot;}]  
+    &quot;dot-notation&quot;: [2, {&quot;allowKeywords&quot;: true}],  
+    // 文件末尾强制换行  
+    &quot;eol-last&quot;: 2,  
+    // 使用 === 替代 ==  
+    &quot;eqeqeq&quot;: [2, &quot;allow-null&quot;],  
+    // 方法表达式是否需要命名  
+    &quot;func-names&quot;: 0,  
+    // 方法定义风格，参数：  
+    //    declaration: 强制使用方法声明的方式，function f(){} e.g [2, &quot;declaration&quot;]  
+    //    expression：强制使用方法表达式的方式，var f = function() {}  e.g [2, &quot;expression&quot;]  
+    //    allowArrowFunctions: declaration风格中允许箭头函数。 e.g [2, &quot;declaration&quot;, { &quot;allowArrowFunctions&quot;: true }]  
+    &quot;func-style&quot;: 0,  
+    &quot;generator-star-spacing&quot;: [2, { &quot;before&quot;: true, &quot;after&quot;: true }],  
+    &quot;guard-for-in&quot;: 0,  
+    &quot;handle-callback-err&quot;: [2, &quot;^(err|error)$&quot; ],  
+    &quot;indent&quot;: [2, 2, { &quot;SwitchCase&quot;: 1 }],  
+    &quot;key-spacing&quot;: [2, { &quot;beforeColon&quot;: false, &quot;afterColon&quot;: true }],  
+    &quot;linebreak-style&quot;: 0,  
+    &quot;lines-around-comment&quot;: 0,  
+    &quot;max-nested-callbacks&quot;: 0,  
+    &quot;new-cap&quot;: [2, { &quot;newIsCap&quot;: true, &quot;capIsNew&quot;: false }],  
+    &quot;new-parens&quot;: 2,  
+    &quot;newline-after-var&quot;: 0,  
+    &quot;no-alert&quot;: 0,  
+    &quot;no-array-constructor&quot;: 2,  
+    &quot;no-caller&quot;: 2,  
+    &quot;no-catch-shadow&quot;: 0,  
+    &quot;no-cond-assign&quot;: 2,  
+    &quot;no-console&quot;: 0,  
+    &quot;no-constant-condition&quot;: 0,  
+    &quot;no-continue&quot;: 0,  
+    &quot;no-control-regex&quot;: 2,  
+    &quot;no-debugger&quot;: 2,  
+    &quot;no-delete-var&quot;: 2,  
+    &quot;no-div-regex&quot;: 0,  
+    &quot;no-dupe-args&quot;: 2,  
+    &quot;no-dupe-keys&quot;: 2,  
+    &quot;no-duplicate-case&quot;: 2,  
+    &quot;no-else-return&quot;: 0,  
+    &quot;no-empty&quot;: 0,  
+    &quot;no-empty-character-class&quot;: 2,  
+    &quot;no-empty-label&quot;: 2,  
+    &quot;no-eq-null&quot;: 0,  
+    &quot;no-eval&quot;: 2,  
+    &quot;no-ex-assign&quot;: 2,  
+    &quot;no-extend-native&quot;: 2,  
+    &quot;no-extra-bind&quot;: 2,  
+    &quot;no-extra-boolean-cast&quot;: 2,  
+    &quot;no-extra-parens&quot;: 0,  
+    &quot;no-extra-semi&quot;: 0,  
+    &quot;no-fallthrough&quot;: 2,  
+    &quot;no-floating-decimal&quot;: 2,  
+    &quot;no-func-assign&quot;: 2,  
+    &quot;no-implied-eval&quot;: 2,  
+    &quot;no-inline-comments&quot;: 0,  
+    &quot;no-inner-declarations&quot;: [2, &quot;functions&quot;],  
+    &quot;no-invalid-regexp&quot;: 2,  
+    &quot;no-irregular-whitespace&quot;: 2,  
+    &quot;no-iterator&quot;: 2,  
+    &quot;no-label-var&quot;: 2,  
+    &quot;no-labels&quot;: 2,  
+    &quot;no-lone-blocks&quot;: 2,  
+    &quot;no-lonely-if&quot;: 0,  
+    &quot;no-loop-func&quot;: 0,  
+    &quot;no-mixed-requires&quot;: 0,  
+    &quot;no-mixed-spaces-and-tabs&quot;: 2,  
+    &quot;no-multi-spaces&quot;: 2,  
+    &quot;no-multi-str&quot;: 2,  
+    &quot;no-multiple-empty-lines&quot;: [2, { &quot;max&quot;: 1 }],  
+    &quot;no-native-reassign&quot;: 2,  
+    &quot;no-negated-in-lhs&quot;: 2,  
+    &quot;no-nested-ternary&quot;: 0,  
+    &quot;no-new&quot;: 2,  
+    &quot;no-new-func&quot;: 0,  
+    &quot;no-new-object&quot;: 2,  
+    &quot;no-new-require&quot;: 2,  
+    &quot;no-new-wrappers&quot;: 2,  
+    &quot;no-obj-calls&quot;: 2,  
+    &quot;no-octal&quot;: 2,  
+    &quot;no-octal-escape&quot;: 2,  
+    &quot;no-param-reassign&quot;: 0,  
+    &quot;no-path-concat&quot;: 0,  
+    &quot;no-process-env&quot;: 0,  
+    &quot;no-process-exit&quot;: 0,  
+    &quot;no-proto&quot;: 0,  
+    &quot;no-redeclare&quot;: 2,  
+    &quot;no-regex-spaces&quot;: 2,  
+    &quot;no-restricted-modules&quot;: 0,  
+    &quot;no-return-assign&quot;: 2,  
+    &quot;no-script-url&quot;: 0,  
+    &quot;no-self-compare&quot;: 2,  
+    &quot;no-sequences&quot;: 2,  
+    &quot;no-shadow&quot;: 0,  
+    &quot;no-shadow-restricted-names&quot;: 2,  
+    &quot;no-spaced-func&quot;: 2,  
+    &quot;no-sparse-arrays&quot;: 2,  
+    &quot;no-sync&quot;: 0,  
+    &quot;no-ternary&quot;: 0,  
+    &quot;no-this-before-super&quot;: 2,  
+    &quot;no-throw-literal&quot;: 2,  
+    &quot;no-trailing-spaces&quot;: 2,  
+    &quot;no-undef&quot;: 2,  
+    &quot;no-undef-init&quot;: 2,  
+    &quot;no-undefined&quot;: 0,  
+    &quot;no-underscore-dangle&quot;: 0,  
+    &quot;no-unexpected-multiline&quot;: 2,  
+    &quot;no-unneeded-ternary&quot;: 2,  
+    &quot;no-unreachable&quot;: 2,  
+    &quot;no-unused-expressions&quot;: 0,  
+    &quot;no-unused-vars&quot;: [2, { &quot;vars&quot;: &quot;all&quot;, &quot;args&quot;: &quot;none&quot; }],  
+    &quot;no-use-before-define&quot;: 0,  
+    &quot;no-var&quot;: 0,  
+    &quot;no-void&quot;: 0,  
+    &quot;no-warning-comments&quot;: 0,  
+    &quot;no-with&quot;: 2,  
+    &quot;object-curly-spacing&quot;: 0,  
+    &quot;object-shorthand&quot;: 0,  
+    &quot;one-var&quot;: [2, { &quot;initialized&quot;: &quot;never&quot; }],  
+    &quot;operator-assignment&quot;: 0,  
+    &quot;operator-linebreak&quot;: [2, &quot;after&quot;, { &quot;overrides&quot;: { &quot;?&quot;: &quot;before&quot;, &quot;:&quot;: &quot;before&quot; } }],  
+    &quot;padded-blocks&quot;: 0,  
+    &quot;prefer-const&quot;: 0,  
+    &quot;quote-props&quot;: 0,  
+    &quot;quotes&quot;: [2, &quot;single&quot;, &quot;avoid-escape&quot;],  
+    &quot;radix&quot;: 2,  
+    &quot;semi&quot;: [2, &quot;never&quot;],  
+    &quot;semi-spacing&quot;: 0,  
+    &quot;sort-vars&quot;: 0,  
+    &quot;space-after-keywords&quot;: [2, &quot;always&quot;],  
+    &quot;space-before-blocks&quot;: [2, &quot;always&quot;],  
+    &quot;space-before-function-paren&quot;: [2, &quot;always&quot;],  
+    &quot;space-in-parens&quot;: [2, &quot;never&quot;],  
+    &quot;space-infix-ops&quot;: 2,  
+    &quot;space-return-throw-case&quot;: 2,  
+    &quot;space-unary-ops&quot;: [2, { &quot;words&quot;: true, &quot;nonwords&quot;: false }],  
+    &quot;spaced-comment&quot;: [2, &quot;always&quot;, { &quot;markers&quot;: [&quot;global&quot;, &quot;globals&quot;, &quot;eslint&quot;, &quot;eslint-disable&quot;, &quot;*package&quot;, &quot;!&quot;] }],  
+    &quot;strict&quot;: 0,  
+    &quot;use-isnan&quot;: 2,  
+    &quot;valid-jsdoc&quot;: 0,  
+    &quot;valid-typeof&quot;: 2,  
+    &quot;vars-on-top&quot;: 0,  
+    &quot;wrap-iife&quot;: [2, &quot;any&quot;],  
+    &quot;wrap-regex&quot;: 0,  
+    &quot;yoda&quot;: [2, &quot;never&quot;]  
+  }  
+}
+</code></pre>

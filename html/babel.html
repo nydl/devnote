@@ -1,0 +1,100 @@
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<link href="css/markdown7.css" media="all" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" href="css/prettify.css" />
+
+<script src="http://apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<script src="js/prettify.js"></script>  
+
+<h1 id="babel">babel</h1>
+<p>一款功能强大的js编译（转换）器，能将ES7、ES6编译（转换）为ES5、ES6。</p>
+<blockquote>
+<p>babel 6 将功能分拆为很多插件，可以自由组合。如果嫌麻烦，可以直接使用预设（presets）好的插件包。比如：es2015、react。刚开始可能被 babel 晃得不明所以，本质上就是一个转码工具，类似编译器。复杂就是插件化，很多插件让你不知所措。<br>插件化虽然增加了选择成本，但使得babel发展更快，功能跟强大！<br>babel 实在太强大了，强大得令 type script 失色！coffee script、dark 彻底退出历史舞台。</p>
+</blockquote>
+<p><a href="http://babeljs.io/">官网</a>
+<a href="http://babeljs.io/docs/plugins/">插件</a></p>
+<h2 id="-">安装</h2>
+<ul>
+<li><p>将需要的babel包加入到项目配置文件
+package.json</p>
+<pre><code class="lang-js">&quot;devDependencies&quot;: {
+  &quot;babel-cli&quot;: &quot;^6.5.1&quot;,
+  &quot;babel-plugin-syntax-async-functions&quot;: &quot;^6.5.0&quot;,
+  &quot;babel-plugin-syntax-object-rest-spread&quot;: &quot;^6.5.0&quot;,
+  &quot;babel-plugin-transform-async-to-generator&quot;: &quot;^6.3.13&quot;,
+  &quot;babel-plugin-transform-es2015-arrow-functions&quot;: &quot;^6.5.2&quot;,
+  &quot;babel-plugin-transform-es2015-destructuring&quot;: &quot;^6.3.15&quot;,
+  &quot;babel-plugin-transform-es2015-modules-commonjs&quot;: &quot;^6.3.16&quot;,
+  &quot;babel-plugin-transform-es2015-parameters&quot;: &quot;^6.5.0&quot;,
+  &quot;babel-plugin-transform-es2015-spread&quot;: &quot;^6.5.2&quot;,
+  &quot;babel-plugin-transform-object-rest-spread&quot;: &quot;^6.5.0&quot;,
+  &quot;babel-plugin-transform-strict-mode&quot;: &quot;^6.5.2&quot;,
+  &quot;babel-register&quot;: &quot;^6.3.13&quot;,
+  &quot;babel-eslint&quot;: &quot;^4.1.6&quot;,
+}
+</code></pre>
+</li>
+<li>在命令行执行：npm i 自动安装</li>
+<li>npm 修改npm服务器为淘宝镜像服务器，加快安装速度
+npm config set registry <a href="https://registry.npm.taobao.org">https://registry.npm.taobao.org</a>
+npm config set disturl <a href="https://npm.taobao.org/dist">https://npm.taobao.org/dist</a></li>
+<li><p>创建 .babelrc 文件，确定需要转换哪些语法，可自己组合搭配</p>
+<pre><code class="lang-js">{
+  &quot;plugins&quot;: [
+    &quot;syntax-object-rest-spread&quot;,
+    &quot;syntax-async-functions&quot;,
+    &quot;transform-es2015-arrow-functions&quot;,
+    &quot;transform-async-to-generator&quot;,
+    &quot;transform-es2015-modules-commonjs&quot;,
+    &quot;transform-es2015-destructuring&quot;,
+    &quot;transform-es2015-spread&quot;,
+    &quot;transform-object-rest-spread&quot;,
+    &quot;transform-es2015-parameters&quot;,
+    &quot;transform-strict-mode&quot;
+  ]
+}
+</code></pre>
+</li>
+</ul>
+<h2 id="-">使用</h2>
+<ul>
+<li>在项目配置文件中设置
+&quot;scripts&quot;: {
+  &quot;build&quot;: &quot;node_modules/.bin/babel src -d lib&quot;,
+  &quot;prepublish&quot;: &quot;node_modules/.bin/babel src -d lib&quot;
+},</li>
+<li>批量编译：发布时，命令行运行 npm run build 即可生成转换后的代码</li>
+<li>IDE自动编译：在 webstorm 中调试代码，添加文件时，使用 babel-node 代替 标准 node
+比如 osx 上：
+/Users/way/.nvm/versions/node/v5.10.1/bin/node
+替换为：
+全局安装 babel-cli
+/Users/way/.nvm/versions/node/v5.10.1/bin/babel-node
+项目安装 babel-cli
+/Users/way/prj/koa/koastart/node_modules/.bin/babel-node</li>
+<li>如果需要浏览器，在浏览器上先连一下调试端口，然后打开web端口，即可触发调试</li>
+<li></li>
+</ul>
+<h2 id="babel-es6-">babel 与 ES6的兼容性问题</h2>
+<ul>
+<li><p>箭头函数，babel不绑定参数，而ES6绑定</p>
+<pre><code class="lang-js">// test babel bug
+function a(){
+  return ()=&gt;{
+    console.log(...arguments);
+  }
+}
+
+a(1)();
+</code></pre>
+</li>
+</ul>
+<h2 id="-">相关资源</h2>
+<ul>
+<li><a href="http://www.itnpc.com/news/web/145586447142569.html">http://www.itnpc.com/news/web/145586447142569.html</a></li>
+<li><a href="https://blog.jetbrains.com/webstorm/2015/05/ecmascript-6-in-webstorm-transpiling/#babelfilewatcher">https://blog.jetbrains.com/webstorm/2015/05/ecmascript-6-in-webstorm-transpiling/#babelfilewatcher</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2016/01/babel.html">http://www.ruanyifeng.com/blog/2016/01/babel.html</a></li>
+<li><a href="http://cnodejs.org/topic/565c65c4b31692e827fdd00c">http://cnodejs.org/topic/565c65c4b31692e827fdd00c</a></li>
+</ul>
