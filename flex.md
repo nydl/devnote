@@ -194,7 +194,7 @@ html {
 - D X：m.dx.com
 
 最后我们再来看一看他的兼容性：
-![适配兼容性](img/flex02.png)
+![适配兼容性](https://raw.githubusercontent.com/nydl/devnote/master/img/flex02.png)
 
 ### 通过 js 动态修改 font-size的例子
 
