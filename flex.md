@@ -131,7 +131,7 @@ html{
 
 到这里肯定有很多人会问我是怎么计算出不同分辨率下font-size的值？
 首先假设我上面的页面设计稿给我时候是按照640的标准尺寸给我的前提下，（当然这个尺寸肯定不一定是640，可以是320，或者480，又或是375）来看一组表格。
-![rem尺寸图](img/flexremsize.jpeg)
+![rem尺寸图](img/https://raw.githubusercontent.com/nydl/devnote/master/img/flexremsize.jpeg)
 
 上面的表格蓝色一列是640px的尺寸，页面是以640px的宽度去切的，怎么计算不同宽度下font-size的值，大家看表格上面的数值变化应该能明白。举个例子：384/640 = 0.6，384是640的0.6倍，所以384页面宽度下的font-size也等于它的0.6倍，这时384的font-size就等于12px。在不同设备的宽度计算方式以此类推。
 
