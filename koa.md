@@ -132,7 +132,8 @@ Koa 不在内核方法中绑定任何中间件，它仅仅提供了一个轻量�
 - 强烈推荐使用 web storm 编辑项目
 - web storm 设置：
   - js 版本：JSX Harmoney，最大限度支持新语法
-  - ESLint：Java Script 中开启 ESLint,提供代码编写规范检查
+  - ESLint：Java Script 的 代码质量工具中开启 ESLint,提供代码编写规范检查
+    eslint 库路径设置，如：/Users/way/prj/koa/koastart/node_modules/eslint
   - Babel自动转换：使用 js 6后，webstorm会提示 一个 自动转换为 5 的 插件：
     File watcher 'Babel' is available for thie file. Description:'Transpiles ECMAScript 6 code to ECMAScript 5'
     这个插件在你修改文件时，会自动将es6、es7语法文件转换为es5或es6的文件。  

@@ -52,6 +52,9 @@ eslint
   eslint --init
 - 检查js文件
   eslint test.js test2.js
+- js 版本：JSX Harmoney，最大限度支持新语法
+- ESLint：Java Script 的 代码质量工具中开启 ESLint,提供代码编写规范检查
+  eslint 库路径设置，如：/Users/way/prj/koa/koastart/node_modules/eslint
 
 ## 配置
 

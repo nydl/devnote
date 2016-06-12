@@ -19,6 +19,7 @@ git
 	msysgit是 Git 版本控制系统在 Windows 下的版本。
 -	使用手册：http://www.git-scm.com/book/zh/v2  
 -	使用手册：http://progit.org/book/zh/ch1-5.html http://www.open-open.com/lib/view/1328070404827
+- 七个你无法忽视的Git使用技巧 http://www.oschina.net/news/68437/seven-git-hacks-you-just-cannot-ignore
 
 ![git-local](https://raw.githubusercontent.com/nydl/devnote/master/img/git-local.png)
 

@@ -14,7 +14,14 @@ mongoDB
 
 网址：http://www.mongodb.org
 
-3.0 性能得到巨大提升，WiredTiger存储引擎。
+基于文档的开源非关系数据库。
+
+>其中文档型是个重要的概念需要理解。
+在 sql 中，我们的数据层级是：数据库（db） -> 表（table） -> 记录（record）-> 字段；  
+在 mongodb 中，数据的层级是：数据库 -> collection -> document -> 字段。这四个概念可以对应得上。
+
+>文档型数据这个名字中，“文档”两个字很容易误解。其实这个文档就是 bson 的意思。bson 是 json 的超集，比如 json 中没法储存二进制类型，而 bson 拓展了类型，提供了二进制支持。mongodb 中存储的一条条记录都可以用 bson 来表示。所以你也可以认为，mongodb 是个存 bson 数据的数据库，或是存哈希数据的数据库。
+
 
 安装
 ----
@@ -74,7 +81,7 @@ net:
 
 -	本机访问：bind 127.0.0.1，如果不限定主机，则屏蔽不配置
 -	dbpath 指定数据库存储目录
--	新的 wiredTiger，新安装的默认就是 该引擎，以前需设定！  
+-	3.0版本开始支持全新的 wiredTiger引擎，新安装的默认就是 该引擎，以前需设定！  
   速度快10倍，但是缺省未开启，需在配置文件中开启，开启时，需重新指定全新的数据库路径， 原路径如果存在数据，则无法启动，提示：  
 	>2015-05-16T21:32:59.081+0800 I STORAGE [initandlisten] exception in initAndListen: 28574 Cannot start server. Detected data files in C:\MongoDB\data created by storage engine 'mmapv1'. The configured storage engine is 'wiredTiger'., terminating
 -	storageEngine = wiredTiger 指定存储引擎，屏蔽则使用 mmapv1，这个是3.0以前的引擎， 兼容旧的数据库，如果要使用新的引擎，则无法打开旧的数据，需使用程序或导出导入工具 将旧数据重新写入到新的库！！！
