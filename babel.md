@@ -19,6 +19,8 @@
 
 但是，babel 实在太强大了，强大得令 type script 失色！coffee script、dart 退出历史舞台。
 
+与 babel 能相提并论的，只有 type script，相比 babel，增加了 强类型，写代码相对没有js自由，已有数百万 js 代码库的类型定义，是个大问题，比较麻烦，不像 babel这样平滑，想用新语法可以，不想用也可以。
+
 强大的代价是复杂，似乎没有一个 node 库会像 babel这样复杂！
 比如：
 
@@ -48,20 +50,79 @@ babel 6开始，babel演变为一个庞大的生态（语法提示、自动化�
 对于一般使用者来说，无需关心插件，只需使用 babel 已经打包好的预设库即可。
 
 ```
-"babel-polyfill": "^6.9.1",       // 代码填充，也可译作兼容性补丁，提供 API编译
-"babel-preset-es2015": "^6.9.0",  // 所有es6转es5插件集合
-"babel-preset-react": "^6.5.0",   // react 语法转es5插件集合
-"babel-preset-stage-0", // 草案
-"babel-preset-stage-1",
+"babel-polyfill"        // 提供一些环境中不存在的函数
+"babel-preset-es2015"   // es5 发布标准
+"babel-preset-react"    // react 语法转es5插件集合
+"babel-preset-stage-0", // 最新草案
+"babel-preset-stage-1", 
 "babel-preset-stage-2",
-"babel-preset-stage-3"
+"babel-preset-stage-3"  // 第三阶段草案
 // 注意 stage-4 预设是不存在的，因为它就是上面的 es2015 预设。
 
 ```
 
-对于web前端开发，babel-preset-es2015 是必备选择，如果使用了 react，则毫无疑问， 需要 babel-preset-react。babel-polyfill则作为可选，跟普通node库一样，如果觉得有价值就装，否则可不装。
+对于web前端开发，babel-preset-es2015 是必备选择，如果使用了 react，则毫无疑问， 需要 babel-preset-react。
 
-其他插件可选，插件一般分为 语法和转换，基本上是对应的，比如怎了异步函数，类静态属性的插件.babelrc：
+如果使用了Promise、异步函数等，则需要 polyfill 运行库，提供一个 转换es5之后浏览器不支持的运行环境！  
+这个库文件（polyfill.min.js，在安装模块polyfill中）大约 98k，不算小，影响打开速度，适合后台管理之类页面，不太适合手机页面。  
+对于 react大量使用 异步及 promise来说，属于必选，spa单页应用需做好加载过度页面！
+
+babel 对于后台、react native来说，体验是最好的，属于必选环境。  
+
+其他插件可选，插件一般分为 语法（用于语法识别）和转换，基本上是对应的，比如异步函数，类静态属性的插件。
+
+预设插件功能容量：  
+
+`stage-0 > stage-1 > stage-2 > stage-3 > es2015`  
+
+stage-0 是最初级、也是最新的版本，最终形成正式标准，这需要一个漫长的过程！
+
+当然，可以自己选择插件，随意组合，不受预设限制！
+
+## 配置文件示例
+
+### 后台 .babelrc 文件示例：
+
+```
+{
+  "plugins": [
+    "syntax-object-rest-spread",
+    "syntax-async-functions",
+    "syntax-class-properties",
+    "transform-es2015-arrow-functions",
+    "transform-async-to-generator",
+    "transform-es2015-modules-commonjs",
+    "transform-es2015-destructuring",
+    "transform-es2015-spread",
+    "transform-object-rest-spread",
+    "transform-es2015-parameters",
+    "transform-strict-mode",
+    "transform-class-properties"
+  ]
+}
+
+```
+
+后台的js 版本需设置为 es2015 或 JSX，主要增加了es2015不支持的异步函数，以及类静态属性等。
+
+### 前端浏览器不使用异步函数 .babelrc 文件示例：
+
+```
+{
+  "presets": ["es2015"],
+  "plugins": [
+    "syntax-object-rest-spread",
+    "syntax-class-properties",
+    "transform-object-rest-spread",
+    "transform-strict-mode",
+    "transform-class-properties"
+  ]
+}
+```
+
+
+### 前端浏览器使用异步函数 .babelrc 文件示例：
+
 ```
 {
   "presets": ["es2015"],
@@ -79,13 +140,10 @@ babel 6开始，babel演变为一个庞大的生态（语法提示、自动化�
 }
 ```
 
-标准版本：  
-`stage-0 > stage-1 > stage-2 > stage-3 > es2015`  
-stage-0 是最初级、也是最新的版本，最终形成正式标准，这需要一个漫长的过程！
+前端需加载 polyfill.min.js
 
-当然，可以自己选择插件，随意组合，不受预设限制！
 
-安装 预设es2015包，从自有插件集合中删除重复插件：
+### 安装 预设es2015包，从自有插件集合中删除重复插件：
 
 ```
 "babel-plugin-transform-es2015-arrow-functions": "^6.5.2",
@@ -95,7 +153,7 @@ stage-0 是最初级、也是最新的版本，最终形成正式标准，这需
 "babel-plugin-transform-es2015-spread": "^6.5.2",
 ```
 
-babel-preset-es2015预设集合：
+### babel-preset-es2015预设集合：
 
 ```
 check-es2015-constants
@@ -121,7 +179,8 @@ transform-es2015-unicode-regex
 transform-regenerator
 ```
 
-stage-0
+### stage-0 初级草案
+
 ```
 └─┬ babel-preset-stage-0@6.5.0
   ├─┬ babel-plugin-transform-do-expressions@6.8.0
@@ -144,37 +203,59 @@ stage-0
           ├─┬ babel-helper-builder-binary-assignment-operator-visitor@6.8.0
           │ └── babel-helper-explode-assignable-expression@6.8.0
           └── babel-plugin-syntax-exponentiation-operator@6.8.0
+
 ```
 
 ## 安装
 
-- 将需要的babel包加入到项目配置文件
+- [详细安装说明](http://babeljs.io/docs/setup/)
+  babel不仅仅只是一个转换工具，涉及到数十种环境的安装。
+- 命令行客户端工具（CLI）：`npm install -S babel-cli`
+- 注册器：`npm install babel-register`
+- webpack: `npm install -S babel-loader babel-core`
+- 批量安装，将需要的babel包加入到项目配置文件，babel 及 eslint语法静态检查包！
   package.json
-  ``` js
+
+  ```js
   "devDependencies": {
-    "babel-cli": "^6.5.1",
-    "babel-plugin-syntax-async-functions": "^6.5.0",
+    "babel-cli": "^6.10.1",
+    "babel-plugin-syntax-async-functions": "^6.8.0",
+    "babel-plugin-syntax-class-properties": "^6.8.0",
     "babel-plugin-syntax-object-rest-spread": "^6.5.0",
-    "babel-plugin-transform-async-to-generator": "^6.3.13",
+    "babel-plugin-transform-async-to-generator": "^6.8.0",
+    "babel-plugin-transform-class-properties": "^6.9.0",
+    "babel-plugin-transform-regenerator": "^6.9.0",
+    "babel-plugin-transform-regenerator": "^6.9.0",
     "babel-plugin-transform-object-rest-spread": "^6.5.0",
     "babel-plugin-transform-strict-mode": "^6.5.2",
+    "babel-plugin-transform-es2015-arrow-functions": "^6.5.2",
+    "babel-plugin-transform-es2015-destructuring": "^6.3.15",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.3.16",
+    "babel-plugin-transform-es2015-parameters": "^6.5.0",
+    "babel-plugin-transform-es2015-spread": "^6.5.2",
     "babel-register": "^6.3.13",
-    "babel-eslint": "^4.1.6",
-    "babel-preset-es2015": "^6.9.0",
+    "babel-eslint": "^6.0.4",
+    "eslint": "^2.9.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.8.0",
+    "eslint-plugin-jsx-a11y": "^1.2.0",
+    "eslint-plugin-react": "^5.1.1",
   }
-  
+
   ```
 
-- 在命令行执行：npm i 自动安装
-- npm 修改npm服务器为淘宝镜像服务器，加快安装速度
+- npm 修改npm服务器为淘宝镜像服务器（10分钟自动与国外同步），加快安装速度，如果已经设置过，则无需重新设置！
   npm config set registry https://registry.npm.taobao.org
   npm config set disturl https://npm.taobao.org/dist
+  查看 npm config list，可以看是否设置正确，否则 npm 从国外下载，非常慢！
+- 在命令行执行：npm i ，将批量安装所有包。
 - 创建 .babelrc 文件，确定需要转换哪些语法，可自己组合搭配
-  ``` js
+  ``` js  
   {
     "plugins": [
       "syntax-object-rest-spread",
       "syntax-async-functions",
+      "syntax-class-properties",
       "transform-es2015-arrow-functions",
       "transform-async-to-generator",
       "transform-es2015-modules-commonjs",
@@ -182,7 +263,8 @@ stage-0
       "transform-es2015-spread",
       "transform-object-rest-spread",
       "transform-es2015-parameters",
-      "transform-strict-mode"
+      "transform-strict-mode",
+      "transform-class-properties"
     ]
   }
   
@@ -190,7 +272,7 @@ stage-0
 
 ## 使用
 
-- 在项目配置文件中设置，自动将源文件编译到目的路径
+- 在项目配置文件 package.json 中设置，自动将源文件编译到目的路径
   "scripts": {
     "build": "node_modules/.bin/babel src -d lib",
     "prepublish": "node_modules/.bin/babel src -d lib"
@@ -206,15 +288,17 @@ stage-0
   /Users/way/prj/koa/koastart/node_modules/.bin/babel-node
 - 如果需要浏览器，在浏览器上先连一下调试端口，然后打开web端口，即可触发调试
 - 如果不想每次编译后调试，可使用 register，直接在 bable环境里面动态执行
+- 生成 source map文件，方便单步跟踪调试。
 
 ## 与 webpack 集成
 
-对于后端项目，由于 node 内置了 模块管理，使用 babel 可以独立完成编译，文件一般也不需要打包。  
+对于后端项目，由于 node 内置了 模块管理，使用 babel 可以独立完成编译，文件一般也不需要打包。   
+
 对于前端项目来说，由于没有模块管理，需要借助 webpack完成模块管理及打包。  
 babel 与 webpack 需要集成，使用 webpack打包时自动完成转换。
 
-集成非常简单，只需安装一个 babel loader 即可：
-`npm i babel-loader -D`
+集成非常简单，只需安装 babel-core、 babel-loader 即可：  
+`npm install --save-dev babel-loader babel-core`
 
 然后在 webpack.config.js 中设置一行：
 ```js
@@ -749,6 +833,35 @@ var itemsCopy = [].concat(items);
 
 2，fis3 + babel + Qjs + lego 选择这样的方案一方面是因为团队目前的主要技术选型，另一方面则是每个工具的特有优势。目前这块仍在不断完善当中。
 
+### async、await异步函数
+
+转换后的代码在浏览器运行，报 regeneratorRuntime is not defined 错误！
+
+这个在网上搜索，国内国外很多很多，乱七八糟的，实际上都没说明白。  
+
+有的说需增加 "transform-runtime"，增加这个，需要很多 require，运行报错！
+
+有的说转换是曾经 -- option runtime选项，实际上没有作用。 
+    
+最后在官网上看到，babel-browser项目已经终止，如果要在浏览器环境执行，需包含 polyfill文件！   
+客户端 html文件需增加如下引用，该文件在安装模块的 polyfill目录下面，最号找到 cdn 镜像，加速加载。
+
+```
+<script src="lib/polyfill.min.js" charset="utf-8"></script>
+```
+
+国内外关于 异步函数的说明，没几个说的清楚！
+
+- http://masnun.com/2015/11/11/using-es7-asyncawait-today-with-babel.html
+- http://stackoverflow.com/questions/28708975/transpile-async-await-proposal-with-babel-js
+- https://github.com/sindresorhus/gulp-traceur
+- https://www.npmjs.com/package/gulp-traceur
+- https://www.sitepoint.com/simplifying-asynchronous-coding-es7-async-functions/
+- http://stackoverflow.com/questions/24645789/convenient-syntax-for-executing-asynchronous-functions-if-condition-is-met
+- http://www.jbernier.com/how-to-get-es7-async-functions-with-babel
+- http://stackoverflow.com/questions/33527653/babel-6-regeneratorruntime-is-not-defined-with-async-await
+- http://quabr.com/28976748/regeneratorruntime-is-not-defined
+
 ### 小结
 
 所以使用ES6这一方案来进行实际开发是否有一定的必要性仍需要进行考虑，因为es6的高等特性在es5中没有对应的特性去代替，即使能够代替也是使用一些复杂的自定义函数去做，而部分可转换实现的特性仍然较少，而且写起来确实很简洁，这也是es6的一大优势。
@@ -763,16 +876,8 @@ https://github.com/ouvens/ecmaScript-2015-babel-rules
 - [官网](http://babeljs.io/)
 - [插件](http://babeljs.io/docs/plugins/)
 - [中文手册](https://github.com/thejameskyle/babel-handbook/blob/master/translations/zh-Hans/README.md)
-- [举例]https://github.com/ruanyf/webpack-demos
 - [node.js学习笔记之babel使用](http://www.itnpc.com/news/web/145586447142569.html)
 - [ECMAScript 6 in WebStorm: Transpiling](https://blog.jetbrains.com/webstorm/2015/05/ecmascript-6-in-webstorm-transpiling/#babelfilewatcher)
 - [Babel 入门教程](http://www.ruanyifeng.com/blog/2016/01/babel.html)
 - [ES2015 & babel 实战：开发NPM模块](http://cnodejs.org/topic/565c65c4b31692e827fdd00c)
-【前端构建】WebPack实例与前端性能优化 https://segmentfault.com/a/1190000004577578
-基于webpack的前端工程化开发之多页站点篇（一） https://segmentfault.com/a/1190000004511992
-基于webpack的前端工程化开发之多页站点篇（二）https://segmentfault.com/a/1190000004516832
-基于 Webpack 和 ES6 打造 JavaScript 类库 http://www.open-open.com/lib/view/open1452821009073.html
-
-
-webpack + gulp 在前端中的应用 https://segmentfault.com/a/1190000005129121
 
