@@ -91,20 +91,11 @@ module.exports = {
   },
   module: {
     loaders: [
-      {test: /\.js$/, loader: 'babel', exclude: '/node_modules/',
-        query: {
-          presets: ['es2015'],
-          plugins: ['transform-async-to-generator',
-          'transform-object-rest-spread',
-          'transform-es2015-parameters',
-          'transform-strict-mode',
-          'transform-class-properties']
-        }
-      }
+      {test: /\.js$/, loader: 'babel', exclude: '/node_modules/'}
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js']
   },
   plugins: []
 };
@@ -174,7 +165,7 @@ window.kdDesc = evt =>_etDesc.keyDown(evt);
 >babel加载器就是通过babel库实现js 6、7的代码转换为 js 5，浏览器能正常执行！  
 >其实通过 babel 自己也能完成转换，但是 babel自身并没有 分析 js中的引用、关联与依赖，后台代码，由于 node.js本身自带的模块化管理可直接使用，因此，后台代码并不需要 模块工具，但是前端部分，只能使用 webpack 这种工具进行依赖分析打包，确保所有的js打包到一个文件，否则，页面代码会以为缺少 模块而无法运行。
 
-安装babel、babel-preset-es2015 babel-loader加载器：  
+安装babel-core、babel-preset-es2015、babel-loader加载器：  
 
 `npm i babel-core babel-preset-es2015 babel-loader –D`
 
@@ -188,23 +179,23 @@ babel 几个最常用的库：
 "babel-preset-es2015": "^6.5.0",
 "babel-preset-react": "^6.5.0",
 ```
-babel-loader加载器配置：
+babel-loader加载器使用 .babelrc 文件配置，这个配置文件，使用 bable编译时也有效！
 
 ```
-  module: {
-    loaders: [
-      {test: /\.js$/, loader: 'babel', exclude: '/node_modules/',
-        query: {
-          presets: ['es2015'],
-          plugins: ['transform-async-to-generator',
-          'transform-object-rest-spread',
-          'transform-es2015-parameters',
-          'transform-strict-mode',
-          'transform-class-properties']
-        }
-      }
-    ]
-  },
+{
+  "presets": ["es2015"],
+  "plugins": [
+    "syntax-object-rest-spread",
+    "syntax-async-functions",
+    "syntax-async-generators",
+    "syntax-class-properties",
+    "transform-async-to-generator",
+    "transform-object-rest-spread",
+    "transform-regenerator",
+    "transform-strict-mode",
+    "transform-class-properties"
+  ]
+}
 ```
 
 ## 使用 gulp 集成 webpack 自动打包
@@ -218,6 +209,7 @@ npm i vinyl-named -D
 ```
 
 webpack-stream 详细说明：https://www.npmjs.com/package/webpack-stream
+  这个库在 windows 上执行，好像报错！！！
 淘宝镜像：https://npm.taobao.org/package/webpack-stream
 
 修改 webpack.config.js，屏蔽 entry 项，使用 gulp的 gulp.src 替代 entry
@@ -253,6 +245,26 @@ gulp.task('build', function () {
 ```
 
 gulp 自动生成 prodEdit.js、prodEdit.min.js, tool.tool.min.js，一个用于调试，一个是压缩的，用于生产环境！  
+
+## 有了gulp和webpack，还需要bower吗？
+
+不是同一个level的工具。  
+
+- gulp是工具链，可以配合各种插件做js压缩，css压缩，less编译等工作
+- webpack是文件打包工具，可以把项目的各种js文、css文件等打包合并成一个或多个文件
+- bower是包管理器，用来管理你项目里的那些外部依赖的。
+  所以是否还用bower，完全取决于你的需求。不要执着于是否用了gulp或者webpack
+
+webpack是一个比browserify功能更强大的模块加载器。既然是模块加载器，当然就包括对各种各样模块的加载，包括SASS/LESS/CoffeeScript/png/jpg等，以及webpack对于node_module模块加载已经非常完善了。
+
+那么，为什么还需要bower呢？由于前端开发很多第三方模块并非都以标准npm包形式存在，有一些非主流，或者各种原因没放到npm上的包，可以在bower找到。
+
+基于这个原因，使用webpack时候，凭着能用npm就用（依赖加载更加方便，功能更加强大），不能用的时候使用bower声明第三方模块依赖，然后使用js/css加载方式进行加载。
+
+值得一提的是，webpack官方也提供非常便利的方式加载bower模块（模块的主要文件，被声明在bower.json main属性里面）,通过配置后就可以很方便地沿用require来加载bower模块。
+
+传送门：http://webpack.github.io/docs/usage-with-bower.html
+
 
 ## 多页面 js 规划
 
@@ -355,7 +367,6 @@ module: {
 Expose file.js as XModule to the global context
 ```
 require("expose?XModule!./file.js")
-```
 Another Example:
    require('expose?$!expose?jQuery!jquery');
    ...
@@ -363,7 +374,18 @@ Another Example:
    console.log("hey");
    })
 ```   
+
 By making Jquery available as a global namespace in our file containing Jquery code or the root file, it’s available to use Jquery everywhere in your project. This works very well if you plan to implement Bootstrap in your Webpack project.
 
 Note: Using too much global name-spacing will make your app less efficient. If you are planning to use a lot of global namespaces, consider implementing something like Babel runtime to your project.
 
+## 参考资源
+
+- [webpack举例]https://github.com/ruanyf/webpack-demos
+- [WebPack实例与前端性能优化](https://segmentfault.com/a/1190000004577578)
+- [基于webpack的前端工程化开发之多页站点篇（一）](https://segmentfault.com/a/1190000004511992)
+- [基于webpack的前端工程化开发之多页站点篇（二）](https://segmentfault.com/a/1190000004516832)
+- [基于 Webpack 和 ES6 打造 JavaScript 类库](http://www.open-open.com/lib/view/open1452821009073.html)
+- [webpack + gulp 在前端中的应用](https://segmentfault.com/a/1190000005129121)
+- [gulp + webpack 构建多页面前端项目](http://www.open-open.com/news/view/1c51682)
+- [gulp + webpack 构建多页面前端项目](http://www.07net01.com/2015/11/967593.html)
