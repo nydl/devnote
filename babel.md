@@ -841,6 +841,8 @@ var itemsCopy = [].concat(items);
 
 有的说需增加 "transform-runtime"，增加这个，需要很多 require，运行报错！
 
+[runtime详细说明](http://babeljs.io/docs/plugins/transform-runtime/)
+
 有的说转换是曾经 -- option runtime选项，实际上没有作用。 
     
 最后在官网上看到，babel-browser项目已经终止，如果要在浏览器环境执行，需包含 polyfill文件！   
@@ -880,4 +882,4 @@ https://github.com/ouvens/ecmaScript-2015-babel-rules
 - [ECMAScript 6 in WebStorm: Transpiling](https://blog.jetbrains.com/webstorm/2015/05/ecmascript-6-in-webstorm-transpiling/#babelfilewatcher)
 - [Babel 入门教程](http://www.ruanyifeng.com/blog/2016/01/babel.html)
 - [ES2015 & babel 实战：开发NPM模块](http://cnodejs.org/topic/565c65c4b31692e827fdd00c)
-
+- [ES6 Babel Browserify Boilerplate](https://github.com/thoughtram/es6-babel-browserify-boilerplate)
