@@ -1,6 +1,8 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
 <link href="css/markdown7.css" media="all" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="css/prettify.css" />
+<script src="js/jquery-2.0.0.min.js"></script>
+<script src="js/prettify.js"></script>  
 
 Node.js
 =======
@@ -10,6 +12,174 @@ Node.js
 网址：https://nodejs.org/  
 iojs网址：https://iojs.org  
 V8引擎网址：http://code.google.com/p/v8/
+
+入门手册 http://nodebeginner.org/index-zh-cn.html http://www.nodebeginner.org/index-zh-cn.html
+
+安装node
+--------
+
+- node.js https://nodejs.org/en/download/
+- windows 版本，下载 node-v5.0.0-x64.msi，安装，如果之前安装过 iojs，可卸载
+- iojs(不再使用)
+  - iojs网址(node分离的版本): https://iojs.org/en/index.html  
+  - 最新版本相关文件：https://iojs.org/dist/v2.0.1/
+  - 相关中间件：https://github.com/koajs
+  - 例子：
+    - https://github.com/koajs/examples
+    - https://github.com/koajs/workshop
+    - https://github.com/koajs/kick-off-koa
+  - windows版本：iojs-v1.7.1-x64.msi  
+  - 苹果版本：iojs-v1.7.1-darwin-x64.tar.gz  
+  - 源代码：iojs-v1.7.1.tar.gz，源代码webstorm需要，用于开发时提示
+  - iojs 已经与node言归于好合并了，卸载 iojs，重新安装
+- 直接运行，按缺省方式安装！
+- 如果以前安装有node.js 请卸载，如果安装有旧版本iojs，无需卸载，直接安装即可覆盖。
+- 安装完毕，会自动将 node、iojs、npm加入路径！
+- 在命令行执行 node -v 可看到 安装的版本号。
+
+安装 直接从 官网下载 Node.js 安装程序， 支持 Windows、Linux、Apple 三种操作系统
+
+如果你想长期做 node 开发, 或者想快速更新 node 版本, 或者想快速切换 node 版本, 那么在非 Windows(如 osx, linux) 环境下, 请使用 nvm 来安装你的 node 开发环境, 保持系统的干净
+
+## 卸载 Node
+
+1. 如果已经安装了 node，需要卸载后，使用 brew nvm安装，卸载指令如下：
+```
+#!/bin/bash
+lsbom -f -l -s -pf /var/db/receipts/org.nodejs.pkg.bom \
+| while read i; do
+  sudo rm /usr/local/${i}
+done
+```
+2. 如果是从brew安装的, 运行brew uninstall node
+1. 检查~/中所有的local, lib或者include文件夹, 删除里面所有node和node_modules
+4. 在/usr/local/bin中, 删除所有node的可执行文件
+5. 最后运行以下代码:
+```
+sudo rm -rf /usr/local/lib/node \
+     /usr/local/lib/node_modules \
+     /var/db/receipts/org.nodejs.*
+sudo rm /usr/local/lib/dtrace/node.d
+sudo rm /usr/local/bin/npm \
+     /usr/local/bin/node
+sudo rm /usr/local/share/man/man1/node.1
+sudo rm -rf ~/.npm
+sudo rm -rf ~/.node_repl_history
+sudo rm -rf ~/.node-gyp
+sudo rm /opt/local/bin/node
+sudo rm /opt/local/include/node
+sudo rm -rf /opt/local/lib/node_modules
+```
+
+## 使用nvm安装多个 node 版本
+    
+- 如果你使用 Windows 做开发, 那么你可以使用 nvmw 来替代 nvm   
+  网址：https://github.com/creationix/nvm https://github.com/hakobera/nvmw https://github.com/coreybutler/nvm-windows
+- mac os系统，先安装 brew，使用 brew install nvm，安装完毕，需按提示操作将如下内容：
+```  
+export NVM_DIR=~/.nvm
+ . $(brew --prefix nvm)/nvm.sh
+``` 
+写入 .bash_profile（mac中 ~/.bashrc , ~/.profile , 或者 ~/.zshrc都不对）文件，才能运行 nvm指令！
+
+nvm ls 已经安装的版本 nvm ls-rmote 服务器上的有效版本 
+nvm install v5.6.0 安装指定版本 
+nvm use v5.6.0 使用指定版本
+- 设置开机启动缺省版本
+如果不设置，每次重启计算机，都需要设置 按项目设置不同的版本：  
+如果每个项目要用到不同版本的 node，那么就在你的项目目录下用 .nvmrc 设置缺省的 nvm use 版本号， 然后在 package.json 的各个 script 入口代码加上 nvm use 即可。 这项执行 start/test 等脚本前就会先 use 一下。 
+Example: 
+nvm install v5.6.0 #Install a specific version number    
+nvm install v4.3.0     
+nvm use 0.10 #Use the latest available 0.10.x release  
+nvm run 0.10.24 myApp.js #Run myApp.js using node v0.10.24  
+nvm alias default 0.10.24 #Set default node version on a shell
+
+Note: to remove, delete or uninstall nvm - just remove ~/.nvm, ~/.npm and ~/.bower folders
+
+系统缺省：.bash_profile 中设置 nvm alias default 5.6
+```
+
+Windows 会自动 将程序安装在
+
+```
+C:\Program Files\nodejs 目录！ 全局模块安装在 C:\Users\Walter\AppData\Roaming\npm
+```
+
+程序目录会有 一个 node.exe 文件 和 npm.cmd 文件，
+node 文件，就可执行 js 脚本了，类似 java！
+npm 能实现 模块安装！
+
+上述两个目录 会自动加到 系统 的 Path 路径，方便 执行！ 如果没有自动加载，请手工加载！ 如果Path中已经有了，但是不生效，请手工修改 path，保存下，确保 node 所在 path生效！
+
+更新 版本，请 下载新版本，直接安装即可！
+
+查看版本： 再 输入 指令 node -v 版本 npm -v 版本
+
+如果上诉两个命令出错，请打开系统环境变量Path，加入 node.js 路径，再试。
+
+cmd 命令行下，执行 node，启动 node shell
+```
+> process.versions
+返回 安装node 版本信息：
+{ node: '0.6.13',
+    v8: '3.6.6.24',
+    ares: '1.7.5-DEV',
+    uv: '0.6',
+    openssl: '0.9.8r' }
+>
+```
+
+全局第三方库
+
+npm i -g typescript
+npm i -g typings
+npm i -g react-native-cli
+
+运行 代码 node xxx.js
+
+下载 Node 源代码 node-v5.0.0.tar.gz 并 放入 Node项目文件夹，比如 为 Node专门建立的 项目目录： C:\Users\Walter\Prjs\node
+
+使用 cnpm 加速 npm
+------------------
+
+## npm 镜像服务器
+
+- 淘宝镜像服务器，10分钟同步一次，http://npm.taobao.org
+- npm 修改npm服务器为淘宝镜像服务器，加快安装速度
+  npm config set registry https://registry.npm.taobao.org
+  npm config set disturl https://npm.taobao.org/dist
+
+
+同理 nvm , npm 默认是从国外的源获取和下载包信息, 不慢才奇怪. 可以通过简单的 ---registry 参数, 使用国内的镜像 http://r.cnpmjs.org : 如： $ npm --registry=http://r.cnpmjs.org install koa
+
+但是毕竟镜像跟官方的 npm 源还是会有一个同步时间差异, 目前 cnpm 的默认同步时间间隔是 15 分钟. 如果你是模块发布者, 或者你想马上同步一个模块, 那么推荐你安装 cnpm cli:
+
+$ npm --registry=http://r.cnpmjs.org install cnpm -g 通过 cnpm 命令行, 你可以快速同步任意模块:
+
+$ cnpm sync koa connect mocha 呃, 我就是不想安装 cnpm cli 怎么办? 哈哈, 早就想到你会这么懒了, 于是我们还有一个 web 页面:
+
+例如我想马上同步 koa, 直接打开浏览器: http://cnpmjs.org/sync/koa
+
+或者你是命令行控, 通过 open 命令打开:
+
+$ open http://cnpmjs.org/sync/koa 如果你安装的模块依赖了 C++ 模块, 需要编译, 肯定会通过 node-gyp 来编译, node-gyp 在第一次编译的时候, 需要依赖 node 源代码, 于是又会去 node dist 下载, 于是大家又会吐槽, 怎么 npm 安装这么慢...
+
+好吧, 于是又要提到 --disturl 参数, 通过七牛的镜像来下载:
+
+$ npm --registry=http://r.cnpmjs.org --disturl=http://dist.u.qiniudn.com install microtime 再次要提到 cnpm cli, 它已经默认将 --registry 和 --disturl 都配置好了, 谁用谁知道 . 写到这里, 就更快疑惑那些不想安装 cnpm cli 又吐槽 npm 慢的同学是基于什么考虑不在本地安装一个 cnpm 呢?
+
+github 好慢
+
+好了, 看到这里大家应该对 node 和 npm 已经没有速度慢的问题了.
+
+github 慢, 或者说是它的资源 host 被堵而已, 大家可以通过简单的 hosts 映射解决:
+
+185.31.16.184 github.global.ssl.fastly.net
+
+```
+python 2.7 https://www.python.org/downloads/
+```
 
 V8引擎介绍
 ----------
@@ -46,6 +216,14 @@ console.log('Server running at http://127.0.0.1:8124/');
 
 类似 PHP，一个脚本语言，js 更强大，更灵活，更方便！ 个人 一直不喜欢 PHP 语言，太多的 $，没有美感！ PHP运行还需要 Apache， Node.js = PHP + Apache Node.js = Python
 
+## 引用第三方库
+
+var circle = require('circle.js');
+Error: Cannot find module 'circle.js'
+面对这样的错误，反复检查了一下源代码，比对之后发现 第一句 require中的路径和文章中的路径不一致，于是将引用路径改成：
+var circle = require('./circle.js');
+
+
 编译C++插件
 -----------
 
@@ -67,30 +245,27 @@ console.log('Server running at http://127.0.0.1:8124/');
 	-	https://github.com/nodejs/node-gyp
 	-	为支持 iojs提取下载库文件的辅助插件，现在无用！ https://github.com/mafintosh/node-gyp-install
 
-它对什么有好处？ 正如您此前所看到的，Node 非常适合以下情况： 在响应客户端之前，您预计可能有很高的流量，但所需的服务器端逻辑和处理不一定很多。Node 表现出众的典型示例包括：
+## 它对什么有好处
 
-```
-RESTful API
+- 正如您此前所看到的，Node 非常适合以下情况：    
+  在响应客户端之前，您预计可能有很高的流量，但所需的服务器端逻辑和处理不一定很多。
+- RESTful API
     提供 RESTful API 的 Web 服务接收几个参数，解析它们，组合一个响应，并返回一个响应（通常是较少的文本）给用户。
     这是适合 Node 的理想情况，因为您可以构建它来处理数万条连接。它仍然不需要大量逻辑；
     它本质上只是从某个数据库中查找一些值并将它们组成一个响应。由于响应是少量文本，入站请求也是少量的文本，
     因此流量不高，一台机器甚至也可以处理最繁忙的公司的 API 需求。
-
-Twitter 队列
+- Twitter 队列
     想像一下像 Twitter 这样的公司，它必须接收 tweets 并将其写入数据库。
     实际上，每秒几乎有数千条 tweet 达到，数据库不可能及时处理高峰时段所需的写入数量。
-
     Node 成为这个问题的解决方案的重要一环。如您所见，Node 能处理数万条入站 tweet。
     它能快速而又轻松地将它们写入一个内存排队机制（例如 memcached），另一个单独进程可以从那里将它们写入数据库。
-
     Node 在这里的角色是迅速收集 tweet，并将这个信息传递给另一个负责写入的进程。
     想象一下另一种设计（常规 PHP 服务器会自己尝试处理对数据库本身的写入）：
     每个 tweet 都会在写入数据库时导致一个短暂的延迟，因为数据库调用正在阻塞通道。
     由于数据库延迟，一台这样设计的机器每秒可能只能处理 2000 条入站 tweet。
     每秒处理 100 万条 tweet 则需要 500 个服务器。相反，Node 能处理每个连接而不会阻塞通道，
     从而能够捕获尽可能多的 tweets。一个能处理 50,000 条 tweet 的 Node 机器仅需 20 台服务器即可。
-
-电子游戏统计数据
+- 电子游戏统计数据
     如果您在线玩过《使命召唤》这款游戏，当您查看游戏统计数据时，
     就会立即意识到一个问题：要生成那种级别的统计数据，必须跟踪海量信息。
     这样，如果有数百万玩家同时在线玩游戏，而且他们处于游戏中的不同位置，
@@ -101,133 +276,7 @@ Twitter 队列
     如果您使用 Apache 这样的服务器，可能会 有一些有用的限制；
     但相反，如果您专门使用一个服务器来跟踪一个游戏的所有统计数据，
     就像使用运行 Node 的服务器所做的那样，那看起来似乎是一种明智之举。
-```
 
-```
-
-入门手册 http://nodebeginner.org/index-zh-cn.html http://www.nodebeginner.org/index-zh-cn.html
-
-安装node
---------
-
-- node.js https://nodejs.org/en/download/
-- windows 版本，下载 node-v5.0.0-x64.msi，安装，如果之前安装过 iojs，可卸载
-- iojs
-	-	iojs网址(node分离的版本): https://iojs.org/en/index.html  
-	-	最新版本相关文件：https://iojs.org/dist/v2.0.1/
-	-	相关中间件：https://github.com/koajs
-	-	例子：
-		-	https://github.com/koajs/examples
-		-	https://github.com/koajs/workshop
-		-	https://github.com/koajs/kick-off-koa
-	-	windows版本：iojs-v1.7.1-x64.msi  
-	-	苹果版本：iojs-v1.7.1-darwin-x64.tar.gz  
-	-	源代码：iojs-v1.7.1.tar.gz，源代码webstorm需要，用于开发时提示
-	- iojs 已经与node言归于好合并了，卸载 iojs，重新安装
--	直接运行，按缺省方式安装！
--	如果以前安装有node.js 请卸载，如果安装有旧版本iojs，无需卸载，直接安装即可覆盖。
--	安装完毕，会自动将 node、iojs、npm加入路径！
--	在命令行执行 iojs -v 可看到 安装的版本号。
-
-安装 直接从 官网下载 Node.js 安装程序， 支持 Windows、Linux、Apple 三种操作系统
-
-```
-
-如果你想长期做 node 开发, 或者想快速更新 node 版本, 或者想快速切换 node 版本, 那么在非 Windows(如 osx, linux) 环境下, 请使用 nvm 来安装你的 node 开发环境, 保持系统的干净.
-
-如果你使用 Windows 做开发, 那么你可以使用 nvmw 来替代 nvm https://github.com/creationix/nvm https://github.com/hakobera/nvmw https://github.com/coreybutler/nvm-windows
-
-mac os系统，先安装 brew，使用 brew 安装 nvm，安装完毕，需按提示将 export NVM_IDR=~/.nvm source $(brew --prefix nvm)/nvm.sh 写入 .bash_profile（mac中 ~/.bashrc , ~/.profile , 或者 ~/.zshrc都不对） 文件，才能运行 nvm指令！
-
-nvm ls 已经安装的版本 nvm ls-rmote 服务器上的有效版本 nvm install 安装哪个版本 nvm use 使用哪个版本
-
-如果不设置，每次重启计算机，都需要设置 按项目设置不同的版本：  
- 如果每个项目要用到不同版本的 node，那么就在你的项目目录下用 .nvmrc 设置缺省的 nvm use 版本号， 然后在 package.json 的各个 script 入口代码加上 nvm use 即可。 这项执行 start/test 等脚本前就会先 use 一下。 Example: nvm install v0.10.24 Install a specific version number nvm install iojs-v1.0.3 nvm use 0.10 Use the latest available 0.10.x release nvm run 0.10.24 myApp.js Run myApp.js using node v0.10.24 nvm alias default 0.10.24 Set default node version on a shell
-
-Note: to remove, delete or uninstall nvm - just remove ~/.nvm, ~/.npm and ~/.bower folders
-
-系统缺省：.bash_profile 中设置 nvm alias default stable/0.10.x
-
-```
-
-```
-
-Windows 会自动 将程序安装在
-
-```
-
-C:\Program Files\nodejs 目录！ 全局模块安装在 C:\Users\Walter\AppData\Roaming\npm
-
-```
-
-```
-程序目录会有 一个 node.exe 文件 和 npm.cmd 文件，
-node 文件，就可执行 js 脚本了，类似 java！
-npm 能实现 模块安装！
-```
-
-上述两个目录 会自动加到 系统 的 Path 路径，方便 执行！ 如果没有自动加载，请手工加载！ 如果Path中已经有了，但是不生效，请手工修改 path，保存下，确保 node 所在 path生效！
-
-更新 版本，请 下载新版本，直接安装即可！
-
-查看版本： 再 输入 指令 node -v 版本 npm -v 版本
-
-```
-如果上诉两个命令出错，请打开系统环境变量Path，加入 node.js 路径，再试。
-
-cmd 命令行下，执行 node，启动 node shell
-> process.versions
-返回 安装node 版本信息：
-{ node: '0.6.13',
-    v8: '3.6.6.24',
-    ares: '1.7.5-DEV',
-    uv: '0.6',
-    openssl: '0.9.8r' }
->
-```
-
-运行 代码 node xxx.js
-
-```
-
-```
-
-下载 Node 源代码 node-v5.0.0.tar.gz 并 放入 Node项目文件夹，比如 为 Node专门建立的 项目目录： C:\Users\Walter\Prjs\node
-
-使用 cnpm 加速 npm
-------------------
-
-同理 nvm , npm 默认是从国外的源获取和下载包信息, 不慢才奇怪. 可以通过简单的 ---registry 参数, 使用国内的镜像 http://r.cnpmjs.org : 如： $ npm --registry=http://r.cnpmjs.org install koa
-
-但是毕竟镜像跟官方的 npm 源还是会有一个同步时间差异, 目前 cnpm 的默认同步时间间隔是 15 分钟. 如果你是模块发布者, 或者你想马上同步一个模块, 那么推荐你安装 cnpm cli:
-
-$ npm --registry=http://r.cnpmjs.org install cnpm -g 通过 cnpm 命令行, 你可以快速同步任意模块:
-
-$ cnpm sync koa connect mocha 呃, 我就是不想安装 cnpm cli 怎么办? 哈哈, 早就想到你会这么懒了, 于是我们还有一个 web 页面:
-
-例如我想马上同步 koa, 直接打开浏览器: http://cnpmjs.org/sync/koa
-
-或者你是命令行控, 通过 open 命令打开:
-
-$ open http://cnpmjs.org/sync/koa 如果你安装的模块依赖了 C++ 模块, 需要编译, 肯定会通过 node-gyp 来编译, node-gyp 在第一次编译的时候, 需要依赖 node 源代码, 于是又会去 node dist 下载, 于是大家又会吐槽, 怎么 npm 安装这么慢...
-
-好吧, 于是又要提到 --disturl 参数, 通过七牛的镜像来下载:
-
-$ npm --registry=http://r.cnpmjs.org --disturl=http://dist.u.qiniudn.com install microtime 再次要提到 cnpm cli, 它已经默认将 --registry 和 --disturl 都配置好了, 谁用谁知道 . 写到这里, 就更快疑惑那些不想安装 cnpm cli 又吐槽 npm 慢的同学是基于什么考虑不在本地安装一个 cnpm 呢?
-
-github 好慢
-
-好了, 看到这里大家应该对 node 和 npm 已经没有速度慢的问题了.
-
-github 慢, 或者说是它的资源 host 被堵而已, 大家可以通过简单的 hosts 映射解决:
-
-185.31.16.184 github.global.ssl.fastly.net
-
-```
-
-python 2.7 https://www.python.org/downloads/
-
-```
 
 这篇文章主要介绍了我个人使用的一些Node.js开发工具、开发包、框架等总结,需要的朋友可以参考下 开发工具
 
