@@ -11,7 +11,46 @@
 WEB前端设计
 =========
 
+全局安装
+
+gulp-cli `npm install -g gulp-cli`  
+webpack
+grunt-cli
+eslint
+marked
+react-native-cli
+
+less
+regenerator
+typescript
+typings
+
+
+
 >主要面向手机、微信的H5前端设计。  
+
+1 http://ehire.51job.com/Candidate/ResumeView.aspx?hidUserID=346397956&hidEvents=23&hidKey=ee30c7ab76a18eef6dd20ce9e8155b21
+
+2 http://ehire.51job.com/Candidate/ResumeView.aspx?hidUserID=347793963&hidEvents=23&hidKey=7e843a50870f874991f0b842c8513d5c
+
+3 http://ehire.51job.com/Candidate/ResumeView.aspx?hidUserID=344511766&hidEvents=23&hidKey=b1921157367128abb798bd58daf5ccf9
+
+4 http://ehire.51job.com/Candidate/ResumeView.aspx?hidUserID=347727591&hidEvents=23&hidKey=873f4186929bb1915be31dcbdf182dc6
+
+5 http://ehire.51job.com/Candidate/ResumeView.aspx?hidUserID=335916530&hidEvents=23&hidKey=c1d7be0c0eb8885e9b80d93572ce527c
+
+6 http://ehire.51job.com/Candidate/ResumeView.aspx?hidUserID=329400501&hidEvents=23&hidKey=3a7eee1b867de443a9e85e1f9b219362
+
+7 http://ehire.51job.com/Candidate/ResumeView.aspx?hidUserID=334083113&hidEvents=23&hidKey=22ad480393cbf72521f7fe9289b15c65
+
+8 http://ehire.51job.com/Candidate/ResumeView.aspx?hidUserID=328783826&hidEvents=23&hidKey=5be45fa6aa6405bcab11887f1f778697
+
+9 http://ehire.51job.com/Candidate/ResumeView.aspx?hidUserID=28484926&hidEvents=23&hidKey=75d76e02ccf5e8dbcc603d7be3b06fc6
+
+10 http://ehire.51job.com/Candidate/ResumeView.aspx?hidUserID=338545301&hidEvents=23&hidKey=30f2f0e73d74d00941d7e997d0379671
+
+11 http://ehire.51job.com/Candidate/ResumeView.aspx?hidUserID=326732746&hidEvents=23&hidKey=841ad4269535fcd4892752d58411aadd
+
 
 ## 相关资源 
 
@@ -25,6 +64,8 @@ WEB前端设计
 - 浅谈移动前端的最佳实践 http://www.cnblogs.com/yexiaochai/p/4219523.html
 - h5移动端页面的适配问题 http://www.mamicode.com/info-detail-516462.html
 - zeptojs: http://zeptojs.com
+
+- 微信jssdk http://res.wx.qq.com/open/js/jweixin-1.0.0.js
 
 像这个页面的底部，我们一般用定位固定到最底部：position：fixed；但是当有输入框textarea时，但是点击textarea的文本框，下面的键盘会把底部顶上去，这就是一个小小的bug，我刚遇到这个问题时，从网上找了好多方法，试了好多方法，终于找到了一个解决方法，在代码中引入
 ```js
@@ -260,6 +301,8 @@ react 版本
 https://github.com/weui/react-weui
 weui.js
 https://github.com/progrape/weui.js
+jquery
+https://github.com/lihongxun945/jquery-weui
 
 总结：看完微信设计团队设计的这套 DEMO，二话不说如果要做微信公众，这个二话不说必然是首选了。框架不好的地方简而言之就是框架本身应该就没考虑过让用户用到非微信的场景之下。
 
@@ -290,10 +333,12 @@ Demo：http://m.sui.taobao.org/demos/
 如果你希望在开发环境下可以调试代码，那么你可以这样引用未压缩的版本
 ```
 <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.css">
+<!--如果你用到了拓展包中的组件，还需要引用下面-->
+<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.css">
+
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.js' charset='utf-8'></script>
-<!--如果你用到了拓展包中的组件，还需要引用下面两个-->
-<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.css">
+<!--如果你用到了拓展包中的组件，还需要引用下面-->
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.js' charset='utf-8'></script>
 ```
 
@@ -319,7 +364,9 @@ Github：https://github.com/twbs/bootstrap/
 
 ### AUI
 
-第三个是最近刚起来的AUI，虽然作者声称是专为APICloud开发者设计的一套UI框架，但实际它还是解决了很多移动前端开发的普遍问题，是主要面向混合开发的 CSS 框架。看起来作者比较猖狂，各种高级 CSS3 遍地使用，这让我也不得不去查查这些个 CSS3 的兼容性。不负众望果然选的都是兼容不错的属性，哈哈了一顿激动从前辈手上大胆认识了几个好东西，并且框架还提供了聊天界面、计数列表等组件，解决了很多复杂的让我骂娘的布局，现在可以直接拿走就用。
+第三个是最近刚起来的AUI，虽然作者声称是专为APICloud开发者设计的一套UI框架，但实际它还是解决了很多移动前端开发的普遍问题，是主要面向混合开发的 CSS 框架。看起来作者比较猖狂，各种高级 CSS3 遍地使用，这让我也不得不去查查这些个 CSS3 的兼容性。不负众望果然选的都
+
+是兼容不错的属性，哈哈了一顿激动从前辈手上大胆认识了几个好东西，并且框架还提供了聊天界面、计数列表等组件，解决了很多复杂的让我骂娘的布局，现在可以直接拿走就用。
 
 Github：https://github.com/liulangnan/aui
 官网：http://www.auicss.com/
@@ -1227,6 +1274,15 @@ base64码带有图片的说明字符串，所以得用正则去掉，然后base6
 https://segmentfault.com/a/1190000000754560
 
 
+## 图片压缩
+
+http://www.gbtags.com/gb/share/2991.htm
+https://github.com/mhbseal/html5ImgCompress
+https://github.com/Lzccug/ImageCompression
+https://github.com/mailru/FileAPI
+
+
+
 ### 七牛 package.json
 
 {
@@ -1402,4 +1458,1888 @@ wangkechunwangkechun 2楼•3 个月前
     "angulartics": "~1.0.0"
   }
 }
+
+## ajax 跨域
+
+一个资源会发起一个跨域HTTP请求(Cross-site HTTP request), 当它请求的一个资源是从一个与它本身提供的第一个资源的不同的域名时 。
+
+比如说，域名A(http://domaina.example)的某 Web 应用程序中通过<img>标签引入了域名B(http://domainb.foo)站点的某图片资源(http://domainb.foo/image.jpg)，域名A的那 Web 应用就会导致浏览器发起一个跨站 HTTP 请求。在当今的 Web 开发中，使用跨站 HTTP 请求加载各类资源（包括CSS、图片、JavaScript 脚本以及其它类资源），已经成为了一种普遍且流行的方式。
+
+正如大家所知，出于安全考虑，浏览器会限制脚本中发起的跨站请求。比如，使用 XMLHttpRequest 对象发起 HTTP 请求就必须遵守同源策略。 具体而言，Web 应用程序能且只能使用 XMLHttpRequest 对象向其加载的源域名发起 HTTP 请求，而不能向任何其它域名发起请求。为了能开发出更强大、更丰富、更安全的Web应用程序，开发人员渴望着在不丢失安全的前提下，Web 应用技术能越来越强大、越来越丰富。比如，可以使用 XMLHttpRequest 发起跨站 HTTP 请求。（这段描述跨域不准确，跨域并非浏览器限制了发起跨站请求，而是跨站请求可以正常发起，但是返回结果被浏览器拦截了。最好的例子是CSRF跨站攻击原理，请求是发送到了后端服务器无论是否跨域！注意：有些浏览器不允许从HTTPS的域跨域访问HTTP，比如Chrome和Firefox，这些浏览器在请求还未发出的时候就会拦截请求，这是一个特例。）
+
+隶属于 W3C 的 Web 应用工作组( Web Applications Working Group )推荐了一种新的机制，即跨源资源共享（Cross-Origin Resource Sharing (CORS)）。这种机制让Web应用服务器能支持跨站访问控制，从而使得安全地进行跨站数据传输成为可能。需要特别注意的是，这个规范是针对API容器的。比如说，要使得 XMLHttpRequest 在现代浏览器中可以发起跨域请求。浏览器必须能支持跨源共享带来的新的组件，包括请求头和策略执行。同样，服务器端则需要解析这些新的请求头，并按照策略返回相应的响应头以及所请求的资源。这篇文章适用于网站管理员、服务器端程序开发人员以及前端开发人员。对于服务器端程序开发人员，还可以阅读补充材料 cross-origin sharing from a server perspective (with PHP code snippets) 。
+
+
+
+- 跨域资源共享 http://www.cnblogs.com/yuzhongwusan/p/3677955.html
+- HTTP访问控制(CORS) https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS
+
+跨域访问需在服务返回页面的 Header 中添加如下参数：  
+Access-Control-Allow-Origin: *
+
+云服务器一般都支持 跨域设置  
+
+如 腾讯云的设置：
+
+- Allow-Origin 许可的访问来源，支持一条规则中匹配多个来源域名，每行填写一行域名。
+  例如：http://image.qq.com 或 http://*.qq.com
+  也支持单条通配符 * 这样将许可所有来源的请求。当 Origin 配置许可所有来源时，Allow-Credentials 选项不可以勾选为 True。
+- Allow-Method 指明资源可以被请求的方式有哪些（一个或者多个）。
+  例如：PUT 和 POST
+- Allow-Credentials 为 True 时，响应带凭证（HTTP Cookies 和验证信息）的请求，否则响应会被忽略。
+  当来源 Origin 不限时（即配置为 *）则不应当勾选该选项。
+- Allow-Headers(可选) 在发送 OPTIONS 请求时告知服务端，接下来的请求可以使用哪些自定义的 HTTP 请求头部。
+  例如：x-cos-meta-md5
+- Expose-Headers(可选) 设置浏览器可以接收到的来自服务器端的自定义头部信息。
+  例如：x-cos-acl
+- Max-Age 设置 OPTIONS 请求得到结果的有效期。
+  例如：600
+
+当配置了 Allow-Origin 为 * 时，试图发出一个 GET 请求和得到的回应情况。
+  <
+  GET /resources/public-data/ HTTP/1.1
+  Host: bar.other
+  Connection: keep-alive
+  Referer: http://foo.example/examples.html
+  Origin: http://foo.example
+  >
+  HTTP/1.1 200 OK
+  Connection: Keep-Alive
+  Access-Control-Allow-Origin: *
+  [data]
+
+
+CORS其实出现时间不短了，它在维基百科上的定义是：跨域资源共享（CORS ）是一种网络浏览器的技术规范，它为Web服务器定义了一种方式，允许网页从不同的域访问其资源。而这种访问是被同源策略所禁止的。CORS系统定义了一种浏览器和服务器交互的方式来确定是否允许跨域请求。 它是一个妥协，有更大的灵活性，但比起简单地允许所有这些的要求来说更加安全。
+
+        而W3C的官方文档目前还是工作草案，但是正在朝着W3C推荐的方向前进。
+
+        简言之，CORS就是为了让AJAX可以实现可控的跨域访问而生的。
+
+以往的解决方案
+
+        以前要实现跨域访问，可以通过JSONP、Flash或者服务器中转的方式来实现，但是现在我们有了CORS。
+
+        CORS与JSONP相比，无疑更为先进、方便和可靠。
+
+        1、 JSONP只能实现GET请求，而CORS支持所有类型的HTTP请求。
+
+        2、 使用CORS，开发者可以使用普通的XMLHttpRequest发起请求和获得数据，比起JSONP有更好的错误处理。
+
+        3、 JSONP主要被老的浏览器支持，它们往往不支持CORS，而绝大多数现代浏览器都已经支持了CORS（这部分会在后文浏览器支持部分介绍）。
+
+详细内容
+
+        要使用CORS，我们需要了解前端和服务器端的使用方法。
+
+        1、  前端
+
+        以前我们使用Ajax，代码类似于如下的方式：
+
+ 
+
+var xhr = new XMLHttpRequest();  
+xhr.open("GET", "/hfahe", true);  
+xhr.send();  
+ 
+
+        这里的“/hfahe”是本域的相对路径。
+
+        如果我们要使用CORS，相关Ajax代码可能如下所示：
+
+ 
+
+var xhr = new XMLHttpRequest();  
+xhr.open("GET", "http://blog.csdn.net/hfahe", true);  
+xhr.send();  
+ 
+
+        请注意，代码与之前的区别就在于相对路径换成了其他域的绝对路径，也就是你要跨域访问的接口地址。
+
+        我们还必须提供浏览器回退功能检测和支持，避免浏览器不支持的情况。
+
+function createCORSRequest(method, url) {  
+  var xhr = new XMLHttpRequest();  
+  if ("withCredentials" in xhr) {  
+    // 此时即支持CORS的情况  
+    // 检查XMLHttpRequest对象是否有“withCredentials”属性  
+    // “withCredentials”仅存在于XMLHTTPRequest2对象里  
+    xhr.open(method, url, true);  
+   
+  } else if (typeof!= "undefined") {  
+   
+    // 否则检查是否支持XDomainRequest，IE8和IE9支持  
+    // XDomainRequest仅存在于IE中，是IE用于支持CORS请求的方式  
+    xhr = new XDomainRequest();  
+    xhr.open(method, url);  
+   
+  } else {  
+   
+    // 否则，浏览器不支持CORS  
+    xhr = null;  
+   
+  }  
+  return xhr;  
+}  
+   
+var xhr = createCORSRequest('GET', url);  
+if (!xhr) {  
+  throw new Error('CORS not supported');  
+}  
+        现在如果直接使用上面的脚本进行请求，会看到浏览器里控制台的报错如下：
+
+错误显示的很明显，这是因为我们还未设置Access-Control-Allow-Origin头。
+
+        2、  服务器
+
+        服务器端对于CORS的支持，主要就是通过设置Access-Control-Allow-Origin来进行的。如果浏览器检测到相应的设置，就可以允许Ajax进行跨域的访问。
+
+        HTTP 头的设置方法有很多，http://enable-cors.org/这篇文章里对各种服务器和语言的设置都有详细的介绍，下面我们主要介绍Apache和PHP里的设置方法。
+
+        Apache：Apache需要使用mod_headers模块来激活HTTP头的设置，它默认是激活的。你只需要在Apache配置文件的<Directory>, <Location>, <Files>或<VirtualHost>的配置里加入以下内容即可：
+
+ 
+
+Header set Access-Control-Allow-Origin *  
+ 
+
+        PHP：只需要使用如下的代码设置即可。
+
+ 
+
+<?php  
+ header("Access-Control-Allow-Origin:*");  
+ 
+
+        以上的配置的含义是允许任何域发起的请求都可以获取当前服务器的数据。当然，这样有很大的危险性，恶意站点可能通过XSS攻击我们的服务器。所以我们应该尽量有针对性的对限制安全的来源，例如下面的设置使得只有http://blog.csdn.net这个域才能跨域访问服务器的API。
+
+ 
+
+Access-Control-Allow-Origin: http://blog.csdn.net  
+ 
+
+浏览器支持情况
+
+
+
+        上图为各浏览器对于CORS的支持情况（绿色为支持，数据来源：http://caniuse.com/cors），看起来相当乐观。主流浏览器都已基本提供对跨域资源共享的支持，所以，CORS才会在国外使用的如此普遍。
+
+        上文曾经提到，IE8和IE9在某种程度上可以通过XDomainRequest来提供同样功能的支持。
+
+使用案例
+
+        目前国外支持CORS的平台有很多，例如：
+
+
+
+ 
+
+        Google APIClient Library for JS
+
+        Google CloudStorage
+
+
+
+ 
+
+        Face.com API
+
+未来
+
+        从所有的浏览器都支持来看，CORS将成为未来跨域访问的标准解决方案。无论是自己服务器间的跨域访问，还是开放平台为第三方提供API，都将采用这种统一的解决方案，因为它简单、高效，受到所有主流浏览器的支持。它非常重要，也会让我们的网络变得更加开放。
+
+参考文章
+
+        IE10中的CORS forXHR
+
+        USING CORS
+
+        原创文章，转载请注明：来自蒋宇捷的博客（http://blog.csdn.net/hfahe）
+
+## XMLHttpRequest 2
+
+XMLHttpRequest 对象用于通过 js 与服务器交换数据，浏览器的Ajax实际上都是借助XMLHttpRequest实现的。  
+2.0 在 1.0 的基础上增加了更多的数据类型，最重要的就是文件、二进制上传的支持。
+
+XMLHttpRequest 对象是开发者的梦想，因为您能够：
+
+- 在不重新加载页面的情况下更新网页
+- 在页面已加载后从服务器请求数据
+- 在页面已加载后从服务器接收数据
+- 在后台向服务器发送数据
+- 所有现代的浏览器都支持 XMLHttpRequest 对象。
+
+参考
+
+- http://www.zhangxinxu.com/wordpress/2013/10/understand-domstring-document-formdata-blob-file-arraybuffer/
+
+### get方法
+
+xmlhttp.open("GET",url,true);
+xmlhttp.send(null);
+
+### post方法
+
+xhr.open('POST', url, true);
+// xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+xhr.send(data);
+  
+### 同步还是异步
+
+为什么使用 Async=true ？
+我们的实例在 open() 的第三个参数中使用了 "true"。
+该参数规定请求是否异步处理。
+True 表示脚本会在 send() 方法之后继续执行，而不等待来自服务器的响应。
+onreadystatechange 事件使代码复杂化了。但是这是在没有得到服务器响应的情况下，防止代码停止的最安全的方法。
+通过把该参数设置为 "false"，可以省去额外的 onreadystatechange 代码。如果在请求失败时是否执行其余的代码无关紧要，那么可以使用这个参数。
+
+### DOMString和Document数据类型
+
+XMLHttpRequest由于就两个数据类型：DOMString和Document，且并不是100%听话。为了顺应时代的潮流，XMLHttpRequest升级到2.0，增加了一下新的数据类型：
+
+- FormData
+- Blob
+- File
+- ArrayBuffer
+
+也就是在XMLHttpRequest Level 2背景下，我们Ajax可以发送任意这些类型的数据。
+
+### DOMString
+
+实际上，在JavaScript中，DOMString就是String。规范解释说DOMString指的是UTF-16字符串，而JavaScript正是使用了这种编码的字符串，因此，在Ajax中，DOMString就等同于JS中的普通字符串。
+
+大家应该都与XMLHttpRequest中数据返回属性之responseText打过交道吧，这厮就是与DOMString数据类型发生关系的，表明返回的数据是常规字符串。
+
+### Document
+
+如果单纯看Document对象，则解释很多，在这里，我们只要关注下图标注的这一个：responseXML
+
+可以看到，实际上就是XMLHttpRequest中数据返回属性之responseXML，也就是可以解析为XML的数据。因此，这里的Document数据类似你就可以近似看成XML数据类型。
+
+### FormData对象
+
+利用FormData对象，我们可以通过JavaScript用一些键值对来模拟一系列表单控件，我们还可以使用XMLHttpRequest的send()方法来异步的提交这个”表单”。比起普通的ajax, 使用FormData的最大优点就是我们可以异步上传一个二进制文件。
+
+以上为官方口吻的解释，略抽象。我们应该都用过jQuery，其中有个方法叫做serialize(), 作用就是表单序列化，也就是以查询字符串形式获得类表单post/get的数据给Ajax请求，例如：userid=123&username=zxx.
+
+FormData对象的作用就类似于这里的serialize()方法，不过FormData是浏览器原生的，且支持二进制文件。
+
+
+家臣之Blob数据对象
+一个Blob对象就是一个包含有只读原始数据的类文件对象。Blob对象中的数据并不一定得是JavaScript中的原生形式。File接口基于Blob, 继承了Blob的功能，并且扩展支持了用户计算机上的本地文件。
+
+创建Blob对象的方法有几种，可以调用Blob构造函数，还可以使用一个已有Blob对象上的slice()方法切出另一个Blob对象，还可以调用canvas对象上的toBlob方法。
+
+以上为MDN上官方口吻的解释。实际上，Blob是计算机界通用术语之一，全称写作：BLOB (binary large object)，表示二进制大对象。MySql/Oracle数据库中，就有一种Blob类型，专门存放二进制数据。
+
+在实际Web应用中，Blob更多是图片二进制形式的上传与下载，虽然其可以实现几乎任意文件的二进制传输。
+
+举个例子，使用Blob从服务器上GET某mm的图片（只要关心标红的部分）：
+
+var xhr = new XMLHttpRequest();    
+xhr.open("get", "mm1.jpg", true);
+xhr.responseType = "blob";
+xhr.onload = function() {
+    if (this.status == 200) {
+        var blob = this.response;  // this.response也就是请求的返回就是Blob对象
+        var img = document.createElement("img");
+        img.onload = function(e) {
+          window.URL.revokeObjectURL(img.src); // 清除释放
+        };
+        img.src = window.URL.createObjectURL(blob);
+        eleAppend.appendChild(img);    
+    }
+}
+xhr.send();
+您可以狠狠地点击这里：Blob获取图片并二进制显示demo
+
+我们查看demo页面这个mm图片元素，会发现其URL地址既不是传统HTTP，也不是Base64 URL，而是Blob形式~如下截图示意：
+图片blob地址示意
+demo页面图片的blob格式的URL
+
+这就是Blob在Web开发中非常重要的一个功能——创建Blob网址。上述代码涉及XMLHttpRequest 2一些重要知识点，以及window.URL相关技术，都是可以深入挖掘学习的部分，但，不是本文重点，以后有机会会细致阐述。
+
+但是，并不是所有的图片都能以Blob形式请求，因为，毕竟是Ajax请求嘛，还是有一定的跨域限制。XMLHttpRequest 2虽然支持跨源资源共享(CORS)，但是，还是需要对Access-Control-Allow-Origin的设置，允许来自那个域名的这类请求，例如，允许本人的站点Blob请求你服务器上的图片资源，你可以设置：
+
+Access-Control-Allow-Origin: http://zhangxinxu.com
+要允许任何域向您提交请求，可以设置：
+
+Access-Control-Allow-Origin: *
+我们都知道CSS3的font-face属性，在Firefox浏览器下，如果字体文件跨域（包括跨子域），是显示不出来的，也是通过
+
+Access-Control-Allow-Origin: *
+设置解决。其实，本质是一样的。
+
+由于权限原因，我的个人站点无法配置Access-Control-Allow-Origin，我测试了下，新浪微博的图片是无法二进制请求的，不过我的前东家，xiaomishu.com的图片都是可以Ajax请求并Blob显示的，悄悄告诉大家，是我当初动的手脚，(*^__^*) 嘻嘻……
+
+属性
+Blob对象有两个属性，参见下表：
+
+属性名	类型	描述
+size	unsigned long long(表示可以很大的数值)	Blob对象中所包含数据的大小。字节为单位。 只读。
+type	DOMString	一个字符串，表明该Blob对象所包含数据的MIME类型。例如，上demo图片MIME类似就是”image/jpeg“. 如果类型未知，则该值为空字符串。 只读。
+今天在微博上看到一个表单提交之前判断文件大小并作阻止的tip，实际上，就是使用的Blob对象的size属性。
+
+构造函数
+与FormData对象类似，Blob也有一个构造函数用法。语法如下：
+
+Blob Blob(
+  [可选] Array parts,
+  [可选] BlobPropertyBag properties
+);
+例如：
+
+var myBlob= new Blob(arrayBuffer);
+其中，两个参数的含义是：
+
+parts
+一个数组，包含了将要添加到Blob对象中的数据。数组元素可以是任意多个的ArrayBuffer, ArrayBufferView(typed array), Blob, 或者DOMString对象。
+properties
+一个对象，设置Blob对象的一些属性。目前仅支持一个type属性，表示Blob的类型。
+方法
+Blob对象有个很重要的方法-slice()，作用是，可以实现文件的分割！
+
+这个slice()有一段不堪回首的历史，不过现在大家不要关心。目前的slice()方法已经跟JS中数组啊，字符串的slice方法用法一致了。如下：
+
+Blob slice(
+  [可选] long long start,
+  [可选] long long end,
+  [可选] DOMString contentType
+};
+参数释义：
+
+start
+开始索引，可以为负数，语法类似于数组的slice方法。默认值为0.
+end
+结束索引，可以为负数，语法类似于数组的slice方法。默认值为最后一个索引。
+contentType
+新的Blob对象的MIME类型，这个值将会成为新的Blob对象的type属性的值，默认为一个空字符串。
+显然，此方法返回的数据格式还是Blob对象，不过是指定范围复制的新的Blob对象。注意，如果start参数的值比源Blob对象的size属性值还大，则返回的Blob对象的size值为0，也就是不包含任何数据。
+
+六、家臣之File对象
+File顾名思意就是“文件”，通常而言，表示我们使用file控件(<input type="file">)选择的FileList对象，或者是使用拖拽操作搞出的DataTransfer对象。
+
+这里的File对象也是二进制对象，因此，从属于Blob对象，Blob对象的一些属性与方法，File对象同样适合，且推荐使用Blob对象的属性与方法。
+
+File对象自身也有一些属性与方法，但是，有些已经过时——不推荐使用，因此，当前很多HTML5 Ajax文件上传下载的教程中出现是属性和方法都是过时的，不要盲目Copy，请大家明辨！
+
+属性
+
+File.lastModifiedDate[只读]
+文件对象最后修改的日期
+File.name[只读]
+文件对象的名称
+File.fileName[只读] [过时不推荐使用]
+文件对象的名称（请使用File.name代替）
+File.fileSize[只读] [过时不推荐使用]
+文件对象的大小（请使用Blob.size代替）
+Blob.size[只读]
+Blob对象包含数据的字节大小
+Blob.type[只读]
+一个字符串，表明该Blob对象所包含数据的MIME类型
+方法
+
+File.getAsBinary()[过时不推荐使用]
+二进制形式返回文件数据（请使用FileReader对象的FileReader.readAsBinaryString()方法代替）
+File.getAsDataURL()[过时不推荐使用]
+返回文件data:URL编码字符串数据（请使用FileReader对象的FileReader.readAsDataURL()方法代替）
+File.getAsText(string encoding)[过时不推荐使用]
+以给定的字符串编码返回文件数据解释后的文本（请使用FileReader对象的FileReader.readAsText()方法代替）
+Blob.size[只读]
+Blob对象包含数据的字节大小
+Blob.type[只读]
+一个字符串，表明该Blob对象所包含数据的MIME类型。
+上面有提到FileReader对象，这货是相当的有货，之前有人曾问我，如何将图片转换成Data base64 url格式，其中一个方法就是FileReader.readAsDataURL()方法（还有就是canvas元素的toDataURL()和toDataURLHD()方法），然与本文主旨无关，暂不赘述；如您有兴趣，页面底部有其相关知识点链接，可自行概览。
+
+七、家臣之ArrayBuffer对象
+//zxx:ArrayBuffer对象牵扯知识点非常多，这里仅接触肌肤，深入接触下次会专门再说下。
+
+很术语的解释有：
+
+ArrayBuffer表示二进制数据的原始缓冲区，该缓冲区用于存储各种类型化数组的数据。
+
+ArrayBuffer是二进制数据通用的固定长度容器。
+
+所谓术语，就是小白看不懂的解释语。我再用通俗语解释下，希望大家可以有点感性的认识：
+
+术语中，提到“二进制”，我们脑中应该会出现01010111之类；提到“缓冲”，会联想到在线视频提前加载一部分视频的那个缓冲。但是，两个合起来，“二进制数据缓冲区”，脑补就不连贯了，焦虑产生~~
+
+现在，听我的，上面概念全部扔掉。所谓ArrayBuffer就是个装着2进制数据的对象。或者想象成带了个名叫“缓冲”帽子的二进制数据。然后直接关联：ArrayBuffer ＝ 2进制。
+
+上面＝表示关联，不是相等，诸位。
+
+例如，我们设置Ajax请求的responseType为”arraybuffer“，我们去请求某mm图片，返回的response就是ArrayBuffer，就是个二进制对象。什么缓冲不缓冲的，千万别补脑这个。
+
+如果还觉得概念抽象，可以看下面的具体认知：
+大家可能玩过神器编辑器Sublime Text, 我们随便找张图片拖进去，会发现是类似下面这样子的代码：
+Sublime Text图片16进制编码显示
+
+Sublime Text以16进制的形式显示图片资源，ArrayBuffer的差别在于是二进制，因此，我们可以把ArrayBuffer的形体脑补成——上图的数字全是的0101 1000 1101之类的。Get it否？
+
+上面提到的Blob对象也是二进制，那Blob和ArrayBuffer有啥区别呢？
+
+Blob可以append ArrayBuffer数据，也就是Blob是个更高一级的大分类，类似领导的感觉。ArrayBuffer则是具有某种恶魔果实的尖兵。
+
+ArrayBuffer存在的意义就是作为数据源提前写入在内存中，就是提前钉死在某个区域，长度也固定，万年不变。于是，当我们要处理这个ArrayBuffer中的二进制数据，例如，分别8位，16位，32位转换一遍，这个数据都不会变化，3种转换共享数据。
+
+So，ArrayBuffer就是缓冲出来的打死不动的二进制对象。
+
+注意，ArrayBuffer本身是不能读写的，需要借助类型化数组或DataView对象来解释原始缓冲区（宰割原始二进制数据）。
+
+类型化数组
+类型化数组(Typed Arrays)是JavaScript中新出现的一个概念，专为访问原始的二进制数据而生。
+
+类型数组的类型有：
+
+名称	大小 (以字节为单位)	说明
+Int8Array
+
+1
+
+8位有符号整数
+
+Uint8Array
+
+1
+
+8位无符号整数
+
+Int16Array
+
+2
+
+16位有符号整数
+
+Uint16Array
+
+2
+
+16位无符号整数
+
+Int32Array
+
+4
+
+32位有符号整数
+
+Uint32Array
+
+4
+
+32位无符号整数
+
+Float32Array
+
+4
+
+32位浮点数
+
+Float64Array
+
+8
+
+64位浮点数
+
+本质上，类型化数组和ArrayBuffer是一样的。不过一个可读写（脱掉buffer限制），一个当数据源的命。
+
+举一些代码例子，看看本质一致在何处：
+
+// 创建一个8字节的ArrayBuffer  
+var b = new ArrayBuffer(8);  
+  
+// 创建一个指向b的视图v1，采用Int32类型，开始于默认的字节索引0，直到缓冲区的末尾  
+var v1 = new Int32Array(b);  
+  
+// 创建一个指向b的视图v2，采用Uint8类型，开始于字节索引2，直到缓冲区的末尾  
+var v2 = new Uint8Array(b, 2);  
+  
+// 创建一个指向b的视图v3，采用Int16类型，开始于字节索引2，长度为2  
+var v3 = new Int16Array(b, 2, 2);  
+上面代码里变量的数据结构如下表所示：
+
+变量	索引
+ 	字节（不可索引）
+b=	0	1	2	3	4	5	6	7
+ 	类型数组
+v1=	0	1
+v2=	 	 	0	1	2	3	4	5
+v3=	 	 	0	1	 	 
+由于类型化数组直接访问固定内存，因此，速度很赞，比传统数组要快！因为普通Javascript数组使用的是Hash查找方式。同时，类型化数组天生处理二进制数据，这对于XMLHttpRequest 2、canvas、webGL等技术有着先天的优势。
+
+DataView对象
+DataView对象在可以在ArrayBuffer中的任何位置读取和写入不同类型的二进制数据。
+
+用法语法如下：
+
+var dataView = new DataView(DataView(buffer, byteOffset[可选], byteLength[可选]);
+其中，buffer表示ArrayBuffer；byteOffset指缓冲区开始处的偏移量（以字节为单位）；byteLength指缓冲区部分的长度（以字节为单位）。
+
+属性
+
+buffer
+表示ArrayBuffer
+byteOffset
+指缓冲区开始处的偏移量
+byteLength
+指缓冲区部分的长度
+方法有很多，实际上，是有规律的，篇幅原因，也不是重点，就单纯露个脸：
+getInt8, getUint8, getInt16, getUint16, getInt32, getUint32, getFloat32, getFloat64, setInt8, setUint8, setInt16, setUint16, setInt32, setUint32, setFloat32, setFloat64.
+
+下面回到ArrayBuffer对象，ArrayBuffer对象自身也可以构造，跟上面的FormData, Blob对象类似，例如：
+
+var buf = new ArrayBuffer(32);
+语法为：
+
+ArrayBuffer ArrayBuffer(length[可以很大数值]);
+我们在控制台运行下new ArrayBuffer(32)，看看结果：
+ArrayBuffer的属性和方法 张鑫旭-鑫空间-鑫生活
+
+可以看到，其有一个byteLength属性，表示ArrayBuffer的长度，也可以说是大小；还有一个slice方法，语法如下：
+
+ArrayBuffer slice(
+  begin
+  end[可选]
+);
+begin表示起始，end表示结束点。据说，Internet Explorer 10 以及iOS6-是没有该方法的。
+
+综上，举个ArrayBuffer的实例吧，发送使用XMLhttpRequest发送ArrayBuffer数据：
+
+function sendArrayBuffer() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/server', true);
+  xhr.onload = function(e) { ... };
+
+  var uInt8Array = new Uint8Array([1, 2, 3]);
+
+  xhr.send(uInt8Array.buffer);
+}
+使用了类型化数组，发送的是类型化数组(uInt8Array)的buffer属性，也就是ArrayBuffer对象。
+
+over~
+
+八、结束语
+新技术层出不穷，我觉得吧，以后，行业的分支可能要更细了。比方说JS开发吧，可能就有JS UI交互开发工程师；JS Web开发工程师。因为，一个人想要完全hold住这么多的知识点，还真不是一般人能做到的。
+
+刚开始写的时候，还想最后举个文件分割上传的例子，只可惜内容实在太多，加上去也会被湮没，于是作罢，决定有机会，专门讲下这个。还有FileReader可以独立讲一下，还有类型化数组也可以专门讲一下等。
+
+学路漫漫，任重道远。文中若有致命的结论错误或疏忽的文字书写错误，都欢迎指正，不甚感谢。欢迎讨论，欢迎交流！
+
+参考链接
+
+https://developer.mozilla.org/zh-CN/docs/DOM/DOMString
+https://developer.mozilla.org/en-US/docs/Web/API/document
+https://developer.mozilla.org/zh-CN/docs/DOM/XMLHttpRequest/FormData
+https://developer.mozilla.org/zh-CN/docs/DOM/Blob
+https://developer.mozilla.org/en-US/docs/Web/API/File
+https://developer.mozilla.org/en-US/docs/Web/API/FileReader
+http://technet.microsoft.com/zh-cn/ie/br212474
+https://developer.mozilla.org/en-US/docs/Web/API/ArrayBuffer
+http://blog.csdn.net/hfahe/article/details/7421203
+原创文章，转载请注明来自张鑫旭-鑫空间-鑫生活[http://www.zhangxinxu.com]
+本文地址：http://www.zhangxinxu.com/wordpress/?p=3725
+
+
+## FormData
+
+通常我们提交（使用submit button）时，会把form中的所有表格元素的name与value组成一个queryString，提交到后台。这用jQuery的方法来说，就是serialize。但当我们使用Ajax提交时，这过程就要变成人工的了。因此，FormData对象的出现可以减少我们一些工作量。
+FormData 可以很方便地将表单字段和它们的值建立成键和值对应的成对形式，然后通过 XMLHttpRequest 的 sent() 方法发送表格数据。
+
+### 创建一个FormData对象
+
+你可以先创建一个空的FormData对象,然后使用append()方法向该对象里添加字段,如下:
+
+```js
+var oMyForm = new FormData();
+
+oMyForm.append("username", "Groucho");
+oMyForm.append("accountnum", 123456); // 数字123456被立即转换成字符串"123456"
+
+// fileInputElement中已经包含了用户所选择的文件
+oMyForm.append("userfile", fileInputElement.files[0]);
+
+var oFileBody = '<a id="a"><b id="b">hey!</b></a>'; // Blob对象包含的文件内容
+var oBlob = new Blob([oFileBody], { type: "text/xml"});
+
+oMyForm.append("webmasterfile", oBlob);
+
+var oReq = new XMLHttpRequest();
+oReq.open("POST", "http://foo.com/submitform.php");
+oReq.send(oMyForm);
+
+```
+
+### FormData字段只有三种取值
+
+- 字符串，数字等都会转为字符串
+- file对象
+- Blob对象
+
+上面例子中，字段"userfile"和"webmasterfile"的值都包含了一个文件，通过 FormData.append()方法赋给字段"accountnum"的数字被自动转换为字符(字段的值可以是一个Blob对象,一个File对象,或者一个字符串,剩下其他类型的值都会被自动转换成字符串).
+
+在上例中,我们创建了一个名为oMyForm的FormData对象,该对象中包含了名为"username", "accountnum", "userfile" 以及 "webmasterfile"的字段名,然后使用XMLHttpRequest的send()方法把这些数据发送了出去."webmasterfile"字段的值不是一个字符串,还是一个Blob对象.
+
+### 使用HTML表单来初始化一个FormData对象
+
+可以用一个已有的<form>元素来初始化FormData对象,只需要把这个form元素作为参数传入FormData构造函数即可:
+
+```js
+var newFormData = new FormData(someFormElement);
+例如:
+
+var formElement = document.getElementById("myFormElement");
+var oReq = new XMLHttpRequest();
+oReq.open("POST", "submitform.php");
+oReq.send(new FormData(formElement));
+```
+
+你还可以在已有表单数据的基础上,继续添加新的键值对,如下:
+
+```js
+var formElement = document.getElementById("myFormElement");
+formData = new FormData(formElement);
+formData.append("serialnumber", serialNumber++);
+oReq.send(formData);
+```
+
+你可以通过这种方式添加一些不想让用户编辑的固定字段,然后再发送.
+
+### form的enctype属性
+
+- application/x-www-form-urlencoded	
+  默认属性，在发送前编码所有字符，实际测试，formdata没有使用这个值。
+- multipart/form-data	
+  不对字符编码。在使用包含文件上传控件的表单时，必须使用该值。formdata时，发现默认是这个值。
+- text/plain	
+  空格转换为 "+" 加号，但不对特殊字符编码。
+
+发送文本form
+
+```html
+<form action="form_action.asp" enctype="text/plain">
+  <p>First name: <input type="text" name="fname" /></p>
+  <p>Last name: <input type="text" name="lname" /></p>
+  <input type="submit" value="Submit" />
+</form>
+```
+
+
+### 使用FormData对象发送文件
+
+你还可以使用FormData来发送二进制文件.首先在HTML中要有一个包含了文件输入框的form元素:
+
+```html
+<form enctype="multipart/form-data" method="post" name="fileinfo">
+  <label>Your email address:</label>
+  <input type="email" autocomplete="on" autofocus name="userid" placeholder="email" required size="32" maxlength="64" /><br />
+  <label>Custom file label:</label>
+  <input type="text" name="filelabel" size="12" maxlength="32" /><br />
+  <label>File to stash:</label>
+  <input type="file" name="file" required />
+</form>
+<div id="output"></div>
+<a href="javascript:sendForm()">Stash the file!</a>
+
+```
+
+然后你就可以使用下面的代码来异步的上传用户所选择的文件:
+
+``` js
+function sendForm() {
+  var oOutput = document.getElementById("output");
+  var oData = new FormData(document.forms.namedItem("fileinfo"));
+
+  oData.append("CustomField", "This is some extra data");
+
+  var oReq = new XMLHttpRequest();
+  oReq.open("POST", "stash.php", true);
+  oReq.onload = function(oEvent) {
+    if (oReq.status == 200) {
+      oOutput.innerHTML = "Uploaded!";
+    } else {
+      oOutput.innerHTML = "Error " + oReq.status + " occurred uploading your file.<br \/>";
+    }
+  };
+
+  oReq.send(oData);
+}
+```
+
+你还可以不借助HTML表单,直接向FormData对象中添加一个File对象或者一个Blob对象:
+`data.append("myfile", myBlob);`
+
+如果FormData对象中的某个字段值是一个Blob对象,则在发送http请求时,代表该Blob对象所包含文件的文件名的"Content-Disposition"请求头的值在不同的浏览器下有所不同,Firefox使用了固定的字符串"blob,"而Chrome使用了一个随机字符串.
+
+你还可以使用jQuery来发送FormData,但必须要正确的设置相关选项:
+
+```js
+var fd = new FormData(document.getElementById("fileinfo"));
+fd.append("CustomField", "This is some extra data");
+$.ajax({
+  url: "stash.php",
+  type: "POST",
+  data: fd,
+  processData: false,  // 告诉jQuery不要去处理发送的数据
+  contentType: false   // 告诉jQuery不要去设置Content-Type请求头
+});
+```
+
+### 数据格式
+
+使用 FormData发送数据，会发现与传统发送不一样，FormData提交格式的每个数据分三部分：
+
+- 第一部分也就是第一行，表示“分界线(boundary)”
+  二进制大文件分隔传输时候，就是使用这个分界线。在webkit核心中，使用“——WebKitFormBoundary”加16位随机Base64位编码的字符串作为分隔边界。根据Firebug的显示，Firefox中，似乎是使用很多个"-"加时间戳进行边界分隔的。这里的边界的作用比较单纯，可能就是把表单的这两个字段作为两个独立数据流传输。
+- 第二部分也就是第二行，表示内容配置
+  这里都是统一的form-data（因为是FormData对象格式提交的），然后紧跟着name键值。
+- 第三部分就是第三行，表示传输的值
+  如果为空，就是几个换行，后台看到的就是“\n\r\n\r”之类的。
+
+在浏览器调试界面的 Headers或Post中可以看到发送的数据：
+
+Request Headers：
+Content-Type:multipart/form-data; boundary=----WebKitFormBoundarycJ8DqycKCKa14RtC
+
+Request Payload：
+------WebKitFormBoundarycJ8DqycKCKa14RtC
+Content-Disposition: form-data; name="txTitle"
+
+标题
+------WebKitFormBoundarycJ8DqycKCKa14RtC
+Content-Disposition: form-data; name="txSwipe"
+
+
+------WebKitFormBoundarycJ8DqycKCKa14RtC
+Content-Disposition: form-data; name="txName"
+
+张三
+
+### 后台数据获取
+
+使用 body-parse，无法获取
+
+FormData.delete
+将一对键和值从 FormData 对象中删除。
+
+formData.delete(username);
+FormData.get
+返回给定键的第一个值
+
+formData.append('username', 'Justin');
+formData.append('username', 'Chris');
+formData.get(username);    // "Justin"
+FormData.getAll
+返回给定键的所有值
+
+formData.append('username', 'Justin');
+formData.append('username', 'Chris');
+formData.get(username);    // ["Justin", "Chris"]
+FormData.has
+检查是否包含给定键，返回 true 或 false
+
+formData.has(username);
+FormData.set
+设置给定键的值
+
+formData.set(name, value);
+formData.set(name, value, filename);
+
+
+## 图像处理
+
+大量使用的经典库 GM https://github.com/aheckmann/gm
+  可写入文字
+速度最快的库sharp https://github.com/lovell/sharp
+  trim 切空白边
+国人发布的库，使用简单 https://github.com/zhangyuanwei/node-images  
+  不能写入文字！
+人脸检测 https://github.com/peterbraden/node-opencv
+  http://opencv.org/downloads.html
+获取像素 https://github.com/scijs/get-pixels 
+  nodejs读取图片像素 http://blog.csdn.net/dreamer2020/article/details/51678238
+  Node.js 调用OpenCV 读取图像数据矩阵 http://www.cnblogs.com/thugasin/p/5181387.html
+
+
+## 轮播图
+
+### 参考
+
+- [swipe](https://github.com/thebird/Swipe) 系统使用库，5705 star，很小，虽然比较旧，但是很实用！
+- [weui 的 swiper](https://github.com/wechatui/swiper)功能不全！ 与 swipe类似！很小！
+  商品详情使用的js库 45k https://github.com/jssor/slider
+- sui 自带的 swiper，css、js 都非常大！
+- 11628 star https://github.com/dimsemenov/PhotoSwipe
+  100K以上！
+- 8815 star https://github.com/nolimits4web/Swiper
+  100K以上！
+
+### 库
+
+[swipe](https://github.com/thebird/Swipe) 系统使用库，5705 star，很小，虽然比较旧，但是很实用！
+  修正了部分样式及初始化宽度
+  图片做了居中处理，超出部分隐藏
+
+### 页面
+
+```html
+      <!-- 轮播图 -->
+      <div id='dvSwipe' class='swipe'>
+        <div id='dvSwipeImg' class='swipe-wrap'>
+        </div>
+      </div>
+```
+
+### 样式
+
+```css
+// 轮播图
+.swipe {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative;
+  width: 100%;
+  height: 100vw/1.5; // 默认高度
+  margin:0 auto;
+}
+// 轮播图片套层
+.swipe-wrap {
+  overflow: hidden;
+  position: relative;
+  height:100%;
+}
+
+// 单张图片层,向左浮动
+.swipe-wrap > div {
+  float:left;
+  height:100%;
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+}
+```
+
+### 代码
+
+```js
+var swipeImg = ['img/meinv.jpg', 'img/lizhi.jpg', 'img/8.jpg'];
+
+/**
+ * 加载轮播图片
+ */
+function bindSwipImg(imgs) {
+  const w = screen.width;
+  const h =  parseInt(w) / WHR; // parseInt(w * 2 / 3);
+  dvSwipe.style.width = w + 'px';
+  dvSwipe.style.height = h + 'px';
+
+  if (imgs) {
+    for (let i = 0; i < imgs.length; i++) {
+      const img = document.createElement('img');
+      img.src = imgs[i];
+      // img.width = window.screen.width; // device-width;
+      img.height = h;
+      img.width = h * img.naturalWidth / img.naturalHeight;
+      const div = document.createElement('div');
+      // div.width = window.screen.width; // device-width;
+      div.appendChild(img);
+      id('dvSwipeImg').appendChild(div);
+    }
+  } 
+}
+
+function startSwipe(imgs) {
+  bindSwipImg(imgs);
+  // alert(JSON.stringify(imgs));
+  const sw = id('dvSwipe');
+  window.swipe = new Swipe(sw, {
+    // startSlide: 4,
+    auto: 3000,
+    continuous: true
+    // disableScroll: true,
+    // stopPropagation: true,
+    // callback: function(index, element) {},
+    // transitionEnd: function(index, element) {}
+  });
+}
+
+function stopSwipe() {
+  window.swipe.kill();
+}
+```
+
+## 定位
+
+position: 
+
+- static 缺省静态定位，left、top、bottom、right 无效
+- relative 相对定位，针对自己当前位置偏移 
+- absolute 根据上层定位
+- fixed 针对body定位
+
+## 尺寸
+
+getComputedStyle 获取当前元素所有最终使用的CSS属性值
+三、getComputedStyle与style的区别
+我们使用element.style也可以获取元素的CSS样式声明对象，但是其与getComputedStyle方法还有有一些差异的。
+
+只读与可写
+正如上面提到的getComputedStyle方法是只读的，只能获取样式，不能设置；而element.style能读能写，能屈能伸。
+获取的对象范围
+getComputedStyle方法获取的是最终应用在元素上的所有CSS属性对象（即使没有CSS代码，也会把默认的祖宗八代都显示出来）；而element.style只能获取元素style属性中的CSS样式。因此对于一个光秃秃的元素<p>，getComputedStyle方法返回对象中length属性值（如果有）就是190+(据我测试FF:192, IE9:195, Chrome:253, 不同环境结果可能有差异), 而element.style就是0。
+
+## 下拉更新
+
+实现类似今日头条的下拉更新。
+
+网上搜索了，基本上都是用 [iScroll](http://iscrolljs.com/) 来实现！  
+[github](https://github.com/cubiq/iscroll) star 7951，使用的人非常多！ 
+
+另外一个方案是[jQuery weui](http://jqweui.com/extends#pull-to-refresh)原生实现了下拉更新。
+https://github.com/lihongxun945/jquery-weui
+
+由于整个UI框架采用了 sui，最终采用了 sui中的下拉刷新，不过没有使用整个 sm.js，而是将其中的相关代码摘出来，直接使用，整个文件大小不过几K而已！
+
+原来版本使用了 300K 的css 及 js！  
+优化后，不过 50K！
+
+
+## 图片链接
+
+将图片放入 a 标签内，实现图片链接。  
+
+```js
+        <div class="item" id="35341">
+          <a class="img" hreft>
+            <img id="img-3725850229" class="list_img lazy_load_img" style="min-height:190px" xzsrc="ok"
+                 replacesrc="images/lazy_image.png" src="//image.xiaozhustatic1.com/12/6,0,67,7981,1800,1201,e673a649.jpg">
+            <span class="nostar"></span>
+            <span class="head">
+              <img class="lazy_load_img" id="img-head-3725850229" xzsrc="ok" replacesrc="images/lazy_header.png"
+                   src="//image.xiaozhustatic1.com/roundcrop/6/00,260,260,1,80,1/6,0,27,6452,281,281,c06a0c67.jpg">
+            </span>
+            <span class="price">¥<em>148</em>/晚</span>
+          </a>
+```
+
+由于需要在图片上叠加更多元素，因此需要将a设置为 block 或 inline-block，相对定位，这样里面的元素可以使用绝对定位，控制位置。  
+a 块状化后，会发现图片下面多了一行空白，影响元素定位。  
+空白产生的原因是图片作为 inline元素，受vertical-align 和 line-height控制，而 vertical-align默认值是baseline, 也就是基线
+
+对齐。而基线是什么，基线就是字母X（在这里实际是空白节点）的下边缘，而x除了有基线，还有高度，其高度底部比基线低，因此图片下面出现空白部分。  
+
+去掉底部白边，只需将 line-height 设置为0 或 图片 block化即可。因为vertical-align对block元素无效。
+
+```css
+.item {
+  position: relative;
+  // margin-bottom: 80px;
+
+  .img {
+    position: relative;
+    display: block; //table-cell;
+    width: 100%;
+    min-height: 190px;
+
+    img {
+      display: block;
+    }
+
+    .star, .nostar {
+      position: absolute;
+      background: url(../img/collect.png) no-repeat;
+      width: 32px;
+      height: 32px;
+      top: 10px;
+      right: 5px;
+      z-index: 2;
+    }
+
+    .nostar {
+      background: url(../img/no_collect.png) no-repeat;
+      z-index: 2;
+    }
+
+    .price {
+      position: absolute;
+      left: 0px;
+      bottom: 0px;
+      text-align: center;
+      padding: 0 12px;
+      // background-color: #000;
+      background-color: rgba(45,45,45,0.9);
+      opacity: 0.8;
+      height: 42px;
+      line-height: 42px;
+      display: inline-block;
+      font-size: 14px;
+      color: #fff;
+      vertical-align: middle;
+      em {
+        font-size: 30px;
+      }
+    }
+
+    .head {
+      position: absolute;
+      right: 10px;
+      bottom: -28px;
+      img {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background-color: #fff;
+        padding: 1px;
+      }
+    }
+  }
+
+```
+
+## 水平居中
+
+table-cell
+
+flex box
+
+
+## 垂直居中
+
+flex box
+
+margin:auto
+
+transform: 
+
+## 图标
+
+http://ask.dcloud.net.cn/article/128
+
+图标 icon mui
+mui如何增加自定义icon图标
+
+mui框架遵循极简原则，在icon图标集上也是如此，mui仅集成了原生系统中最常用的图标；其次，mui中的图标并不是图片，而是字体，至于为什么使用字体图标而不是图片，相信web开发者多少都有所了解，简单列举几条：
+
+
+多个图标字体合成一个字体文件，避免每张图片都需要联网请求；
+
+字体可任意缩放，而图片放大会失真、缩小则浪费像素；
+
+可通过css任意改变颜色、设置阴影及透明效果；
+
+http://iconfont.cn/
+新浪账户登录
+2152693077@weibo.oauth.com
+
+在实际项目中，开发者难免会需要自定义图标，此时该如何操作呢？本文以阿里巴巴矢量图标库为例（同样的网站有很多，比如icomoon，欢迎热心用户分享其它平台的使用方法），介绍一种用户自定义图标的方法，假设我们要做一个电商项目，需要补充男装、女装、购物车三个图标，如下为分步实现操作；
+
+登录
+
+浏览器访问阿里巴巴矢量图标库官网，选择登录方式，可直接使用新浪微博账号登录；
+
+搜索图标
+
+在右上角搜索“男装”，会列出当前网站上的所有男装图标，如下：
+image
+选择自己喜欢的图标，点击，会添加到右上角的购物车中，如下：
+image
+同样的方式分别搜索选择女装、购物车图标，结果如下：
+image
+之后点击“存储为项目”，输入项目名字，例如“mui-icon-custom”，点击“存储”按钮后，会跳转到项目管理页面，如下图所示：
+image
+
+下载字体
+
+点击“下载到本地”按钮，会将合并后的字体文件及自动生成的css全部下载，如下：
+image
+
+修改css
+
+默认的css代码如下：
+
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot'); /* IE9*/
+  src: url('iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff') format('woff'), /* chrome、firefox */
+  url('iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+  url('iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-nanzhuang:before { content: "\e600"; }
+
+.icon-nvzhuang:before { content: "\e601"; }
+
+.icon-gouwuche:before { content: "\e602"; }
+我们可稍作如下修改：
+
+
+为保证和mui目录结构统一，建议将字体文件放在fonts目录下，这样我们需要修改@font-face下得url属性；
+
+只兼容iOS和Android版本的话，我们仅需要ttf格式的字体即可，其它字体可以删除；同时，我们也仅需保留-webkit前缀语法，-moz前缀部分可以删除；
+
+修改后的css代码如下：
+
+    @font-face {font-family: "iconfont";
+        src:url('../fonts/iconfont.ttf') format('truetype'); /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    }
+
+    .iconfont {
+        font-family:"iconfont" !important;
+        font-size:16px;
+        font-style:normal;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-stroke-width: 0.2px;
+    }
+
+    .icon-nanzhuang:before { content: "\e600"; }
+
+    .icon-nvzhuang:before { content: "\e601"; }
+
+    .icon-gouwuche:before { content: "\e602"; }
+集成mui
+
+将iconfont.css及iconfont.ttf两个文件分别拷贝到mui工程css及fonts目录下，然后即可在mui中引用刚生成的字体图标，我们以选项卡为例，代码如下：
+
+    <nav class="mui-bar mui-bar-tab">
+        <a class="mui-tab-item mui-active">
+            <span class="mui-icon iconfont icon-nanzhuang"></span>
+            <span class="mui-tab-label">男装</span>
+        </a>
+        <a class="mui-tab-item">
+            <span class="mui-icon iconfont icon-nvzhuang"></span>
+            <span class="mui-tab-label">女装</span>
+        </a>
+        <a class="mui-tab-item">
+            <span class="mui-icon iconfont icon-gouwuche"></span>
+            <span class="mui-tab-label">购物车</span>
+        </a>
+        <a class="mui-tab-item">
+            <span class="mui-icon mui-icon-gear"></span>
+            <span class="mui-tab-label">设置</span>
+        </a>
+    </nav>
+主要代码：将mui默认的icon（如mui-icon-home）替换成iconfont icon-nanzhuang，修改后预览效果如下：
+
+image
+
+## 模板与动态内容
+
+页面，都是由 html 及 数据组成，动态页面的动态一般体现在数据变化上。  
+为了方便实现动态页面，一般的做法是做一个模板页面，里面的数据部分用特殊标记标记好，然后获得数据，数据与模板页面的标记替换，生成最终的显示页面显示。
+
+模板与数据合成，可以在服务端完成，也可以在客户端完成。  
+传统 xslt 与 xml的合成，效率非常低，在客户端非常慢，只能在服务端完成。
+
+传统服务端合成
+
+- asp、aspx、jsp、php 均是服务端合并模式，利用服务器的强大运算能力完成模板与数据的合并后，直接将html返回到客户端。 
+- 优点是生成速度快，客户端无负载。  
+- 缺点一，是服务器负载大
+- 缺点二，是客户端需等待网络传送，网络不好，会等待，客户端体验不好，我们经常看到的页面加载等待就是这种。
+
+客户端合成
+
+- spa、react 等模式都是客户端合成，是目前比较流行的模式。
+- 该模式流行的主要原因是 js 引擎得到优化，前端合成速度达到 毫秒级别。
+- 优点是无需等待，点击直接出内容，达到原生应用体验。
+
+模板一般分为字符串替换合成，和 dom 操作更新数据，实现动态内容。
+
+模板的加载
+
+- 对于前端应用，模板文件可使用 webpack 打包到js中，作为字符串变量处理，js文件会比较大，相当于 html 放到 js中。  
+- 优点是快，缺点是加载的 js 文件会比较大，影响首次加载体验。
+- 折中方案是 模板文件、数据都通过 ajax 获取后，在客户端合并。
+  由于客户端大部分为手机，处理能力有限，需注意合成内容的运算量，尽量采用模块化。小范围合并，这种合并为毫秒级，基本不影响使用体验。
+- 客户端合并，需选择轻巧的模板引擎。
+- 模板文件不宜太复杂。
+- 模板嵌套，可在 js 中 import 多个文件字符串变量，通过 占位符替换合并。或者 找到 该模板的 webpack loader，对 include 部分进行合并处理。
+
+如果模板、数据都来自后台，为何不在后台直接合并呢？  
+
+- 既然大量业务逻辑从后端移到前端，全部在前端完成更加自然。
+- 后台基本上只提供各种 api接口，不再承担业务逻辑和视图。
+- 数据与模板并不是完全同步，有时模板不变、数据变，有时数据不变、模板变，前端合成根据灵活。
+- 对于比较小的模板（小于10K），可直接嵌入js中，避免异步加载。
+
+常用的模板有：
+
+- [artTemplate](https://github.com/aui/artTemplate#nodejs)，star 3508, 腾讯公司出品，速度笔记快，只有4K。
+- [doT](https://github.com/olado/doT) star 2936 Docs:http://olado.github.com/doT/
+- [jade]() 后台模板
+- baiduTemplate:  http://baidufe.github.io/BaiduTemplate/
+- juicer: http://juicer.name/或https://github.com/PaulGuo/Juicer/zipball/master#download
+- tmpl：https://github.com/BorisMoore/jquery-tmpl
+- handlebars:http://handlebarsjs.com/
+  或 https://raw.github.com/wycats/handlebars.js/1.0.0-rc.4/dist/handlebars.js
+- easyTemplate：https://github.com/qitupstudios/easyTemplate
+- underscoretemplate: http://documentcloud.github.io/underscore/
+- mustache:https://github.com/janl/mustache.js
+- kissytemplate:https://github.com/ktmud/kissy
+
+[模板速度测试](http://aui.github.io/artTemplate/test/test-speed.html)
+
+
+### 使用 artTemplate 模板
+
+安装 npm i art-template -D
+
+在 post.js 中 
+
+```js  
+  import art from 'art-template/dist/template-debug'; // 调试
+  import art from 'art-template/dist/template';
+  import tpl from 'raw!../view/post.html'; // 读取原始文件为字符串
+  
+  const html = art.compile(tpl)(data); // 转换为 html
+```
+
+## lazy load
+
+[Knot.js](https://github.com/callmecavs/knot.js) 40几行，实现浏览器环境的事件触发，es6语法，非常经典！
+npm i knot.js --save
+[layzr](https://github.com/callmecavs/layzr.js) star 4836，120几行，延迟加载，es6语法，看起来非常棒！
+npm i layzr.js --save
+[echo](https://github.com/toddmotto/echo) star 2916，130几行
+[blazy](https://github.com/dinbror/blazy) star 1417
+[lazysizes](https://github.com/aFarkas/lazysizes) star 5181
+
+### layzr 使用
+
+引用
+
+import Layzr from './lib/layzr';
+const _layzr = Layzr({
+  normal: 'nor',
+  retina: 'ret',
+  srcset: 'set',
+  threshold: 0
+});
+
+注册滚屏事件
+
+_layzr.handlers(true);  // bind scroll and resize handlers
+
+页面dom加载图片后，调用 update 更新跟踪图片列表
+  _layzr.update();
+检查当前是否可视，可视则将 nor 属性 更改为 src 属性，加载图片！  
+  _layzr.check();
+
+小猪使用的
+
+$.fn.xzlazyload = function(options) {
+    var objs = this;
+    var gray_img = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEXDw8PWKQJEAAAACklEQVQI12NgAAAAAgAB4iG8MwAAAABJRU5ErkJggg==';
+    var $window = $(window);
+    var pxOffset = options.pxOffset ?  options.pxOffset : 30;
+    var memorySaver = options.memorySaver ? true : false;
+    var memorySaverOffset = $(window).height();
+    var replaceImg = options.replaceImg ?  options.replaceImg : gray_img;
+    var lastScrollTop = 0;
+    var upShow = options.upShow ? true : false;
+    var inViewZone = function (ele, extPxOffset) {
+        if (!extPxOffset) extPxOffset = pxOffset;
+        var scrollTop = $(window).scrollTop();
+        var wHeight = $(window).height() ;
+        var ele_top = scrollTop - ele.offset().top + wHeight;
+        var ele_bottom =  (ele.offset().top + ele.height()) - scrollTop ;
+        return ( (ele_top > 0 - extPxOffset && ele_top < wHeight + extPxOffset) || (ele_bottom > 0 - extPxOffset && ele_bottom < wHeight + extPxOffset) );
+        //return ( (ele_top > 0 && ele_top < wHeight) || (ele_bottom > 0 && ele_bottom < wHeight) );
+    }
+    function update() {
+        if (!upShow && document.body.scrollTop < lastScrollTop) return; 
+        lastScrollTop = document.body.scrollTop;
+        if (lastScrollTop % 2 == 0 && lastScrollTop > 5) return;
+        objs.filter(':visible').each(function () {
+            var me = $(this);
+            var xzsrc = me.attr('xzsrc');
+            var src = me.attr('src');
+            if (  xzsrc && xzsrc != 'ok' && inViewZone(me)) {
+                me.data('xzsrc',xzsrc);
+                if (options.replaceImage) 
+                me.attr('src', options.replaceImageSrc ? options.replaceImageSrc :gray_img);
+                me.attr('xzsrc', 'ok');
+                me.load(function () {
+                    $(this).data('xzlazyload','ok');
+                }).error(function () {
+                    var mysrc = $(this).attr('src');
+                    if ($(this).data('reload')) {
+                        me.attr('src', me.attr('replacesrc') ? me.attr('replacesrc') : replaceImg);
+                    } else {
+                        $(this).attr('src', mysrc + '?' + Math.random());
+                        $(this).data('reload',1)
+                    }
+                });
+                me.attr('src', xzsrc);
+            } else if ( memorySaver && xzsrc && xzsrc == 'ok' && inViewZone(me, pxOffset + memorySaverOffset)) {
+                var org_src = me.data('xzsrc');
+                if (org_src) {
+                    me.attr('src', org_src);
+                }
+            } else if ( memorySaver && xzsrc && xzsrc == 'ok' && !inViewZone(me, pxOffset + memorySaverOffset)) {
+                var replacesrc = me.attr('replacesrc');
+                replacesrc = replacesrc? replacesrc : (options.replaceImageSrc ? options.replaceImageSrc : replaceImg);
+                me.attr('src', replacesrc);
+            } else if (options.replaceImage && !src){
+                if (options.replaceImageSrc) {
+                    me.attr('src', options.replaceImageSrc);
+                } else {
+                    me.attr('src', gray_img);
+                }
+            }
+        });
+    }
+
+    $window.bind("resize", function() { 
+        update(); 
+    });
+    $(window).on('scroll', function(){
+        update(); 
+    });
+    update();
+}
+
+
+变量
+
+## zepto 解析
+
+var init = function (global, factory) {
+  if (typeof define === 'function' && define.amd)
+    define(function () {
+      return factory(global)
+    })
+  else
+    factory(global)
+};
+
+init(this, function (window) webpack 报错！
+改为
+init(typeof window !== "undefined" ? window : this, function (window) 
+
+var Zepto = (function() {
+  // 内部变量
+  zepto = {},
+
+  // 构造函数
+  function Z(dom, selector) {
+    var i, len = dom ? dom.length : 0
+    for (i = 0; i < len; i++) this[i] = dom[i]
+    this.length = len
+    this.selector = selector || ''
+  }
+
+  zepto.Z = function(dom, selector) {
+    return new Z(dom, selector)
+  }
+
+  zepto.init = function(selector, context) {
+    var dom = zepto.qsa(document, selector)
+    // create a new Zepto collection from the nodes found
+    return zepto.Z(dom, selector)
+  }
+
+  // 实例化函数调用
+  $ = function(selector, context){
+    return zepto.init(selector, context)
+  }
+
+  $.fn = {
+    constructor: zepto.Z,
+    length: 0,
+  }
+
+  // 将 fn 赋给 Z的原型
+  zepto.Z.prototype = Z.prototype = $.fn
+  $.zepto = zepto
+
+  return $
+})();
+
+// If `$` is not yet defined, point it to `Zepto`
+window.Zepto = Zepto
+window.$ === undefined && (window.$ = Zepto)
+
+最后返回
+
+return Zepto；
+
+### 箭头函数 与 this
+
+addClass: function(name)
+  this 指针 有效
+addClass: name => {
+  this 指向 window！！！
+
+<span name="txDesc" idx="0" style="-webkit-user-modify: read-only;">
+![<div>
+</div><div>我们都喜欢有鲜花和巧克力的生</div>](http://nuoya-10038118.image.myqcloud.com/test1472009063687)
+
+![<div><br></div><div>我们都喜欢有鲜花和巧克力的生</div>](http://nuoya-10038118.image.myqcloud.com/test1472009063687)
+</span>
+
+### zepto 片段
+
+  // Status bar classes
+  if (device.statusBar) {
+    classNames.push('with-statusbar-overlay');
+  } else {
+    removeClass(tags(document, 'html')[0], 'with-statusbar-overlay');
+    // $('html').removeClass('with-statusbar-overlay');
+  }
+
+  // Add html classes
+  if (classNames.length > 0)
+    addClass(tags(document, 'html')[0], classNames.join(' '));
+    // $('html').addClass(classNames.join(' '));
+
+  const windowWidth = window.innerWidth; // ??? $(window).width();
+  const windowHeight = window.innerHeight; // ??? $(window).height();
+  container.trigger('refresh');
+
+## webpack 模块引用
+
+在一个包中，不管多少文件中，多次 import 或 require 一个模块，只会生成一个引用，其他的都指向这个引用。  
+意味着，该模块的内部变量，只会初始化一次，被所有文件的所有引用共享！
+意味着，输出模块函数时，不需要挂接到全局 $（jQuery、Zepto）的静态属性上！
+
+如果要实现多实例独立变量，需输出 class 或 函数，函数中 返回一个新的实例，new 或 函数调用（比如 $('.xxx')）来实例化！！！
+不需要多实例的模块，直接返回 函数集合即可，所有包共享该模块内部的变量！
+
+
+## 安卓兼容性
+
+  for (const r of rs) {
+  好像不支持！！！
+
+## 万象优图
+
+http://web.image.myqcloud.com/photos/v2/10038118/nuoya/1368994575/[fileid]/
+
+http://v2test-10000812.image.myqcloud.com/tencentyunRestAPITest?imageView2/0/w/400/h/300
+
+http://nuoya-10038118.image.myqcloud.com/test1471935637672?imageView2/0/w/400/h/300
+
+this 指针
+
+请问大神href="javascript:xxx(this)"取到的this是windows对象？
+请问大神<a href="javascript:xxx(this)"></a>为什么取到的this是windows对象？？
+而onclick取到的就是a? 真的没搞懂
+添加评论 分享
+
+1
+赞同反对，不会显示你的姓名
+Dominator008Google Closure Compiler Committer
+1 人赞同
+记住JavaScript中的this永远指代函数的的调用者。
+假设我们有：
+<a href="javascript:xxx(this)" onclick="alert(this)"></a>
+javascript:xxx(this)的调用者是全局，所以其中的this是全局this，在浏览器中就是window。
+onclick可以理解为我们有一个对象：
+var a = {
+// ...
+onclick: function() { alert(this) },
+};
+click事件发生时，浏览器做了如下操作：
+a.onclick();
+这样的话onclick的调用者是a，所以this就是a本身，而不是全局this。
+
+## 图片压缩、裁剪
+
+todo ???
+
+ios img bug
+图片裁剪 http://wow.techbrood.com/fiddle/2580
+http://stackoverflow.com/questions/11929099/html5-canvas-drawimage-ratio-bug-ios/
+Canvas blending now available on iOS7 and OSX Mavericks
+http://blogs.adobe.com/webplatform/2013/11/01/canvas-blending-availability/
+
+https://github.com/mhbseal/html5ImgCompress
+http://www.zhangxinxu.com/wordpress/2010/05/图片旋转剪裁js插件兼容各浏览器/
+HTML5 Canvas剪切（Clip)动画 http://www.108js.com/article/article3/30197.html?id=829
+HTML5 本地裁剪图片并上传至服务器（老梗） https://segmentfault.com/a/1190000000754560
+Canvas实例教程：图像移动、大小调整和裁剪 http://blog.csdn.net/iefreer/article/details/40740465
+移动前端—图片压缩上传实践移动前端—图片压缩上传实践 http://www.open-open.com/lib/view/open1435407597794.html
+图片上传，前端压缩，裁剪（支持手机端）：ImageCropper 
+http://www.open-open.com/lib/view/open1442049394086.html
+图片上传，前端压缩，裁剪（支持手机端） https://github.com/cpsa3/ImageCropper
+裁剪实例 http://wow.techbrood.com/fiddle/2580
+
+## 参考
+
+https://zh.airbnb.com/getaways/Chengdu?destination=Seoul
+http://m.xiaozhu.com/search.html?cityid=16&city=%25E5%25B9%25BF%25E5%25B7%259E&offset=1&step=15&st=2016-08-18&et=2016-08-19&
+https://m.wanzhoumo.com/
+
+## 图片
+
+图片一般上传到第三方图片服务器，比如 七牛、腾讯、阿里，这些服务器一般提供在线动态图片处理功能！  
+功能包括 自动修正 iPhone 拍照方向、宽高比裁剪、像素、压缩等，处理速度以毫秒计，无需自行处理。
+
+比如 好奇心日报的图片 url
+
+<img src="http://img.qdaily.com/article/article_show/20160905120928KlPWtHE7ZwuJUOpm.jpg?imageMogr2/auto-orient/thumbnail/!580x344r/gravity/Center/crop/580x344/quality/85/format/jpg/ignore-error/1" alt="">
+
+换成腾讯万象优图
+
+<img src="http://img.qdaily.com/article/article_show/20160905120928KlPWtHE7ZwuJUOpm.jpg?imageMogr2/auto-orient/thumbnail/!580x344r/gravity/Center/crop/580x344/quality/85/format/jpg/ignore-error/1" alt="">
+
+好奇心日报的排版是非常不错的，这个图片 100K 左右，580x344 像素，显示非常清晰。宽高比为 1.686。  
+在其app中，手机宽高比为 1.9，图片宽度满屏，看起来非常不错，既解决了大图显示问题，同时也兼顾了一屏尽量多行数问题。
+在 iPhone6 plus 上量，宽度为 68.4，高度为 36mm，保持宽高比例不变，则图片高度为 218 px！
+今日头条的高度为 35mm，宽度为 62.5，不是满屏，宽高比为 1.8
+
+[H5图片规格参考](http://www.5icool.org/a/201511/a14570.html)
+
+那么多手机屏幕尺寸，设计稿应该按照哪一个尺寸作为标准尺寸。现在已经有2K分辨率的手机屏幕了，设计稿是不是也要把宽高跟着最大分辨率来设计。显然不是。
+
+请注意：（以下所有讨论内容和规范均将viewport设定为content=”width=device-width”的情况下） 也就是我们的H5页面前端代码里面必须包含
+
+
+<meta content=”initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width” name=”viewport” />
+<meta content=”telephone=no” name=”format-detection” />
+
+根据目前市场流行的手机移动终端，统计他们的设备独立像素。
+当前最流行的手机的所有尺寸大小规范： http://screensiz.es/phone     值得大家好好细看的智能手机尺寸图表。
+
+iPhone6 plus 举例：
+设备独立像素 414 x 736 物理像素：1242 x 2208 设备像素比：3 
+
+H5的设计稿一般设计为 640x1136px即可。 既满足了显示需求，又能降低用户加载图片需要的带宽。
+
+可以用各种分辨率的移动智能手机查看我们设计的H5页面时，当然，也会出现如下的情况，内容显示不全，甚至一些重要内容和按钮都会被遮挡。
+
+第一：背景图片必须采用background-size:cover;来实现。
+
+第二：我们在进行H5页面内容规划布局设计的时候，不能把重要内容放在太偏下的位置或者偏上，否则前端布局时可能出现内容显示不全的情况。
+
+H5页面设计 H5页面制作 H5页面
+
+通过对比可得：
+
+除去将浏览器全屏显示的情况，几乎所有情况均会有顶部的状态栏和导航栏。
+
+iPhone的设计标准，状态栏和导航栏的独立像素高度分别为40px和88px。
+
+由于Android系统可以更改状态栏和导航栏的高度，这里可以取默认值为48px和100px（这些尺寸网上均可查）。
+
+那么就会把网页内容往下挤，进入盲区（根据不同的布局方式可能挤出视口，即可视区域之下，）。取这两个系统者的最大值为148（48+100）,如下图5，设计稿要尽量保证单页下面没有重要内容。
+
+H5页面设计 H5页面制作 H5页面
+
+图5
+
+那么在所有屏幕大小上把重要内容显示完全，就要注意市面上存在的小尺寸手机屏幕，现在绝大部分智能手机分辨率都在640x960px（iPhone4分辨率）之上，所以只要把重要内容放在上图5中的盲区之上即可。计算后的最安全高度为812（960-148=812）。
+
+在此总结，一般情况下，以现有市场上流行的移动智能手机，单页翻转（非延伸向下的长页面）设计稿尺寸为640×1136，在高度为812处设置一条安全线（参考线），将重要的内容布局在这条安全线之上。
+
+
+移动端H5页面的设计稿尺寸大小规范内容如下：
+
+1、像素是没有宽高的（不要被Photoshop中的像素格欺骗），它只代表一个采样的色值。
+
+2、任何图片作为数据信息被保存在存储盘中时，只有宽高像素数是有意义的，此时的ppi对于图片来说时没有任何意义，也并不能描述这个图片有多少英寸的宽度或者高度，而只有在被打印出来后才有ppi的意义，被打印出来才可以描述这张图片有多高多宽。
+
+3、平时制作H5页面时设计原型时，产品经理出的原型稿建议屏宽为320px，用这个尺寸一是为了浏览方便（现在很多手机的屏宽达到1440px，用这个尺寸去模拟显然不现实），
+4、制作设计稿时，设计师应该把原型稿上的所有尺寸进行2倍处理。这样设计稿在移动设备上预览便可保证清晰。而前端切片时，按照现在流行的做法，可以直接使用原型稿上的尺寸，也就是设计稿上的1/2。
+
+5、一般情况下，H5页面设计稿做成640x1136px是最为稳妥的尺寸，在812px高度处增加一条安全线，重要内容在此线之上（网上有些文章说安全线是960px处，个人认为不太准确）。既保证了在移动设备上显示清晰，也保证了素材的最小尺寸。
+
+
+最后在这里，推荐2个不错的图片压缩的工具。
+
+1、腾讯智图（http://zhitu.isux.us/）
+
+智图–图片智能自动优化平台,为你的图片智能选择合适的图片格式,为你压缩图片以便节省带宽优化体验,为你提供WebP图片让你的站点高大上
+
+2、tinypng（手机APP设计必备图片压缩神器-TinyPNG），这里的图片压缩还是相当好用，可以节省用户不少带宽。
+
+
+## 路由
+
+当项目越来越大，页面越来越多的时候，需要使用路由来管理所有页面，实现页面之间的切换（导航）。
+
+路由本质上是监控所有 url，识别内链时，改变 页面加载方式，缺省页面加载是跳转方式，一旦发生页面跳转，原来加载的文件失效，需要重新加载所有文件，导致页面加载缓慢。
+
+通过路由，将页面跳转改为 ajax 动态加载，原来加载的js等文件全部有效，同时缓存加载的页面，这样页面加载、切换非常平滑，不会卡顿。
+
+https://github.com/progrape/router
+
+SPA 网页导航，一般使用 hash，也就是 url中的 # 号后面的部分。  
+通过监控 hash的变化 hashchange，来实现页面导航。  
+通过 history.pushState、history.replaceState 有 history.state，通过 href直接跳转的，没有 history.state。 不通过 hash，通过 state，监控 state变化 onpopstate 也可以实现导航。  
+
+但是使用 history.pushState() 实现的路由，在微信上方的 Back 和使用“屏幕边缘左滑返回” 的效果完全不一样。  
+当使用 Webview Back 时，所有的路由都很正常，但当通过屏幕边缘左滑返回时，路由失效了，直接退出了整个 webview。
+
+我发现好像所有使用 pushState 实现路由的 web app 都有这个问题，但是使用原始的 locatin.hash & hashchange 做路由的却没有这个问题。
+
+因此在微信里面，要实现屏幕边缘左滑返回，而不是退出，只能使用 hash 方案。
+
+### hash
+
+http://www.cnblogs.com/yeer/archive/2013/01/21/2869827.html
+
+twitter改版一个显著变化，就是URL加入了"#!"符号。比如，改版前的用户主页网址为
+
+　　http://twitter.com/username
+
+改版后，就变成了
+
+　　http://twitter.com/#!/username
+
+在我印象中，这是主流网站第一次将"#"大规模用于直接与用户交互的关键URL中。这表明井号（Hash）的作用正在被重新认识。本文根据HttpWatch的文章，整理与井号有关的所有重要知识点。
+
+一、#的涵义
+
+#代表网页中的一个位置。其右面的字符，就是该位置的标识符。比如，
+
+　　http://www.example.com/index.html#print
+
+就代表网页index.html的print位置。浏览器读取这个URL后，会自动将print位置滚动至可视区域。
+
+为网页位置指定标识符，有两个方法。一是使用锚点，比如<a name="print"></a>，二是使用id属性，比如<div id="print" >。
+
+二、HTTP请求不包括#
+
+#是用来指导浏览器动作的，对服务器端完全无用。所以，HTTP请求中不包括#。
+
+比如，访问下面的网址，
+
+　　http://www.example.com/index.html#print
+
+浏览器实际发出的请求是这样的：
+
+　　GET /index.html HTTP/1.1
+
+　　Host: www.example.com
+
+可以看到，只是请求index.html，根本没有"#print"的部分。
+
+
+三、#后的字符
+
+在第一个#后面出现的任何字符，都会被浏览器解读为位置标识符。这意味着，这些字符都不会被发送到服务器端。
+
+比如，下面URL的原意是指定一个颜色值：
+如果 http://www.example.com/?color=#fff  
+http://example.com/?color=%23fff
+
+改变#不触发网页重载
+
+单单改变#后的部分，浏览器只会滚动到相应位置，不会重新加载网页。
+
+比如，从
+
+　　http://www.example.com/index.html#location1
+
+改成
+
+　　http://www.example.com/index.html#location2
+
+浏览器不会重新向服务器请求index.html。
+
+五、改变#会改变浏览器的访问历史
+
+每一次改变#后的部分，都会在浏览器的访问历史中增加一个记录，使用"后退"按钮，就可以回到上一个位置。
+
+这对于ajax应用程序特别有用，可以用不同的#值，表示不同的访问状态，然后向用户给出可以访问某个状态的链接。
+
+值得注意的是，上述规则对IE 6和IE 7不成立，它们不会因为#的改变而增加历史记录。
+
+六、window.location.hash读取#值
+
+window.location.hash这个属性可读可写。读取时，可以用来判断网页状态是否改变；写入时，则会在不重载网页的前提下，创造一条访问历史记录。
+
+七、onhashchange事件
+
+这是一个HTML 5新增的事件，当#值发生变化时，就会触发这个事件。IE8+、Firefox 3.6+、Chrome 5+、Safari 4.0+支持该事件。
+
+它的使用方法有三种：
+
+　　window.onhashchange = func;
+
+　　<body onhashchange="func();">
+
+　　window.addEventListener("hashchange", func, false);
+
+对于不支持onhashchange的浏览器，可以用setInterval监控location.hash的变化。
+
+八、Google抓取#的机制
+
+默认情况下，Google的网络蜘蛛忽视URL的#部分。
+
+但是，Google还规定，如果你希望Ajax生成的内容被浏览引擎读取，那么URL中可以使用"#!" (被称为 hashbang ) ，Google会自动将其后面的内容转成查询字符串_escaped_fragment_的值。
+
+比如，Google发现新版twitter的URL如下：
+
+　　http://twitter.com/#!/username
+
+就会自动抓取另一个URL：
+
+　　http://twitter.com/?_escaped_fragment_=/username
+
+通过这种机制，Google就可以索引动态的Ajax内容。
+
+Seo 
+
+http://isux.tencent.com/seo-for-single-page-applications.html
+
+Google发现URL里有#!符号，例如example.com/#!/detail/1，于是Google开始抓取example.com/?_escaped_fragment_=/detail/1；    _escaped_fragment_这个参数是Google指定的命名，如果开发者希望把网站内容提交给Google，就必须通过这个参数生成静态页面。  根据上面的demo，我简单示例一下Google要抓取的页面的样子
+:  http://119.28.4.22/?escapedfragment_=/detail/1   如此以来，就需要Server通过生成静态的内容以便Google抓取。     以下将简单介绍，单页架构，爬虫访问根目录时如果配置Server端的路由。    四、判断爬虫    当Google访问119.28.4.22/#!/detail/1 时，会自动转化成http://119.28.4.22/?_escaped_fragment_=/detail/1，以Nginx为例：   if ($args ~ _escaped_fragment_) { rewrite ^ /api; }   /api为后台服务的接口，已nodejs为例，代理设置如下：
+ 
+upstream nodejs { 
+server 127.0.0.1:3000; 
+}   
+location /api { 
+proxy_set_header X-Request-URI $request_uri; 
+proxy_set_header X-Real-IP $remote_addr; 
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; 
+
+### 回退
+
+如何判断页面切换是否回退？  
+
+方案一：对每个页面使用 pushState保存一个索引到 state中，进入新页面，没有 state，索引 ++，记录最大索引。  
+返回时，页面有 state，取出里面的 索引，与刚才记录的最大索引比较，如果小于或等于，则是返回，否则是切换新页面。
+
+缺点：这种方案对于 设置 hash方式切换回原来的页面，由于没有使用 返回，虽然是同一个hash页面，但是作为新页面处理，history 不起作用，state 为 null，不作为返回处理。
+
+方案二：对每个路由视图的上一个路由 lastRoute 进行记录，无论是 返回、还是 hash、href方式切换到 原来的视图，切换路由与lastRoute原路由进行比较，同一个，则是返回，删除当前路由的 lastRoute。
+
+优点：就是支持 hash、href 方式返回，不仅仅只是返回按键返回。
+
+
+
+## 事件
+
+http://www.zhangxinxu.com/wordpress/2012/04/js-dom%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BA%8B%E4%BB%B6/
+http://blog.csdn.net/jxst051665/article/details/3931598
+
+应用中经常会遇到对事件的处理，一种是系统预定义的事件，dom上的各种变化、鼠标动作、手指动作等，需要对这些事件进行响应。  
+如果做一些模块化开发，需要自定义的事件，并触发事件。
+
+在 dom 上扩展自定义事件，使用标准的 addEventListener 设置事件响应函数。  
+使用 addEventListener 要注意，不推荐 匿名函数，同一匿名函数在多次 addEventListener时，会多次触发，如用有名函数则不会，对同一名称函数，多次监听，只会触发一次。
+
+removeEventListener 删除响应，注意，匿名函数没法删除，因为每个匿名函数在系统中都是独立存在，不是一个变量，可以理解系统为每个匿名函数设置了一个唯一的随机名称，强烈建议事件响应中不要使用匿名函数！
+
+在实际使用中，很少对一个事件加载多个不同处理函数，如果有这种需求，可以在一个处理函数中连续处理。  
+反而容易对同一个处理函数进行多次绑定，导致多次触发，引起错误。
+
+kevent 对事件进行封装，一个 dom 对象的事件，只支持 一个 事件响应函数，重复加载时，自动卸载之前函数，添加新的函数，类似 dom.onEvent = fn，覆盖式加载响应函数。
+
+如果需要加载多个，通过 muti 参数指定，缺省为覆盖式加载。
+
+如果大家将一张网页看成一个form的话，大致上就成了一个web form的模型。在win form 下要想手动触发某一个对象的事件是很简单的，只要发送一条消息即可达成。(PostMessage) 但是网页并不是基于消息机制的，如果我们想在一张网页上写出一个类似于按键精灵的功能该如何实现呢？
+为大家介绍js下的几个方法：
+1. createEvent（eventType）
+参数：eventType 共5种类型：
+    Events ：包括所有的事件. 
+          HTMLEvents：包括 'abort', 'blur', 'change', 'error', 'focus', 'load', 'reset', 'resize', 'scroll', 'select', 
+                                    'submit', 'unload'. 事件
+          UIEevents ：包括 'DOMActivate', 'DOMFocusIn', 'DOMFocusOut', 'keydown', 'keypress', 'keyup'.
+                                  间接包含 MouseEvents. 
+          MouseEvents：包括 'click', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup'. 
+          MutationEvents:包括 'DOMAttrModified', 'DOMNodeInserted', 'DOMNodeRemoved', 
+                                      'DOMCharacterDataModified', 'DOMNodeInsertedIntoDocument', 
+                                      'DOMNodeRemovedFromDocument', 'DOMSubtreeModified'. 
+2. 在createEvent后必须初始化，为大家介绍5种对应的初始化方法
+  HTMLEvents 和 通用 Events：
+            initEvent( 'type', bubbles, cancelable )
+    UIEvents ：
+                      initUIEvent( 'type', bubbles, cancelable, windowObject, detail )
+    MouseEvents： 
+                      initMouseEvent( 'type', bubbles, cancelable, windowObject, detail, screenX, screenY, 
+                      clientX, clientY, ctrlKey, altKey, shiftKey, metaKey, button, relatedTarget )
+    MutationEvents ：
+                      initMutationEvent( 'type', bubbles, cancelable, relatedNode, prevValue, newValue, 
+                      attrName, attrChange ) 
+3. 在初始化完成后就可以随时触发需要的事件了，为大家介绍targetObj.dispatchEvent(event)
+    使targetObj对象的event事件触发
+  需要注意的是在IE 5.5+版本上请用fireEvent方法，还是浏览兼容的考虑
+4. 例子
+    //例子1  立即触发鼠标被按下事件
+    var fireOnThis = document.getElementById('someID');
+        var evObj = document.createEvent('MouseEvents');
+        evObj.initMouseEvent( 'click', true, true, window, 1, 12, 345, 7, 220, false, false, true, false, 0, null );
+        fireOnThis.dispatchEvent(evObj);
+
+  //例子2  考虑兼容性的一个鼠标移动事件
+    var fireOnThis = document.getElementById('someID');
+    if( document.createEvent ) 
+    {
+        var evObj = document.createEvent('MouseEvents');
+        evObj.initEvent( 'mousemove', true, false );
+        fireOnThis.dispatchEvent(evObj);
+    }
+  else if( document.createEventObject )
+  {
+      fireOnThis.fireEvent('onmousemove');
+  }
+
+## queryselectorall
+
+返回 NodeList 
+转换为数组
+nodes = Array.prototype.slice.call(document.querySelectorAll(`[${sets.normal}]`));
+
+queryselectorall 是基于全局的，不受调用者限制？？？
+http://www.zhangxinxu.com/wordpress/2015/11/know-dom-queryselectorall/
+
+## faskClick
+
+中所周知，手机上的 click 有 300ms的延迟，为什么这么设计呢？ 因为它想看看你是不是要进行双击（double tap）操作。  
+实际上，99.9%的时候，我们只是点击，不会 双击。
+
+最知名的解决方案是[faskclick](https://github.com/ftlabs/fastclick)，star 13200。  
+其文件大小为 31KB，为了解决一个点击的快速响应，加入 31KB代码，代价太大！
+
+自己动手写了几行代码，对所有 link 增加 ontouchstart 事件，实现点击立刻响应。  
+响应中做了 ev.preventDefault()，普遍反映的 点透（点击上面一层时，触发下面一层事件）问题，好像没有发现。  
+代码如下：
+
+```js
+  /**
+   * use ontouchstart replace onclick, implement faskclick!
+   */
+  bindLink() {
+    try {
+      const links = $.qus('a');
+      links.forEach(link => {
+        if (link.href && link.href.indexOf('javascript:') === -1) {
+          link.ontouchstart = (ev) => {
+            ev.preventDefault();
+            if (!ev.touches.length)
+              return;
+
+            const hash = getHash(link.href);
+            if (hash) {
+              // alert(hash);
+              location.hash = `!${hash}`;
+            } else
+              location.href = link.href;
+          };
+        }
+      });
+    } catch(e) {
+      alert(`bindLink exp: ${e.message}`);
+    }
+  }
+```
+
+## 雪碧图
+
+将小图片合并成一张大图片，减少下载次数！
+
+npm i gulp-css-spriter -D
+
+var spriter = require('gulp-css-spriter');
+
 
