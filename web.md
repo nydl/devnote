@@ -3336,10 +3336,216 @@ http://www.zhangxinxu.com/wordpress/2015/11/know-dom-queryselectorall/
 
 ## 雪碧图
 
-将小图片合并成一张大图片，减少下载次数！
+将小图片合并成一张大图片，减少下载次数，加快显示速度！  
 
-npm i gulp-css-spriter -D
+一般用在大小相等的小图片图标上，一般图标使用字体（如果将图标转换为字体，请见相关章节），但是有些大图标，比如圆形、不同背景等，使用字体不方便，可以直接使用png、gif带透明的图片。  
 
-var spriter = require('gulp-css-spriter');
+一般的图片，大小为 200px x 200px，使用 png格式，使用 智图压缩后，大小一般在 2K左右。  
 
+图标排列，一般使用 flex 布局，实现图标的平铺，如果多列不能对齐，使用 blank 一个像素的透明图像，来占一个位子，实现多行对齐。
+
+常用的合并库有：
+
+- [sprity](https://github.com/sprity/sprity)
+  原名 css-sprite，更名后，支持各种插件，能生成 css、less、sass等各种格式文件，推荐使用。
+- [gulp.spritesmith](https://github.com/twolfson/gulp.spritesmith) 
+  好像只能生成 css。
+
+sprity 比 pritesmith 快一倍，功能更加强大！生成的图片比 pritesmith 略微小一点，但是，原来 2K的图片，合并后大小为 32 和 37K，大了很多！
+
+使用智图压缩下，变为 9K！
+
+### 安装
+
+安装 sprity 报错，发现主要是 lwip 图片处理库在 node 6 上安装报错，解决办法，就是把git上的库下载下来，修改引用版本，从本地安装。  
+
+安装步骤：
+
+1. git clone https://github.com/sprity/sprity.git
+    git clone https://github.com/sprity/sprity-lwip.git
+2. 修改 package.json 文件
+  sprity-lwip
+  "dependencies": {
+    "lwip": "0.0.9",      
+    "bluebird": "^3.4.6"
+  },
+  lwip 0.0.8 改为 0.0.9 版本！
+
+  sprity
+  "optionalDependencies": {
+    "sprity-css": "^1.0.2",
+    "sprity-less": "^1.0.3"
+  },
+  去掉 sprity-lwip，增加 sprity-less，
+3. 安装
+  原来一步安装 npm i sprity -D 
+  改为
+  npm i ../pack/sprity-lwip 
+  npm i ../pack/sprity
+  npm i gulp-if -D
+
+### 使用
+
+sprity
+
+```js
+var gulpif = require('gulp-if');
+var sprity = require('sprity');
+
+var dst = '../nysvr/public/'; // 'dist'  /Users/way/prj/koa/koastart/public/
+
+// generate sprite.png and _sprite.scss
+gulp.task('sprite', function () {
+  return sprity.src({
+      src: 'src/icon/**/*.{png,jpg}',
+      style: 'src/less/sprite.less',
+      processor: 'less', // make sure you have installed sprity-less
+      split: true
+    })
+    .pipe(gulpif('*.png', gulp.dest(dst + 'img/'), gulp.dest('./src/less/')));
+});
+
+```
+
+spritesmith
+
+```js
+var spritesmith = require('gulp.spritesmith');
+
+var dst = '../nysvr/public/'; // 'dist'  /Users/way/prj/koa/koastart/public/
+
+// generate sprite.png and _sprite.scss
+gulp.task('sprite', function () {
+  var spriteData = gulp.src('src/icon/*.png').pipe(spritesmith({
+    imgName: 'sprite.png',
+    cssName: 'sprite.css'
+  }));
+  return spriteData.pipe(gulp.dest('dist/sprite/'));
+});
+
+```
+
+sprity 功能：
+
+- split： 按目录（一个页面需要的图标，放到一个目录中）合并图片，一个目录一个图片，避免所有页面的小图片合并到一个大图。
+- margin：增加间隔，默认 4px，可设置为 0px，不需要间隔，如果图标有边距，建议设置为 0
+- orientation 方向 (vertical|horizontal|binary-tree)，缺省为纵向排列
+- engine 图像处理引擎. 缺省为: lwip
+
+### 图形处理引擎
+
+- sprity-lwip - 缺省引擎，如果不能自动安装，请参见手工安装
+- sprity-canvas - node-canvas 处理图像，系统内置，无需安装.
+- sprity-gm - gm 图像处理库. 需要安装 GraphicsMagick or ImageMagick.
+
+### 样式
+
+合并之后，在页面上如何刚好显示其中一个图片，并且能随意控制大小呢？  
+诀窍就在以下三个样式：
+
+- background-image: url('http://nydl-10038118.cos.myqcloud.com/img/sprite-post.png'); 
+- background-position：偏移位置，按显示大小递增，如 -0 -70px -140px -210px 。。。
+- background-size:100% 500%; 背景图纵向放大五倍，几张图片，放大几倍，图片必须大小相等
+
+原理就是将图片纵向放大，让设定宽高的显示层，值显示偏移位置的一个图，不放大，则会将整个图显示在这个区域中。
+偏移的坐标系需注意，显示层的左上角为坐标，右下为正，左上为负，如果需要背景图向上偏移，需设置为负数。
+
+```less
+@icon-height: 70px;
+@post-event: -0px -0px@icon-height @icon-height;
+@post-link: -0px -@icon-height @icon-height @icon-height;
+@post-shop: -0px -2*@icon-height @icon-height @icon-height;
+@post-topic: -0px -3*@icon-height @icon-height @icon-height;
+@post-write: -0px -4*@icon-height @icon-height @icon-height;
+
+.sprite-width(@sprite) {
+  width: extract(@sprite, 3);
+}
+
+.sprite-height(@sprite) {
+  height: extract(@sprite, 4);
+}
+
+.sprite-position(@sprite) {
+  @sprite-offset-x: extract(@sprite, 1);
+  @sprite-offset-y: extract(@sprite, 2);
+  background-position: @sprite-offset-x @sprite-offset-y;
+}
+
+.sprite(@sprite) {
+  .sprite-position(@sprite);
+  //.sprite-width(@sprite);
+  //.sprite-height(@sprite);
+}
+
+// 平铺图标
+.tiles {
+  display: flex;
+  position: absolute;
+  bottom: 12rem;
+  width: 100%;
+  //justify-content: space-around;
+  .tileItem {
+    display: block;
+    flex: 1;
+    padding: 7px 0 0;
+    -webkit-tap-highlight-color: transparent;
+    text-align: center;
+
+    .icon-post {
+      background-image: url('http://nydl-10038118.cos.myqcloud.com/img/sprite-post.png');
+      display: block;
+      background-size:100% 500%;
+      width: @icon-height;
+      height: @icon-height;
+      margin: 0 auto; // 居中
+    }
+
+    .icon-event {
+      .sprite(@post-event);
+    }
+    .icon-link {
+      .sprite(@post-link);
+    }
+    .icon-shop {
+      .sprite(@post-shop);
+    }
+    .icon-topic {
+      .sprite(@post-topic);
+    }
+    .icon-write {
+      .sprite(@post-write);
+    }
+  }
+  .tileLabel {
+    font-size: .7rem;
+    color: #4b4b4b;
+  }
+}
+```
+
+页面
+
+```html
+<div class="tiles">
+  <a href="topicEdit.html" class="tileItem">
+    <i class="icon-post icon-topic"></i>
+    <span class="tileLabel">
+      专题
+    </span>
+  </a>
+  <a href="javascript:;" class="tileItem">
+    <i class="icon-post icon-write"></i>
+        <span class="tileLabel">
+          文章
+        </span>
+  </a>
+  <a href="javascript:;" class="tileItem">
+    <i class="icon-post icon-shop"></i>
+        <span class="tileLabel">
+          商品
+        </span>
+  </a>
+</div>
+```
 
